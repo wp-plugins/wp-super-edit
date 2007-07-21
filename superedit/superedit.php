@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit
 Plugin URI: http://www.funroe.net/projects/superedit/
 Description: Get some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
 Author: Jesse Planck
-Version: 1.0.98
+Version: 1.1
 Author URI: http://www.funroe.net/
 
 Copyright (c) 2007 Jess Planck (http://www.funroe.net/)
@@ -167,7 +167,6 @@ function superedit_loadsettings() {
 */
 function superedit_usersettings( $superedit_ini = array() ) {
 	$returnusersettings['options'] = $superedit_ini['options'];
-	$returnusersettings['plugins'] = $superedit_ini['plugins'];
 	$button_template = array (
 		'status' => '',
 		'row' => 0,
@@ -234,14 +233,31 @@ function superedit_admin_setup() {
 	add_submenu_page('plugins.php', __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, $page, 'superedit_admin_page');
 	
 	if ( $_GET['page'] == $page ) {
-		
+
+		require_once('superedit_admin.php');
+
 		$superedit_ini = superedit_loadsettings();
 		$superedit_options = get_option('superedit_options');
 		$superedit_buttons = get_option('superedit_buttons');
-		$superedit_plugins = get_option('superedit_plugins');
-				
-		require_once('superedit_admin.php');
+
+		foreach ( $superedit_buttons as $bname => $button_options ) {
+			if ( is_array( $superedit_ini['buttons'][$bname] ) ) {
+				$superedit_ini['buttons'][$bname]['status'] = $button_options['status'];
+				$superedit_ini['buttons'][$bname]['row'] = $button_options['row'];
+				$superedit_ini['buttons'][$bname]['position'] = $button_options['position'];
+				$superedit_ini['buttons'][$bname]['separator'] = $button_options['separator'];
+			}
+		}
 		
+		foreach ( $superedit_plugins as $pname => $plugin_options ) {
+			if ( is_array( $superedit_ini['plugins'][$pname] ) ) {
+				$superedit_ini['plugins'][$pname]['status'] = $plugin_options['status'];
+				$superedit_ini['plugins'][$pname]['callbacks'] = $plugin_options['callbacks'];
+			}
+		}
+		
+		$superedit_ini['options']['language'] = $superedit_options['language'];
+						
 		if (function_exists('wp_enqueue_script')) {
 			wp_enqueue_script( 'superedit-jquery',  '/wp-content/plugins/superedit/js/jquery.pack.js', false, '2135' );
 			wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/superedit/js/greybox.js', false, '2135' );
@@ -265,10 +281,13 @@ function superedit_admin_setup() {
 * @param $locale Wordpress provided language setting.
 */
 function superedit_locale($locale) {
+	global $superedit_options, $superedit_plugins, $superedit_buttons;
+	
 	if (strstr($_SERVER['REQUEST_URI'], 'tiny_mce_config')) {
-		$superedit_current = get_option('superedit_options');
-		
-		if ( $superedit_current['language'] == 'EN' ) {
+		$superedit_buttons = get_option('superedit_buttons');
+		$superedit_options = get_option('superedit_options');
+				
+		if ( $superedit_options['language'] == 'EN' ) {
 			$locale = 'EN';
 		}
 	}
@@ -447,7 +466,7 @@ function superedit_mce_buttons_3($buttons) {
 * @global array $superedit_plugins
 */
 function superedit_init() {
-	global $superedit_options, $superedit_buttons, $superedit_plugins;
+	global $superedit_plugins;
 	
 	if ( superedit_compatibility_check() ) {
 
@@ -456,8 +475,6 @@ function superedit_init() {
 		
 		// Plugin Callback functions
 		$superedit_plugins = get_option('superedit_plugins');
-		$superedit_buttons = get_option('superedit_buttons');
-		$superedit_options = get_option('superedit_options');
 		
 		if ( is_array( $superedit_plugins ) ) {
 			foreach ( $superedit_plugins as $name => $plugin ) {

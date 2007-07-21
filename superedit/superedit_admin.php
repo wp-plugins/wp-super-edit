@@ -83,7 +83,7 @@ function superedit_update_message( $message = '' ) {
 * @global $superedit_options
 */
 function superedit_options_html() {
-	global $superedit_options;
+	global $superedit_ini;
 ?>
 <div id="superedit_options">
 	<fieldset class="options">
@@ -91,7 +91,7 @@ function superedit_options_html() {
 			<table width="100%" cellspacing="2" cellpadding="5" class="editform">
 				<tr valign="top">
 					<th width="45%" scope="row">Use English as the default language</th>
-					<td width="5%" style="background: #ccc;"><input name="superedit_language" type="checkbox" value="Y" <?php if ($superedit_options['language'] == 'EN' ) { echo 'checked="checked"' ;} ?> /></td>
+					<td width="5%" style="background: #ccc;"><input name="superedit_language" type="checkbox" value="Y" <?php if ($superedit_ini['options']['language'] == 'EN' ) { echo 'checked="checked"' ;} ?> /></td>
 					<td width="60%" scope="row">
 					<p>
 					The Wordpress visual editor does have international language support, but language files 
@@ -120,12 +120,8 @@ function superedit_options_html() {
 * @global array $superedit_plugins
 */
 function superedit_option_status( $name, $type ) {
-	global $superedit_buttons, $superedit_plugins;
-	if ( $type == 'plugins' ) {
-		return $superedit_plugins[$name]['status'];
-	} elseif ( $type == 'buttons' ) {
-		return $superedit_buttons[$name]['status'];
-	}
+	global $superedit_ini;
+	return $superedit_ini[$type][$name]['status'];
 }
 
 /**
@@ -139,10 +135,9 @@ function superedit_option_status( $name, $type ) {
 * @global array $superedit_buttons
 */
 function superedit_position_buttons ( $button, $position, $row ) {
-	global $superedit_buttons;
-	
-	$superedit_buttons[$button]['row'] = $row;
-	$superedit_buttons[$button]['position'] = $position + 1;
+	global $superedit_ini;
+	$superedit_ini['buttons'][$button]['row'] = $row;
+	$superedit_ini['buttons'][$button]['position'] = $position + 1;
 }
 
 /**
@@ -173,7 +168,7 @@ function superedit_set_separator ( &$settings, $name ) {
 * @param $value Defines the name for the checkbox.
 * @param $description Optional description for fieldset block.
 */
-function superedit_layout_html ( $title, $option, $superedit_settings, $value, $description = '' ) {
+function superedit_layout_html ( $title, $option, $value ) {
 ?>
 <div id="superedit_<?php echo $value; ?>">
 
@@ -184,7 +179,7 @@ function superedit_layout_html ( $title, $option, $superedit_settings, $value, $
 		<?php foreach ( $option as $name => $settings ) : ?>
 			<tr valign="top">
 				<th width="45%" scope="row"><?php echo $settings['desc']; ?></th>
-				<td width="5%" style="background: #ccc;"><input id="<?php echo $name; ?>" name="<?php echo $value.'['.$name.']'; ?>" onclick="toggleButtons(this)" type="checkbox" value="Y" <?php if ($superedit_settings[$name]['status'] == 'Y' ) { echo 'checked="checked"' ;} ?> /></td>
+				<td width="5%" style="background: #ccc;"><input id="<?php echo $name; ?>" name="<?php echo $value.'['.$name.']'; ?>" onclick="toggleButtons(this)" type="checkbox" value="Y" <?php if ($settings['status'] == 'Y' ) { echo 'checked="checked"' ;} ?> /></td>
 				<td width="60%" scope="row"><?php echo $settings['notice']; ?></td>
 			</tr>
 		<?php endforeach; ?>
@@ -229,14 +224,14 @@ function superedit_form_hidden ( $settings, $name, $type ) {
 * @global array $superedit_plugins
 */
 function superedit_layout_buttons ( $name, $position ) {
-	global $superedit_ini, $superedit_plugins, $superedit_buttons;
+	global $superedit_ini;
 	
 	$plugin = $superedit_ini['buttons'][$name]['plugin'];
 	
 	if ( $name != '' ) {
 ?>
-			<?php if (!$plugin || $superedit_plugins[$plugin]['status'] == 'Y' ) : ?>
-			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_buttons[$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
+			<?php if (!$plugin || $superedit_ini['plugins'][$plugin]['status'] == 'Y' ) : ?>
+			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_ini['buttons'][$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
 			<?php endif; ?>
 
 <?php
@@ -255,11 +250,11 @@ function superedit_layout_buttons ( $name, $position ) {
 * @global array $superedit_plugins
 */
 function superedit_jobjects ( $settings, $name, $type ) {
-	global $superedit_buttons, $superedit_plugins;
+	global $superedit_ini;
 	if ( $type == 'buttons' ) {	
-		printf("\t\ttiny_mce_buttons['%s'] = new superedit_button( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );\n", $name, $settings['desc'], $settings['notice'], $superedit_buttons[$name]['status'], $superedit_buttons[$name]['row'], $superedit_buttons[$name]['position'], $settings['separator'], $settings['plugin'] );
+		printf("\t\ttiny_mce_buttons['%s'] = new superedit_button( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );\n", $name, $settings['desc'], $settings['notice'], $superedit_ini['buttons'][$name]['status'], $superedit_ini['buttons'][$name]['row'], $superedit_ini['buttons'][$name]['position'], $settings['separator'], $settings['plugin'] );
 	} else {
-		printf("\t\ttiny_mce_plugins['%s'] = new superedit_plugin( '%s', '%s', '%s' );\n", $name, $settings['desc'], $settings['notice'], $superedit_plugins[$name]['status'] );
+		printf("\t\ttiny_mce_plugins['%s'] = new superedit_plugin( '%s', '%s', '%s' );\n", $name, $settings['desc'], $settings['notice'], $superedit_ini['plugins'][$name]['status'] );
 	}
 }
 
@@ -274,7 +269,7 @@ function superedit_jobjects ( $settings, $name, $type ) {
 * @global array $superedit_plugins
 */
 function superedit_admin_head() {
-	global $superedit_ini, $superedit_options, $superedit_buttons, $superedit_plugins;
+	global $superedit_ini;
 
 ?>
 <script type="text/javascript" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
@@ -406,7 +401,7 @@ function superedit_admin_head() {
 * @global array $superedit_plugins
 */
 function superedit_admin_page() {
-	global $superedit_ini, $superedit_options, $superedit_buttons, $superedit_plugins;
+	global $superedit_ini;
 		
 	$updated = false;
 		
@@ -414,14 +409,7 @@ function superedit_admin_page() {
 	
 		if ( function_exists('current_user_can') && !current_user_can('manage_options') ) die(__('Security test failed'));
 		check_admin_referer( '$superedit_nonce', $superedit_nonce );
-		
-		array_walk( $superedit_buttons, 'superedit_postvalues', 'buttons' );
 
-		array_walk( $superedit_plugins, 'superedit_postvalues', 'plugins' );
-		
-		array_walk( $superedit_buttons, 'superedit_set_separator' );
-
-		
 		$row_order_1 = explode( ',', $_POST['order_row_1'] );
 		$row_order_2 = explode( ',', $_POST['order_row_2'] );
 		$row_order_3 = explode( ',', $_POST['order_row_3'] );
@@ -430,25 +418,33 @@ function superedit_admin_page() {
 		array_walk( $row_order_2, 'superedit_position_buttons', 2 );
 		array_walk( $row_order_3, 'superedit_position_buttons', 3 );
 
-		$superedit_options['language'] = ( $_POST['superedit_language'] == 'Y' ? 'EN' : 'NO' );
+		array_walk( $superedit_ini['buttons'], 'superedit_postvalues', 'buttons' );
+
+		array_walk( $superedit_ini['plugins'], 'superedit_postvalues', 'plugins' );
 		
-		update_option('superedit_options',$superedit_options);
-		update_option('superedit_buttons',$superedit_buttons);
-		update_option('superedit_plugins',$superedit_plugins);
+		array_walk( $superedit_ini['buttons'], 'superedit_set_separator' );
+
+		$superedit_savesettings = superedit_usersettings( $superedit_ini );
+
+		$superedit_ini['options']['language'] = ( $_POST['superedit_language'] == 'Y' ? 'EN' : 'NO' );
+		
+		update_option('superedit_options',$superedit_ini['options']);
+		update_option('superedit_buttons',$superedit_ini['buttons']);
+		update_option('superedit_plugins',$superedit_ini['plugins']);
 		
 		$updated = true;
 
 	}
 	// User Notification
 	if ($updated) superedit_update_message();
-	
+		
 	// Construct Button containers
 	$buttonrow1 = array();
 	$buttonrow2 = array();
 	$buttonrow3 = array();
 	$buttonrowdefault = array();
 
-	foreach ( $superedit_buttons as $name => $button_options ) {
+	foreach ( $superedit_ini['buttons'] as $name => $button_options ) {
 	
 		if ( $button_options['row'] == 1 && $button_options['status'] == 'Y' ) {
 			$buttonrow1[$button_options['position']] = $name;
@@ -480,8 +476,8 @@ function superedit_admin_page() {
 			<input type="hidden" id="o_row_2" name="order_row_2" value="" />
 			<input type="hidden" id="o_row_3" name="order_row_3" value="" />
 			
-			<?php array_walk( $superedit_buttons, 'superedit_form_hidden', array( 'buttons', 'bval_' ) );?>
-			<?php array_walk( $superedit_buttons, 'superedit_form_hidden', array( 'separators', 'sval_' ) );?>
+			<?php array_walk( $superedit_ini['buttons'], 'superedit_form_hidden', array( 'buttons', 'bval_' ) );?>
+			<?php array_walk( $superedit_ini['buttons'], 'superedit_form_hidden', array( 'separators', 'sval_' ) );?>
 			
 			<?php superedit_admin_title(); ?>
 			
@@ -538,7 +534,7 @@ function superedit_admin_page() {
 				</div>		
 	
 				<div id="plugins_tab">
-					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], $superedit_plugins, 'plugins' ); ?>	
+					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>	
 				</div>
 				
 				<div id="options_tab">			

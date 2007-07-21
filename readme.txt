@@ -16,9 +16,9 @@ Please visit the [WP Super Edit Project](http://www.funroe.net/projects/superedi
 
 **Features**
 
-* Drag and Drop interface for arranging the visual editor buttons.
-* Access to commonly used built-in editor buttons and functions. 
-* Customized TinyMCE plugins to add additional buttons and features. 
+    * Drag and Drop interface for arranging the visual editor buttons.
+    * Access to commonly used built-in editor buttons and functions. 
+    * Customized TinyMCE plugins to add additional buttons and features. 
 
 == Installation ==
 

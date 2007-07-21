@@ -1,10 +1,13 @@
+<?php
+if (empty($wp)) {
+if ( defined('ABSPATH') )
+	require_once( ABSPATH . 'wp-config.php');
+else
+    require_once('../../../../../wp-config.php');
+}
+?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<?php
-
-require_once('../../../../../wp-config.php');
-
-?>
 	<title>{$lang_superemotions_title}</title>
 	<script language="javascript" type="text/javascript" src="../../../../../wp-includes/js/tinymce/tiny_mce_popup.js"></script>
 	<script language="javascript" type="text/javascript" src="jscripts/functions.js"></script>
