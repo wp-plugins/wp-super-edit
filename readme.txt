@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: ev3rywh3re
 Donate link: http://www.funroe.net/about/donations-advertising/
-Tags: TinyMCE, editor, wysiwyg, buttons, formatting, admin
+Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
 Requires at least: 2.1
 Tested up to: 2.3
 Stable tag: trunk
@@ -10,15 +10,22 @@ WP Super Edit is designed to give some control over the visual/wysiwyg editor an
 
 == Description ==
 
-WP Super Edit is designed to give some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code. This is very short, so you may want to visit the project site for more information.
-
-Please visit the [WP Super Edit Project](http://www.funroe.net/projects/superedit/ "WP Super Edit Project") for further details and the latest information on this plugin.
+WP Super Edit is designed to give some control over the Wordpress visual wysiwyg editor and add some functionality without modifying the Wordpress source code. WP Super edit acts as framework for TinyMCE visual editor plugins and buttons.  
 
 **Features**
 
 * Drag and Drop interface for arranging the visual editor buttons.
 * Access to commonly used built-in editor buttons and functions. 
-* Customized TinyMCE plugins to add additional buttons and features. 
+* Customized TinyMCE plugins to add additional buttons and features like tables, layers (div tag), emoticons, style attributes, and css classes from theme files.
+
+For detailed information, visit the **WP Super Edit** project:
+
+* [ http://www.funroe.net/projects/superedit/ ](http://www.funroe.net/projects/superedit/)
+
+For indepth documentation visit **Using WP Super Edit**:
+
+* [ http://www.funroe.net/projects/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
+
 
 == Installation ==
 
@@ -30,8 +37,9 @@ Please visit the [WP Super Edit Project](http://www.funroe.net/projects/superedi
 
 = Can this be used in my language? =
 
-Yes! It requires some editing. You can check out the documentation at [Using WP Super Edit](http://www.funroe.net/projects/superedit/configuration/ "Using WP Super Edit")
+Yes! It requires some editing. You can check out the documentation at **Using WP Super Edit** :
 
+* [ http://www.funroe.net/projects/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
 
 == Screenshots ==
 
