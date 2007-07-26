@@ -24,7 +24,7 @@ For detailed information, visit the **WP Super Edit project** :
 
 For indepth documentation visit **Using WP Super Edit** :
 
-* [ http://www.funroe.net/projects/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
+* [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
 
 Your feedback is always welcome!
 
