@@ -41,7 +41,7 @@ Your feedback is always welcome!
 
 Yes! It requires some editing. You can check out the documentation at **Using WP Super Edit** :
 
-* [ http://www.funroe.net/projects/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
+* [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
 
 == Screenshots ==
 
