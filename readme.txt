@@ -22,7 +22,7 @@ For detailed information, visit the **WP Super Edit project** :
 
 * [ http://www.funroe.net/projects/superedit/ ](http://www.funroe.net/projects/superedit/)
 
-For indepth documentation visit **Using WP Super Edit** :
+For in depth documentation visit **Using WP Super Edit** :
 
 * [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
 
