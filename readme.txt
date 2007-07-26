@@ -18,13 +18,15 @@ WP Super Edit is designed to give some control over the Wordpress visual wysiwyg
 * Access to commonly used built-in editor buttons and functions. 
 * Customized TinyMCE plugins to add additional buttons and features like tables, layers (div tag), emoticons, style attributes, and css classes from theme files.
 
-For detailed information, visit the **WP Super Edit** project:
+For detailed information, visit the **WP Super Edit project** :
 
 * [ http://www.funroe.net/projects/superedit/ ](http://www.funroe.net/projects/superedit/)
 
-For indepth documentation visit **Using WP Super Edit**:
+For indepth documentation visit **Using WP Super Edit** :
 
 * [ http://www.funroe.net/projects/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
+
+Your feedback is always welcome!
 
 
 == Installation ==
