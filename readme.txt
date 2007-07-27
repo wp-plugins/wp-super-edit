@@ -31,7 +31,7 @@ Your feedback is always welcome!
 
 == Installation ==
 
-1. Take the whole superedit folder and put it in the wp-content/plugins/ directory of your Web site. How it gets there is up to you (FTP, WebDAV, RSYNC, SCP.. choose your poison!)
+1. Take the whole **"superedit"** folder (not the wp-super-edit folder) and put it in the wp-content/plugins/ directory of your Web site. How it gets there is up to you (FTP, WebDAV, RSYNC, SCP.. choose your poison!)
 2. Activate the plugin on the Wordpress plugin administration panel
 3. Go to the Plugins panel and you will see the WP Super Edit tab in the sub menu. Here is where you can make your configuration changes.
 
