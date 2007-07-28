@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit
 Plugin URI: http://www.funroe.net/projects/superedit/
 Description: Get some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
 Author: Jesse Planck
-Version: 1.1
+Version: 1.1.1
 Author URI: http://www.funroe.net/
 
 Copyright (c) 2007 Jess Planck (http://www.funroe.net/)
@@ -259,6 +259,12 @@ function superedit_admin_setup() {
 		$superedit_ini['options']['language'] = $superedit_options['language'];
 						
 		if (function_exists('wp_enqueue_script')) {
+		
+			wp_deregister_script( 'prototype' );
+			wp_deregister_script( 'jquery' );
+			wp_deregister_script( 'interface' );
+
+		
 			wp_enqueue_script( 'superedit-jquery',  '/wp-content/plugins/superedit/js/jquery.pack.js', false, '2135' );
 			wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/superedit/js/greybox.js', false, '2135' );
 			wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/superedit/js/jquery.history_remote.pack.js', false, '2135' );
