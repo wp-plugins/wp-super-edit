@@ -49,6 +49,23 @@ Yes! It requires some editing. You can check out the documentation at **Using WP
 
 * [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
 
+
+
+
+== Change Log ==
+
+This is just a brief summary of changes for this version or detailed changes you will want to access the subversion repository. You can find SVN information by visiting **Using WP Super Edit** :
+
+* [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
+
+= Latest Changes =
+
+* Cleaned up javascript and centralized all js functions in admin_footer.
+* New custom jQuery namespace to minimize conflicts with overzealous plugins.
+
+
+
+
 == Screenshots ==
 
 1. WP Super Edit Admin Interface
