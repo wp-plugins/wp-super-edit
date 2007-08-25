@@ -54,7 +54,7 @@ Yes! It requires some editing. You can check out the documentation at **Using WP
 
 == Change Log ==
 
-This is just a brief summary of changes for this version or detailed changes you will want to access the subversion repository. You can find SVN information by visiting **Using WP Super Edit** :
+This is just a brief summary of changes for this version. More details about changes can be found by accessing the subversion repository. You can find SVN information by visiting **Using WP Super Edit** :
 
 * [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
 
