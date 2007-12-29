@@ -4,7 +4,7 @@ Donate link: http://www.funroe.net/about/donations-advertising/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
 Requires at least: 2.1
 Tested up to: 2.3
-Stable tag: trunk
+Stable tag: 1.1.2
 
 WP Super Edit is designed to give some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
 
