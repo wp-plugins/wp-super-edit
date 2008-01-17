@@ -12,7 +12,7 @@ if ( !function_exists('superedit_custom_editor_wpcss') ) {
 	function superedit_custom_wpcss($mce_css) {
 	
 		$pattern = '(htt\w+/wordpress.css)';
-		$replacement = get_bloginfo('url') . '/wp-content/plugins/superedit/tinymce_plugins/wordpress/wordpress.css';
+		$replacement = get_bloginfo('wpurl') . '/wp-content/plugins/superedit/tinymce_plugins/wordpress/wordpress.css';
 		$mce_css = eregi_replace($pattern, $replacement, $mce_css);
 	
 		return $mce_css; 
