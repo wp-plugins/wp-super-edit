@@ -50,7 +50,6 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 * This is a function to be used inplace of the builtin array_intersect_key for 
 * PHP5. This function should respond the same for php4 users.
 *
-* @global $wp_version
 */
 if ( !function_exists('array_intersect_key' ) ) {
 	function array_intersect_key( $isec, $keys ) {
@@ -108,11 +107,11 @@ function superedit_compatibility_notice() {
 <div style="width: 100%; padding: 8px; margin: 8px; font-size: 120%; font-weight: bold; background: #FFFF66; border: 2px dashed #FF0000;"> 
 	<p style="text-align: center; font-size: 130%;">I'm really sorry!</p>
 	
-	<p>WP Super Edit cannot support your current version of Wordpress ( <?php echo $wp_version; ?> ) 
-	You should immediately deactivate the WP Super Edit plugin. </p>
+	<p>WP Super Edit cannot support your current version of WordPress ( <?php echo $wp_version; ?> .) 
+	You should immediately deactivate the WP Super Edit plugin and remove the WP Super Edit plugin files.</p>
 	
-	<p>Please use <a href="http://www.wordpress.org">Wordpress</a> version 2.2 or higher! Although this plugin may work with some other versions
-	of Wordpress, I urge you to be aware of security issues that may arise using older versions of Wordpress.</p>
+	<p>Please use <a href="http://www.wordpress.org">WordPress</a> version 2.1 or higher! Although this plugin may work with some other versions
+	of WordPress, I urge you to be aware of security issues that may arise using older versions of Wordpress.</p>
 </div>
 <?php
 }
@@ -191,15 +190,11 @@ function superedit_usersettings( $superedit_ini = array() ) {
 *
 */
 function superedit_activate() {
-	if ( superedit_compatibility_check() ) {
-		$superedit_ini = superedit_loadsettings();
-		$superedit_current = superedit_usersettings($superedit_ini);
-		add_option('superedit_options', $superedit_current['options']);
-		add_option('superedit_buttons', $superedit_current['buttons']);
-		add_option('superedit_plugins', $superedit_current['plugins']);
-	} else {
-		superedit_compatibility_notice();
-	}
+	$superedit_ini = superedit_loadsettings();
+	$superedit_current = superedit_usersettings($superedit_ini);
+	add_option('superedit_options', $superedit_current['options']);
+	add_option('superedit_buttons', $superedit_current['buttons']);
+	add_option('superedit_plugins', $superedit_current['plugins']);
 }
 
 /**
@@ -227,32 +222,38 @@ function superedit_deactivate() {
 function superedit_admin_setup() {
 	global $superedit_ini, $superedit_options, $superedit_buttons, $superedit_plugins;
 
-	$page = preg_replace('!^.*[\\\\/]wp-content[\\\\/][^\\\\/]*plugins[\\\\/]!', '', __FILE__);
+	require_once('superedit_admin.php');
+
+	$page =  preg_replace('/^.*wp-content[\\\\\/]plugins[\\\\\/]/', '',__FILE__);
 	$page = str_replace('\\', '/', $page);
 	
-	add_submenu_page('plugins.php', __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, $page, 'superedit_admin_page');
 	
-	if ( $_GET['page'] == $page ) {
 
-		require_once('superedit_admin.php');
+	add_submenu_page('options-general.php', __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, $page, 'superedit_admin_page');
+		
+	if ( $_GET['page'] == $page ) {
 
 		$superedit_ini = superedit_loadsettings();
 		$superedit_options = get_option('superedit_options');
 		$superedit_buttons = get_option('superedit_buttons');
 
-		foreach ( $superedit_buttons as $bname => $button_options ) {
-			if ( is_array( $superedit_ini['buttons'][$bname] ) ) {
-				$superedit_ini['buttons'][$bname]['status'] = $button_options['status'];
-				$superedit_ini['buttons'][$bname]['row'] = $button_options['row'];
-				$superedit_ini['buttons'][$bname]['position'] = $button_options['position'];
-				$superedit_ini['buttons'][$bname]['separator'] = $button_options['separator'];
+		if ( is_array( $superedit_buttons )) {
+			foreach ( $superedit_buttons as $bname => $button_options ) {
+				if ( is_array( $superedit_ini['buttons'][$bname] ) ) {
+					$superedit_ini['buttons'][$bname]['status'] = $button_options['status'];
+					$superedit_ini['buttons'][$bname]['row'] = $button_options['row'];
+					$superedit_ini['buttons'][$bname]['position'] = $button_options['position'];
+					$superedit_ini['buttons'][$bname]['separator'] = $button_options['separator'];
+				}
 			}
 		}
-		
-		foreach ( $superedit_plugins as $pname => $plugin_options ) {
-			if ( is_array( $superedit_ini['plugins'][$pname] ) ) {
-				$superedit_ini['plugins'][$pname]['status'] = $plugin_options['status'];
-				$superedit_ini['plugins'][$pname]['callbacks'] = $plugin_options['callbacks'];
+
+		if ( is_array( $superedit_plugins )) {		
+			foreach ( $superedit_plugins as $pname => $plugin_options ) {
+				if ( is_array( $superedit_ini['plugins'][$pname] ) ) {
+					$superedit_ini['plugins'][$pname]['status'] = $plugin_options['status'];
+					$superedit_ini['plugins'][$pname]['callbacks'] = $plugin_options['callbacks'];
+				}
 			}
 		}
 		
@@ -315,18 +316,20 @@ function superedit_map_buttons($row, $oldbuttons) {
 	global $superedit_buttons;
 	
 	$separators = array();
-	
-	foreach ( $superedit_buttons as $name => $button ) {
-		$key = array_search( $name, $oldbuttons );
-		if ( $key !== false ) {
-			unset( $oldbuttons[$key] );
-			if (  $oldbuttons[$key+1] == 'separator' ) unset( $oldbuttons[$key+1] );
-		}	
-			
-		if ( $button['row'] == $row && $button['status'] == 'Y' ) {
-			if ($button['separator'] == 'Y') $separators[] = $button['position'];
-			$buttons[$button['position']] = $name;
-		}	
+
+	if ( is_array( $superedit_buttons ) ) {
+		foreach ( $superedit_buttons as $name => $button ) {
+			$key = array_search( $name, $oldbuttons );
+			if ( $key !== false ) {
+				unset( $oldbuttons[$key] );
+				if (  $oldbuttons[$key+1] == 'separator' ) unset( $oldbuttons[$key+1] );
+			}	
+				
+			if ( $button['row'] == $row && $button['status'] == 'Y' ) {
+				if ($button['separator'] == 'Y') $separators[] = $button['position'];
+				$buttons[$button['position']] = $name;
+			}	
+		}
 	}
 	
 	if ( is_array( $buttons ) ) {
@@ -358,12 +361,18 @@ function superedit_map_buttons($row, $oldbuttons) {
 * @global array $superedit_plugins
 */
 function superedit_external_plugins() {
-	global $superedit_plugins;
+	global $superedit_plugins, $wp_version;
 	
-	foreach ( $superedit_plugins as $name => $plugin ) {
-		if ( $plugin['status'] == 'Y' ) {
-		    echo 'tinyMCE.loadPlugin("'.$name.'", "'.get_option('siteurl').'/wp-content/plugins/superedit/tinymce_plugins/'.$name.'/");'."\n"; 
-		} 
+
+	if ( is_array( $superedit_plugins ) ) {
+		
+		$tiny_mce_plugin_com = ( $wp_version >= '2.4' ) ? 'tinymce.PluginManager.load' : 'tinyMCE.loadPlugin' ;
+	
+		foreach ( $superedit_plugins as $name => $plugin ) {
+			if ( $plugin['status'] == 'Y' ) {
+				echo $tiny_mce_plugin_com . '("'.$name.'", "'.get_option('siteurl').'/wp-content/plugins/superedit/tinymce_plugins/'.$name.'/");'."\n"; 
+			} 
+		}
 	}
    
 	return;
@@ -380,14 +389,16 @@ function superedit_external_plugins() {
 */
 function superedit_mce_plugins($plugins) {
 	global $superedit_plugins;
-	
-	foreach ( $superedit_plugins as $name => $plugin ) {
-		if ( $plugin['status'] == 'Y' ) {
-			$key = array_search( $name, $plugins );
-			if ( $key ) {
-				$plugins[$key] = "-$name";
-			} else {
-				array_push($plugins, "-$name");
+
+	if ( is_array( $superedit_plugins ) ) {
+		foreach ( $superedit_plugins as $name => $plugin ) {
+			if ( $plugin['status'] == 'Y' ) {
+				$key = array_search( $name, $plugins );
+				if ( $key ) {
+					$plugins[$key] = "-$name";
+				} else {
+					array_push($plugins, "-$name");
+				}
 			}
 		}
 	}
@@ -475,32 +486,23 @@ function superedit_mce_buttons_3($buttons) {
 function superedit_init() {
 	global $superedit_plugins;
 	
-	if ( superedit_compatibility_check() ) {
-
-		load_plugin_textdomain('superedit', 'wp-content/plugins/superedit');
-		add_action('admin_menu', 'superedit_admin_setup');
-		
-		// Plugin Callback functions
-		$superedit_plugins = get_option('superedit_plugins');
-		
-		if ( is_array( $superedit_plugins ) ) {
-			foreach ( $superedit_plugins as $name => $plugin ) {
-				if ( isset( $plugin['callbacks'] ) && $plugin['callbacks'] != "" && $plugin['status'] == 'Y') {
-					$superedit_callbacks = explode(',', $plugin['callbacks']);
-					
-					$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/superedit/tinymce_plugins/';
-					require( $tinymce_plugins_loc.$name.'/functions.php');
-					
-					foreach ( $superedit_callbacks as $callback => $command ) {
-						call_user_func(trim($command));
-					}
-					
+	// Plugin Callback functions
+	$superedit_plugins = get_option('superedit_plugins');
+	
+	if ( is_array( $superedit_plugins ) ) {
+		foreach ( $superedit_plugins as $name => $plugin ) {
+			if ( isset( $plugin['callbacks'] ) && $plugin['callbacks'] != "" && $plugin['status'] == 'Y') {
+				$superedit_callbacks = explode(',', $plugin['callbacks']);
+				
+				$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/superedit/tinymce_plugins/';
+				require( $tinymce_plugins_loc.$name.'/functions.php');
+				
+				foreach ( $superedit_callbacks as $callback => $command ) {
+					call_user_func(trim($command));
 				}
+				
 			}
 		}
-		
-	}  else {
-		superedit_compatibility_notice();
 	}
 	
 	do_action('superedit_init');
@@ -528,17 +530,28 @@ if ( !function_exists('wp_nonce_field') ) {
 /**
 * Define Wordpress actions and filters
 */
-if (isset($wp_version)) {
+
+if ( superedit_compatibility_check() ) {
+
+	load_plugin_textdomain('superedit', 'wp-content/plugins/superedit');
+
+    add_action('activate_superedit/superedit.php','superedit_activate');
+    add_action('deactivate_superedit/superedit.php','superedit_deactivate');
+    
+    // Language Check
+    add_filter('locale', 'superedit_locale');
+    
+    add_action('init', 'superedit_init', 5);
+	add_action('admin_menu', 'superedit_admin_setup');
+    
+    add_action('tinymce_before_init','superedit_external_plugins');
     add_filter('mce_plugins', 'superedit_mce_plugins', 11);
     add_filter('mce_buttons', 'superedit_mce_buttons_1', 11);    
     add_filter('mce_buttons_2', 'superedit_mce_buttons_2', 11);
     add_filter('mce_buttons_3', 'superedit_mce_buttons_3', 11);
-    // Language Check
-    add_filter('locale', 'superedit_locale');
-    add_action('tinymce_before_init','superedit_external_plugins');
-    add_action('activate_superedit/superedit.php','superedit_activate');
-    add_action('deactivate_superedit/superedit.php','superedit_deactivate');
-}
 
-add_action('init', 'superedit_init', 5);
+}  else {
+	superedit_compatibility_notice();
+}   
+    
 ?>
