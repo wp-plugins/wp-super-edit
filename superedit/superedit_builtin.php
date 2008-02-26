@@ -291,3 +291,11 @@ status = N
 row = 0
 position = 0
 separator = N
+
+[wp_page]
+desc = "Wordpress Next Page Tag"
+notice = "Insert Wordpress Next Page tag to divide page content into multiple views."
+status = N
+row = 0
+position = 0
+separator = N

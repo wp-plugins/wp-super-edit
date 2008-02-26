@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: WP Super Edit
-Plugin URI: http://www.funroe.net/projects/superedit/
+Plugin URI: http://factory.funroe.net/projects/wp-super-edit/
 Description: Get some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
 Author: Jesse Planck
-Version: 1.1.2
+Version: 1.2
 Author URI: http://www.funroe.net/
 
 Copyright (c) 2007 Jess Planck (http://www.funroe.net/)
@@ -175,6 +175,13 @@ function superedit_usersettings( $superedit_ini = array() ) {
 		'status' => '',
 		'callbacks' => '');
 	foreach ( $superedit_ini['buttons'] as $name => $button ) {
+			
+		if (  $superedit_ini['plugins'][$button['plugin']]['status'] == 'N' ) {
+			$button['status'] = 'N';
+			$button['row'] = 0;
+			$button['position'] = 0;
+		}
+			
 		$returnusersettings['buttons'][$name] = array_intersect_key( $button, $button_template );
 	}
 	foreach ( $superedit_ini['plugins'] as $name => $plugin ) {
@@ -227,8 +234,6 @@ function superedit_admin_setup() {
 	$page =  preg_replace('/^.*wp-content[\\\\\/]plugins[\\\\\/]/', '',__FILE__);
 	$page = str_replace('\\', '/', $page);
 	
-	
-
 	add_submenu_page('options-general.php', __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, $page, 'superedit_admin_page');
 		
 	if ( $_GET['page'] == $page ) {
@@ -240,7 +245,13 @@ function superedit_admin_setup() {
 		if ( is_array( $superedit_buttons )) {
 			foreach ( $superedit_buttons as $bname => $button_options ) {
 				if ( is_array( $superedit_ini['buttons'][$bname] ) ) {
-					$superedit_ini['buttons'][$bname]['status'] = $button_options['status'];
+					
+					if ( $superedit_plugins[$superedit_ini['buttons'][$bname]['plugin']]['status'] == 'N' ) {
+						$superedit_ini['buttons'][$bname]['status'] = 'N';
+					} else {
+						$superedit_ini['buttons'][$bname]['status'] = $button_options['status'];
+					}
+					
 					$superedit_ini['buttons'][$bname]['row'] = $button_options['row'];
 					$superedit_ini['buttons'][$bname]['position'] = $button_options['position'];
 					$superedit_ini['buttons'][$bname]['separator'] = $button_options['separator'];
@@ -274,7 +285,7 @@ function superedit_admin_setup() {
 		}
 		
 		add_action('admin_head', 'superedit_admin_head');
-		add_action('admin_footer', 'superedit_admin_footer');
+		if ( !$_GET['ui'] || $_GET['ui'] == 'buttons' ) add_action('admin_footer', 'superedit_admin_footer');
 
 		do_action('superedit_admin_setup');
 	}
@@ -313,22 +324,26 @@ function superedit_locale($locale) {
 * @global array $superedit_buttons
 */
 function superedit_map_buttons($row, $oldbuttons) {
-	global $superedit_buttons;
+	global $superedit_buttons, $superedit_plugins;
 	
 	$separators = array();
 
 	if ( is_array( $superedit_buttons ) ) {
 		foreach ( $superedit_buttons as $name => $button ) {
-			$key = array_search( $name, $oldbuttons );
-			if ( $key !== false ) {
-				unset( $oldbuttons[$key] );
-				if (  $oldbuttons[$key+1] == 'separator' ) unset( $oldbuttons[$key+1] );
-			}	
-				
-			if ( $button['row'] == $row && $button['status'] == 'Y' ) {
-				if ($button['separator'] == 'Y') $separators[] = $button['position'];
-				$buttons[$button['position']] = $name;
-			}	
+
+			if ( $superedit_plugins[$button['plugin']]['status'] != 'N' ) {
+				$key = array_search( $name, $oldbuttons );
+				if ( $key !== false ) {
+					unset( $oldbuttons[$key] );
+					if (  $oldbuttons[$key+1] == 'separator' ) unset( $oldbuttons[$key+1] );
+				}	
+					
+				if ( $button['row'] == $row && $button['status'] == 'Y' ) {
+					if ($button['separator'] == 'Y') $separators[] = $button['position'];
+					$buttons[$button['position']] = $name;
+				}
+			}
+			
 		}
 	}
 	
@@ -370,7 +385,7 @@ function superedit_external_plugins() {
 	
 		foreach ( $superedit_plugins as $name => $plugin ) {
 			if ( $plugin['status'] == 'Y' ) {
-				echo $tiny_mce_plugin_com . '("'.$name.'", "'.get_option('siteurl').'/wp-content/plugins/superedit/tinymce_plugins/'.$name.'/");'."\n"; 
+				echo $tiny_mce_plugin_com . '("' . $name . '", "' . get_bloginfo('wpurl') . '/wp-content/plugins/superedit/tinymce_plugins/' . $name . '/");'."\n"; 
 			} 
 		}
 	}

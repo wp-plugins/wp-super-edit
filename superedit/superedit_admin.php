@@ -21,11 +21,15 @@
 * @param $postvalue Value array from $_POST.
 */
 function superedit_postvalues ( &$settings, $name, $type ) {
+
+	global $superedit_ini;
+
 	if ( isset( $_POST[$type][$name] ) ) {	
 		$settings['status'] = attribute_escape( $_POST[$type][$name]  );
 	} else {
 		$settings['status'] = 'N';
 	}
+	
 }
 
 /**
@@ -67,7 +71,7 @@ function superedit_update_message( $message = '' ) {
 ?>
 	<div class="fade updated" id="message">
 		<?php $writepost = ($wp_version >= 2.1 ) ? '/wp-admin/post-new.php' : '/wp-admin/post.php'; ?> 
-		<p><?php printf(__('WP Super Edit Settings Updated. Remember... Reload your editor or empty your cache and <a href="%s">Go Write Something!!</a> &raquo;'), get_option('siteurl') . $writepost . '?up='. rand(101, 199) ); ?></p>
+		<p><?php printf(__('WP Super Edit Settings Updated. Remember... Reload your editor or empty your cache and <a href="%s">Go Write Something!!</a> &raquo;'), get_bloginfo('wpurl') . $writepost . '?up='. rand(101, 199) ); ?></p>
 		<p>
 		<span style="color:red;">In most cases you will need to RELOAD the editor page, in some extreme cases you may need to EMPTY YOUR BROWSER CACHE before your new options will be available.</span> 
 		</p>
@@ -178,7 +182,7 @@ function superedit_layout_html ( $title, $option, $value ) {
 		<?php foreach ( $option as $name => $settings ) : ?>
 			<tr valign="top">
 				<th width="45%" scope="row"><?php echo $settings['desc']; ?></th>
-				<td width="5%" style="background: #ccc;"><input id="<?php echo $name; ?>" name="<?php echo $value.'['.$name.']'; ?>" onclick="toggleButtons(this)" type="checkbox" value="Y" <?php if ($settings['status'] == 'Y' ) { echo 'checked="checked"' ;} ?> /></td>
+				<td width="5%" style="background: #ccc;"><input id="<?php echo $name; ?>" name="<?php echo $value.'['.$name.']'; ?>" type="checkbox" value="Y" <?php if ($settings['status'] == 'Y' ) { echo 'checked="checked"' ;} ?> /></td>
 				<td width="60%" scope="row"><?php echo $settings['notice']; ?></td>
 			</tr>
 		<?php endforeach; ?>
@@ -228,7 +232,7 @@ function superedit_layout_buttons ( $name, $position ) {
 	if ( $name != '' ) {
 ?>
 			<?php if (!$plugin || $superedit_ini['plugins'][$plugin]['status'] == 'Y' ) : ?>
-			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_ini['buttons'][$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
+			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_ini['buttons'][$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/superedit/images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/superedit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
 			<?php endif; ?>
 
 <?php
@@ -266,14 +270,10 @@ function superedit_admin_head() {
 
 ?>
 
-<script type="text/javascript" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
-<script type="text/javascript" src="<?php echo get_option('siteurl'); ?>/wp-includes/js/tinymce/tiny_mce_config.php?up=<?php echo rand(101, 199); ?>"></script>
+<script type="text/javascript" src="<?php bloginfo('wpurl'); ?>/wp-content/plugins/superedit/js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
+<script type="text/javascript" src="<?php bloginfo('wpurl'); ?>/wp-includes/js/tinymce/tiny_mce_config.php?up=<?php echo rand(101, 199); ?>"></script>
 
-<link rel="stylesheet" href="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/css/superedit.css" type="text/css" />
-
-<!--[if lte IE 7]>
-<link rel="stylesheet" href="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/css/tabs_ie.css" type="text/css" media="projection, screen" />
-<![endif]-->
+<link rel="stylesheet" href="<?php bloginfo('wpurl'); ?>/wp-content/plugins/superedit/css/wp_super_edit.css" type="text/css" />
 
 <?php
 	do_action('superedit_admin_head');
@@ -294,29 +294,38 @@ function superedit_admin_page() {
 	global $superedit_ini;
 		
 	$updated = false;
-		
-	if (isset($_POST['update_superedit'])) {
+
+	$wp_super_edit_ui_url = htmlspecialchars( $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] );
+	$wp_super_edit_ui_form_url = htmlspecialchars( $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&ui=' . $_REQUEST['ui'] );
+			
+	if (isset($_POST['superedit_action'])) {
 	
 		if ( function_exists('current_user_can') && !current_user_can('manage_options') ) die(__('Security test failed'));
 		check_admin_referer( '$superedit_nonce', $superedit_nonce );
 
-		$row_order_1 = explode( ',', $_POST['order_row_1'] );
-		$row_order_2 = explode( ',', $_POST['order_row_2'] );
-		$row_order_3 = explode( ',', $_POST['order_row_3'] );
+		if (  $_REQUEST['ui'] == 'buttons' ) {
+			$row_order_1 = explode( ',', $_POST['order_row_1'] );
+			$row_order_2 = explode( ',', $_POST['order_row_2'] );
+			$row_order_3 = explode( ',', $_POST['order_row_3'] );
+			
+			array_walk( $row_order_1, 'superedit_position_buttons', 1 );
+			array_walk( $row_order_2, 'superedit_position_buttons', 2 );
+			array_walk( $row_order_3, 'superedit_position_buttons', 3 );
+	
+			array_walk( $superedit_ini['buttons'], 'superedit_postvalues', 'buttons' );
+			
+			array_walk( $superedit_ini['buttons'], 'superedit_set_separator' );
+		}
 		
-		array_walk( $row_order_1, 'superedit_position_buttons', 1 );
-		array_walk( $row_order_2, 'superedit_position_buttons', 2 );
-		array_walk( $row_order_3, 'superedit_position_buttons', 3 );
+		if (  $_REQUEST['ui'] == 'plugins' ) {
+			array_walk( $superedit_ini['plugins'], 'superedit_postvalues', 'plugins' );
+		}
 
-		array_walk( $superedit_ini['buttons'], 'superedit_postvalues', 'buttons' );
-
-		array_walk( $superedit_ini['plugins'], 'superedit_postvalues', 'plugins' );
+		if (  $_REQUEST['ui'] == 'options' ) {
+			$superedit_ini['options']['language'] = ( $_POST['superedit_language'] == 'Y' ? 'EN' : 'NO' );
+		}
 		
-		array_walk( $superedit_ini['buttons'], 'superedit_set_separator' );
-
 		$superedit_savesettings = superedit_usersettings( $superedit_ini );
-
-		$superedit_ini['options']['language'] = ( $_POST['superedit_language'] == 'Y' ? 'EN' : 'NO' );
 		
 		update_option('superedit_options',$superedit_ini['options']);
 		update_option('superedit_buttons',$superedit_ini['buttons']);
@@ -348,20 +357,36 @@ function superedit_admin_page() {
 		}
 		
 	}
-	
+
 	ksort( $buttonrow1 );
 	ksort( $buttonrow2 );
 	ksort( $buttonrow3 );
 	ksort( $buttonrowdefault );
 	
+
+		
 	// Plugin options form
 	?>
 	<div class="wrap">
 	
-		<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo htmlspecialchars( $_SERVER['REQUEST_URI'] ); ?>" method="post">
+		<?php superedit_admin_title(); ?>
+		<div id="wp-super-edit-ui-menu">
+			<ul>
+				<li><a href="<?php echo $wp_super_edit_ui_url; ?>&ui=buttons"><span>Arrange Editor Buttons</span></a></li>
+				<li><a href="<?php echo $wp_super_edit_ui_url; ?>&ui=plugins"><span>Configure Editor Plugins</span></a></li>
+				<li><a href="<?php echo $wp_super_edit_ui_url; ?>&ui=options"><span>Super Edit Options</span></a></li>
+			</ul>
+		</div>
+		
+		<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
 			<?php superedit_nonce_field('$superedit_nonce', $superedit_nonce); ?>
 
-			<input type="hidden" name="superedit_action" value="update" />
+			<?php superedit_submit_button(); ?>	
+
+
+		<?php if ( !$_GET['ui'] || $_GET['ui'] == 'buttons' ) : ?>
+
+			<input type="hidden" name="superedit_action" value="buttons" />
 			
 			<input type="hidden" id="o_row_1" name="order_row_1" value="" />
 			<input type="hidden" id="o_row_2" name="order_row_2" value="" />
@@ -369,18 +394,7 @@ function superedit_admin_page() {
 			
 			<?php array_walk( $superedit_ini['buttons'], 'superedit_form_hidden', array( 'buttons', 'bval_' ) );?>
 			<?php array_walk( $superedit_ini['buttons'], 'superedit_form_hidden', array( 'separators', 'sval_' ) );?>
-			
-			<?php superedit_admin_title(); ?>
-			
-			<?php superedit_submit_button(); ?>	
-			
-			<div id="superedit_tabs">
-		
-				<ul>
-					<li><a href="#button_tab"><span>Arrange Editor Buttons</span></a></li>
-					<li><a href="#plugins_tab"><span>Configure Editor Plugins</span></a></li>
-					<li><a href="#options_tab"><span>Super Edit Options</span></a></li>
-				</ul>
+								
 				
 				<div id="button_tab">
 					<fieldset class="options">
@@ -422,16 +436,23 @@ function superedit_admin_page() {
 										
 					</fieldset>
 				</div>		
-	
+		<?php endif; ?>
+		
+		<?php if ( $_GET['ui'] == 'plugins' ) : ?>	
+				<input type="hidden" name="superedit_action" value="plugins" />
+
 				<div id="plugins_tab">
 					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>	
 				</div>
-				
+		<?php endif; ?>
+		
+		<?php if ( $_GET['ui'] == 'options' ) : ?>	
+				<input type="hidden" name="superedit_action" value="options" />
+
 				<div id="options_tab">			
 					<?php superedit_options_html(); ?>
 				</div>
-				
-			</div>
+		<?php endif; ?>
 				
 				<?php superedit_submit_button(); ?>
 				
@@ -472,58 +493,13 @@ function superedit_admin_footer() {
 		this.plugin = plugin;
 	  }
 	
-	function superedit_plugin( desc, notice, status ) {
-		this.desc = desc;
-		this.notice = notice;
-		this.status = status;
-	  }
-	
 	var data;
 	var tiny_mce_buttons = new Object();
-	var tiny_mce_plugins = new Object();
 	var buttons = new Array();
 	
 <?php array_walk( $superedit_ini['buttons'], 'superedit_jobjects', 'buttons' );?>
-
-<?php array_walk( $superedit_ini['plugins'], 'superedit_jobjects', 'plugins' );?>
 	
 	// Plugin and Button Control Functions
-
-	function makeButton(button) {
-		var separator = '';
-		if ( wpsuperedit('#sval_' + button ).attr('value') == 'Y' ) separator = ' button_separator';
-		wpsuperedit('#tinymce_buttons').append('<div id="' + button + '" class="lineitem' + separator + '"><div class="button_info"><img onclick="getButtonInfo(' + "'" + button + "'" + ');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/info.png" title="Button Info" alt="Button Info" width="14" height="16" /><img onclick="toggleSeparator(' + "'" + button + "'" + ');" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div>' + tiny_mce_buttons[button].desc + '</div>').SortableAddItem(wpsuperedit('#' + button)[0]);
-		return;
-	}
-	
-	function addItem(plugin) {
-	  wpsuperedit.each( tiny_mce_buttons, function(i, n) {
-
-		if ( n.plugin == plugin ) {
-			makeButton( i );		
-		}
-
-	  });
-	}
-	
-	function removeItem(plugin) {
-	  wpsuperedit.each( tiny_mce_buttons, function(i, n) {
-
-		if ( n.plugin == plugin ) {
-			wpsuperedit( '#' + i ).remove();
-		
-		}
-
-	  });
-	}
-	
-	function toggleButtons(plugin) {
-		if ( plugin.checked ) {
-			addItem(plugin.id);
-		} else {
-			removeItem(plugin.id)		
-		}
-	}
 	
 	function toggleSeparator(button) {
 		wpsuperedit( '#' + button ).toggleClass( 'button_separator' );
@@ -539,7 +515,7 @@ function superedit_admin_footer() {
 	function getButtonInfo(button) {
 	
 		wpsuperedit.GB_show('about:blank', {
-				close_img: "<?php echo get_option('siteurl'); ?>/wp-content/plugins/superedit/images/close.gif",
+				close_img: "<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/superedit/images/close.gif",
 				height: 280,
 				width: 300,
 				animation: true,
@@ -558,9 +534,6 @@ function superedit_admin_footer() {
 
 	wpsuperedit(document).ready(
 		function() {
-
-			// Set up tab interface
-			wpsuperedit('#superedit_tabs').tabs();
 
 			// Controls Drag + Drop
 			wpsuperedit('#row1').Sortable(
@@ -601,32 +574,33 @@ function superedit_admin_footer() {
 
 			// Set up values for form submission
 			wpsuperedit('#tinymce_controller').submit(
+				
 				function() {
-				serial2 = wpsuperedit.SortSerialize();
 				
-				
-				wpsuperedit.each( serial2.o.tinymce_buttons, function(i, n){
-				  wpsuperedit( '#bval_' + n ).attr('value','N');			  
-				});			
-	
-				wpsuperedit.each( serial2.o.row1, function(i, n){
-				  wpsuperedit('#bval_' + n ).attr('value','Y');
-				  wpsuperedit( '#o_row_1' ).attr('value', serial2.o.row1 );
-				  
-				});
-				
-				wpsuperedit.each( serial2.o.row2, function(i, n){
-				  wpsuperedit('#bval_' + n ).attr('value','Y');
-				  wpsuperedit( '#o_row_2' ).attr('value', serial2.o.row2 );
-	
-				});
-				
-				wpsuperedit.each( serial2.o.row3, function(i, n){
-				  wpsuperedit('#bval_' + n ).attr('value','Y');
-				  wpsuperedit( '#o_row_3' ).attr('value', serial2.o.row3 );
-	
-				});			
-	
+					serial2 = wpsuperedit.SortSerialize();
+								
+					wpsuperedit.each( serial2.o.tinymce_buttons, function(i, n){
+					  wpsuperedit( '#bval_' + n ).attr('value','N');			  
+					});			
+		
+					wpsuperedit.each( serial2.o.row1, function(i, n){
+					  wpsuperedit('#bval_' + n ).attr('value','Y');
+					  wpsuperedit( '#o_row_1' ).attr('value', serial2.o.row1 );
+					  
+					});
+					
+					wpsuperedit.each( serial2.o.row2, function(i, n){
+					  wpsuperedit('#bval_' + n ).attr('value','Y');
+					  wpsuperedit( '#o_row_2' ).attr('value', serial2.o.row2 );
+		
+					});
+					
+					wpsuperedit.each( serial2.o.row3, function(i, n){
+					  wpsuperedit('#bval_' + n ).attr('value','Y');
+					  wpsuperedit( '#o_row_3' ).attr('value', serial2.o.row3 );
+		
+					});
+						
 				}
 			);
 						

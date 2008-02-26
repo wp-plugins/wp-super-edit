@@ -1,0 +1,145 @@
+div#wp-super-edit-ui-menu {
+	border-bottom: 1px solid #ccc;
+	background: #F9FCFE;
+} 
+
+div#wp-super-edit-ui-menu ul {
+	margin: 0;
+	padding: 0;
+} 
+
+div#wp-super-edit-ui-menu ul li {
+	display: inline;
+	list-style-type: none;
+	margin: .5em 1em 0 1em;
+	padding: .5em;
+	font-size: 1.1em;
+	font-weight: bold;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	background: #fff;
+
+}
+
+
+div.lineitem {
+	width: 120px;
+	height: 2.4em;
+	margin: 0 4px 8px 0;
+	padding: 1px;
+	font-size: 0.9em;
+	background-color: #FFFFFF;
+	border: 1px dotted #333;
+	cursor: move;
+}
+
+div.button_separator {
+	border-bottom: 4px dotted #666;
+}	
+
+div.button_info {
+	width: 18px;
+	height: 2.6em;
+	float: left;
+	margin: 0;
+	margin: -1px 4px 0 -1px;
+	padding: 0;
+	background-color: #448abd;
+	border-right: 2px solid #bbbbbb;
+	text-align: center;
+}	
+
+div.button_info img {
+	margin: 2px 0 0 0;
+}	
+
+div.row_container {
+	float: left;
+	width: 155px;
+	margin: 8px 4px 8px 4px;
+	border: 1px solid #ccc;
+}
+
+div.row_container h3 {
+	font-size: 1em;
+	color: #14568A;
+	margin: 4px 8px 0 4px;
+}
+
+div.disabled_buttons {
+	border: 1px solid #000;
+	background: #CFEBF7;
+}	
+
+div.section {
+	width: 100%;
+	padding: 8px;
+}
+
+div#button_rows {
+	width: 100%;
+}	
+
+.clearer {
+	clear: both;
+}
+
+.sort_placeholder {
+	width: 120px;
+	background: #83B4D8;
+	border: 2px dashed #14568A;
+}
+	
+	
+/* Greybox */
+
+
+#GB_overlay {
+  position: absolute;
+  z-index:100;
+  top: 0px;
+  left: 0px;
+  background-color:#000;
+  filter:alpha(opacity=60);
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+
+#GB_window {
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  background: #fff;
+  border: 5px solid #C3DEF1;
+  overflow: auto;
+  width: 300px;
+  height: 300px;
+  z-index: 150;
+}
+
+#GB_frame {
+  padding: 6px;
+  border: 0;
+  overflow: auto;
+  width: 90%;
+  height: 260px;
+}
+
+#GB_caption {
+  font: 12px bold helvetica, verdana, sans-serif;
+  color: #fff;
+  background: #0D324F;
+  padding: 2px 0 2px 5px;
+  margin: 0;
+  text-align: left;
+}
+
+#GB_window img {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  cursor: pointer;
+  cursor: hand;
+}
+
