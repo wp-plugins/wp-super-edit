@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: ev3rywh3re
-Donate link: http://www.funroe.net/about/donations-advertising/
+Donate link: http://factory.funroe.net/contribute/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
 Requires at least: 2.1
-Tested up to: 2.3
-Stable tag: 1.1.2
+Tested up to: 2.3.3
+Stable tag: 1.5
 
 WP Super Edit is designed to give some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
 
@@ -20,14 +20,13 @@ WP Super Edit is designed to give some control over the Wordpress visual wysiwyg
 
 For detailed information, visit the **WP Super Edit project** :
 
-* [ http://www.funroe.net/projects/superedit/ ](http://www.funroe.net/projects/superedit/)
+* [ http://factory.funroe.net/projects/wp-super-edit/ ](http://factory.funroe.net/projects/wp-super-edit/)
 
 For in depth documentation visit **Using WP Super Edit** :
 
-* [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
+* [ http://factory.funroe.net/projects/wp-super-edit/using/ ](http://factory.funroe.net/projects/wp-super-edit/using/)
 
 Your feedback is always welcome!
-
 
 == Installation ==
 
@@ -37,8 +36,7 @@ Your feedback is always welcome!
 
 For more detailed documentation visit **Using WP Super Edit** :
 
-* [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
-
+* [ http://factory.funroe.net/projects/wp-super-edit/using/ ](http://factory.funroe.net/projects/wp-super-edit/using/)
 
 
 == Frequently Asked Questions ==
@@ -47,23 +45,14 @@ For more detailed documentation visit **Using WP Super Edit** :
 
 Yes! It requires some editing. You can check out the documentation at **Using WP Super Edit** :
 
-* [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
-
-
+* [ http://factory.funroe.net/projects/wp-super-edit/using/ ](http://factory.funroe.net/projects/wp-super-edit/using/)
 
 
 == Change Log ==
 
-This is just a brief summary of changes for this version. More details about changes can be found by accessing the subversion repository. You can find SVN information by visiting **Using WP Super Edit** :
+Information about changes to the current version will typically be posted to the  **WP Super Edit Project** :
 
-* [ http://www.funroe.net/projects/superedit/configuration/ ](http://www.funroe.net/projects/superedit/configuration/)
-
-= Latest Changes =
-
-* Cleaned up javascript and centralized all js functions in admin_footer.
-* New custom jQuery namespace to minimize conflicts with overzealous plugins.
-
-
+* [ http://factory.funroe.net/projects/wp-super-edit/ ](http://factory.funroe.net/projects/wp-super-edit/)
 
 
 == Screenshots ==

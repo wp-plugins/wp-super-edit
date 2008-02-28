@@ -57,7 +57,7 @@ function superedit_postvalues ( &$settings, $name, $type ) {
 function superedit_admin_title() {
 ?>
 	<h2>WP Super Edit</h2>
-	<p style="padding: 6px; font-size: 98%;">To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://www.funroe.net/projects/superedit/">WP Super Edit project.</a></p>
+	<p style="padding: 6px; font-size: 98%;">To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a></p>
 <?php
 }
 
@@ -127,7 +127,7 @@ function superedit_options_html() {
 					for the plugins may need to be installed manually.
 					</p>
 					<p>
-					Currently this plugin only ships with English language files to make the archive smaller. Please <a href="http://www.funroe.net/projects/superedit/">see the WP Super Edit Custom Language Documentation</a>
+					Currently this plugin only ships with English language files to make the archive smaller. Please <a href="http://factory.funroe.net/projects/wp-super-edit/using/">see the WP Super Edit Custom Language Documentation</a>
 					for more information.
 					</p>
 					</td>

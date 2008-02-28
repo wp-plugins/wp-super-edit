@@ -17,7 +17,7 @@ var TinyMCE_EmotionsPlugin = {
 			longname : 'Wordpress Emoticons',
 			author : 'Jess Planck after Moxiecode Systems',
 			authorurl : 'http://www.funroe.net',
-			infourl : 'http://www.funroe.net/projects/superedit/',
+			infourl : 'http://factory.funroe.net/projects/wp-super-edit/',
 			version : tinyMCE.majorVersion + "." + tinyMCE.minorVersion
 		};
 	},
