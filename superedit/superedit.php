@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit
 Plugin URI: http://factory.funroe.net/projects/wp-super-edit/
 Description: Get some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
 Author: Jesse Planck
-Version: 1.2
+Version: 1.5
 Author URI: http://www.funroe.net/
 
 Copyright (c) 2007 Jess Planck (http://www.funroe.net/)
@@ -32,6 +32,15 @@ USA
 You can also view a copy of the HTML version of the GNU General
 Public License at http://www.gnu.org/copyleft/gpl.html
 */
+
+
+/**
+* Define Global Variables
+*/
+$superedit_ini = array();
+$superedit_options = array();
+$superedit_buttons = array();
+$superedit_plugins = array();
 
 /**
 * WP Super Edit 
@@ -176,7 +185,7 @@ function superedit_usersettings( $superedit_ini = array() ) {
 		'callbacks' => '');
 	foreach ( $superedit_ini['buttons'] as $name => $button ) {
 			
-		if (  $superedit_ini['plugins'][$button['plugin']]['status'] == 'N' ) {
+		if ( $superedit_ini['plugins'][$button['plugin']]['status'] == 'N' ) {
 			$button['status'] = 'N';
 			$button['row'] = 0;
 			$button['position'] = 0;
@@ -202,18 +211,6 @@ function superedit_activate() {
 	add_option('superedit_options', $superedit_current['options']);
 	add_option('superedit_buttons', $superedit_current['buttons']);
 	add_option('superedit_plugins', $superedit_current['plugins']);
-}
-
-/**
-* Deactivate plugin
-*
-* Function used when this plugin is deactivated in Wordpress.
-*
-*/
-function superedit_deactivate() {
-	delete_option('superedit_options');
-	delete_option('superedit_buttons');
-	delete_option('superedit_plugins');
 }
 
 /**
@@ -523,13 +520,6 @@ function superedit_init() {
 	do_action('superedit_init');
 }
 
-/**
-* Define Global Variables
-*/
-$superedit_ini = array();
-$superedit_options = array();
-$superedit_buttons = array();
-$superedit_plugins = array();
 
 /**
 * Start security checks
@@ -551,8 +541,7 @@ if ( superedit_compatibility_check() ) {
 	load_plugin_textdomain('superedit', 'wp-content/plugins/superedit');
 
     add_action('activate_superedit/superedit.php','superedit_activate');
-    add_action('deactivate_superedit/superedit.php','superedit_deactivate');
-    
+	
     // Language Check
     add_filter('locale', 'superedit_locale');
     

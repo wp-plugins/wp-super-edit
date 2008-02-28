@@ -12,6 +12,23 @@
 */
 
 /**
+* Uninstall plugin
+*
+* Function used when to clear settings and deactivate plugin.
+*
+*/
+function superedit_uninstall() {
+	delete_option('superedit_options');
+	delete_option('superedit_buttons');
+	delete_option('superedit_plugins');
+}
+
+function superedit_deactivate() {
+    $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_superedit/superedit.php' ), 'plugins.php?action=deactivate&plugin=superedit/superedit.php' );
+	wp_redirect( $url );
+}
+
+/**
 * Set user configurations from
 *
 * Uses array_walk to set status of plugins or buttons.
@@ -49,10 +66,10 @@ function superedit_admin_title() {
 *
 * Just to display the form button for the WP Super Edit admin interfaces.
 */
-function superedit_submit_button() {
+function superedit_submit_button( $button_text = 'Update Options &raquo;', $message = '' ) {
 ?>
 	<p class="submit clearer">
-		<input type="submit" name="update_superedit" value="Update Options &raquo;" />
+		<?php echo $message; ?> <input type="submit" name="update_superedit" value="<?php echo $button_text; ?>" />
 	</p>
 <?php
 }
@@ -71,10 +88,18 @@ function superedit_update_message( $message = '' ) {
 ?>
 	<div class="fade updated" id="message">
 		<?php $writepost = ($wp_version >= 2.1 ) ? '/wp-admin/post-new.php' : '/wp-admin/post.php'; ?> 
-		<p><?php printf(__('WP Super Edit Settings Updated. Remember... Reload your editor or empty your cache and <a href="%s">Go Write Something!!</a> &raquo;'), get_bloginfo('wpurl') . $writepost . '?up='. rand(101, 199) ); ?></p>
 		<p>
-		<span style="color:red;">In most cases you will need to RELOAD the editor page, in some extreme cases you may need to EMPTY YOUR BROWSER CACHE before your new options will be available.</span> 
+			<?php printf(__('WP Super Edit Settings Updated. Remember... Reload your editor or empty your cache and <a href="%s">Go Write Something!!</a> &raquo;'), get_bloginfo('wpurl') . $writepost . '?up='. rand(101, 199) ); ?>
 		</p>
+		<p style="color:red;">
+			In most cases you will need to RELOAD the editor page, in some extreme cases you may need to EMPTY YOUR BROWSER CACHE before your new options will be available.
+		</p>
+		<?php if ( $message != '' ) : ?>
+		<p>
+			<?php echo $message ?>
+		</p>		
+		<?php endif; ?>
+		
 	</div>       
 <?php
 }
@@ -294,11 +319,19 @@ function superedit_admin_page() {
 	global $superedit_ini;
 		
 	$updated = false;
+		
+	$wp_super_edit_ui = ( !$_REQUEST['ui'] ? 'buttons' : $_REQUEST['ui'] );
 
 	$wp_super_edit_ui_url = htmlspecialchars( $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] );
-	$wp_super_edit_ui_form_url = htmlspecialchars( $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&ui=' . $_REQUEST['ui'] );
+	$wp_super_edit_ui_form_url = htmlspecialchars( $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&ui=' . $wp_super_edit_ui );
 			
-	if (isset($_POST['superedit_action'])) {
+	
+	if (  $_REQUEST['superedit_action'] == 'uninstall' ) {
+		superedit_uninstall();
+		superedit_deactivate();
+	}
+	
+	if ( isset( $_POST['superedit_action'] ) && $_REQUEST['superedit_action'] != 'uninstall' ) {
 	
 		if ( function_exists('current_user_can') && !current_user_can('manage_options') ) die(__('Security test failed'));
 		check_admin_referer( '$superedit_nonce', $superedit_nonce );
@@ -457,6 +490,14 @@ function superedit_admin_page() {
 				<?php superedit_submit_button(); ?>
 				
 		</form>
+		
+		<div id="wp_super_edit_uninstall">
+			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
+				<?php superedit_nonce_field('$superedit_nonce', $superedit_nonce); ?>
+				<input type="hidden" name="superedit_action" value="uninstall" />
+				<?php superedit_submit_button('Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' ); ?>
+			</form>
+		</div>
 		
 </div>
 
