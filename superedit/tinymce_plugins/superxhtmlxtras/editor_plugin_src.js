@@ -20,7 +20,7 @@ var TinyMCE_XHTMLXtrasPlugin = {
 	},
 
 	initInstance : function(inst) {
-		tinyMCE.importCSS(inst.getDoc(), this.baseURL + "/plugins/xhtmlxtras/css/xhtmlxtras.css");
+		tinyMCE.importCSS(inst.getDoc(), this.baseURL + "/css/xhtmlxtras.css");
 	},
 
 	getControlHTML : function(cn) {
