@@ -134,10 +134,10 @@ function superedit_compatibility_notice() {
 */
 function superedit_loadsettings() {
 
-	$superedit_ini['options'] = parse_ini_file( ABSPATH.'wp-content/plugins/superedit/superedit_config.php' );
-	$superedit_ini['buttons'] = parse_ini_file( ABSPATH.'wp-content/plugins/superedit/superedit_builtin.php', true );	
+	$superedit_ini['options'] = parse_ini_file( ABSPATH.'wp-content/plugins/wp-super-edit/wp-super-edit-config.php' );
+	$superedit_ini['buttons'] = parse_ini_file( ABSPATH.'wp-content/plugins/wp-super-edit/wp-super-edit-builtin.php', true );	
 
-	$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/superedit/tinymce_plugins/';
+	$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/wp-super-edit/tinymce_plugins/';
 	$tinymce_plugins = @ dir($tinymce_plugins_loc);
 	while(($tinymce_plugin = $tinymce_plugins->read()) !== false) {
 		if ( is_dir( $tinymce_plugins_loc.'/'.$tinymce_plugin ) && is_readable( $tinymce_plugins_loc.'/'.$tinymce_plugin ) ) {
@@ -274,10 +274,9 @@ function superedit_admin_setup() {
 			wp_deregister_script( 'interface' );
 
 		
-			wp_enqueue_script( 'superedit-jquery',  '/wp-content/plugins/superedit/js/jquery.pack.js', false, '2135' );
-			wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/superedit/js/greybox.js', false, '2135' );
-			wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/superedit/js/jquery.history_remote.pack.js', false, '2135' );
-			wp_enqueue_script( 'superedit-tabs',  '/wp-content/plugins/superedit/js/jquery.tabs.pack.js', false, '2135' );
+			wp_enqueue_script( 'superedit-jquery',  '/wp-content/plugins/wp-super-edit/js/jquery.pack.js', false, '2135' );
+			wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
+			wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
 
 		}
 		
@@ -382,7 +381,7 @@ function superedit_external_plugins() {
 	
 		foreach ( $superedit_plugins as $name => $plugin ) {
 			if ( $plugin['status'] == 'Y' ) {
-				echo $tiny_mce_plugin_com . '("' . $name . '", "' . get_bloginfo('wpurl') . '/wp-content/plugins/superedit/tinymce_plugins/' . $name . '/");'."\n"; 
+				echo $tiny_mce_plugin_com . '("' . $name . '", "' . get_bloginfo('wpurl') . '/wp-content/plugins/wp-super-edit/tinymce_plugins/' . $name . '/");'."\n"; 
 			} 
 		}
 	}
@@ -506,7 +505,7 @@ function superedit_init() {
 			if ( isset( $plugin['callbacks'] ) && $plugin['callbacks'] != "" && $plugin['status'] == 'Y') {
 				$superedit_callbacks = explode(',', $plugin['callbacks']);
 				
-				$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/superedit/tinymce_plugins/';
+				$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/wp-super-edit/tinymce_plugins/';
 				require( $tinymce_plugins_loc.$name.'/functions.php');
 				
 				foreach ( $superedit_callbacks as $callback => $command ) {
@@ -538,9 +537,9 @@ if ( !function_exists('wp_nonce_field') ) {
 
 if ( superedit_compatibility_check() ) {
 
-	load_plugin_textdomain('superedit', 'wp-content/plugins/superedit');
+	load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
 
-    add_action('activate_superedit/superedit.php','superedit_activate');
+    add_action('activate_wp-super-edit/wp-super-edit.php','superedit_activate');
 	
     // Language Check
     add_filter('locale', 'superedit_locale');

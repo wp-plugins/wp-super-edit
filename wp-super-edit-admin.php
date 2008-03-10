@@ -24,7 +24,7 @@ function superedit_uninstall() {
 }
 
 function superedit_deactivate() {
-    $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_superedit/superedit.php' ), 'plugins.php?action=deactivate&plugin=superedit/superedit.php' );
+    $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), 'plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
 	wp_redirect( $url );
 }
 
@@ -257,7 +257,7 @@ function superedit_layout_buttons ( $name, $position ) {
 	if ( $name != '' ) {
 ?>
 			<?php if (!$plugin || $superedit_ini['plugins'][$plugin]['status'] == 'Y' ) : ?>
-			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_ini['buttons'][$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/superedit/images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/superedit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
+			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_ini['buttons'][$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
 			<?php endif; ?>
 
 <?php
@@ -295,10 +295,10 @@ function superedit_admin_head() {
 
 ?>
 
-<script type="text/javascript" src="<?php bloginfo('wpurl'); ?>/wp-content/plugins/superedit/js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
+<script type="text/javascript" src="<?php bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
 <script type="text/javascript" src="<?php bloginfo('wpurl'); ?>/wp-includes/js/tinymce/tiny_mce_config.php?up=<?php echo rand(101, 199); ?>"></script>
 
-<link rel="stylesheet" href="<?php bloginfo('wpurl'); ?>/wp-content/plugins/superedit/css/wp_super_edit.css" type="text/css" />
+<link rel="stylesheet" href="<?php bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/css/wp_super_edit.css" type="text/css" />
 
 <?php
 	do_action('superedit_admin_head');
@@ -556,7 +556,7 @@ function superedit_admin_footer() {
 	function getButtonInfo(button) {
 	
 		wpsuperedit.GB_show('about:blank', {
-				close_img: "<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/superedit/images/close.gif",
+				close_img: "<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/images/close.gif",
 				height: 280,
 				width: 300,
 				animation: true,
