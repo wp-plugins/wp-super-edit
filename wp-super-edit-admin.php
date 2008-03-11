@@ -295,8 +295,6 @@ function superedit_admin_head() {
 
 ?>
 
-<script type="text/javascript" src="<?php bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
-<script type="text/javascript" src="<?php bloginfo('wpurl'); ?>/wp-includes/js/tinymce/tiny_mce_config.php?up=<?php echo rand(101, 199); ?>"></script>
 
 <link rel="stylesheet" href="<?php bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/css/wp_super_edit.css" type="text/css" />
 

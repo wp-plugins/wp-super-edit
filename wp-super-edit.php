@@ -226,7 +226,7 @@ function superedit_activate() {
 function superedit_admin_setup() {
 	global $superedit_ini, $superedit_options, $superedit_buttons, $superedit_plugins;
 
-	require_once('superedit_admin.php');
+	require_once('wp-super-edit-admin.php');
 
 	$page =  preg_replace('/^.*wp-content[\\\\\/]plugins[\\\\\/]/', '',__FILE__);
 	$page = str_replace('\\', '/', $page);
@@ -270,11 +270,10 @@ function superedit_admin_setup() {
 		if (function_exists('wp_enqueue_script')) {
 		
 			wp_deregister_script( 'prototype' );
-			wp_deregister_script( 'jquery' );
 			wp_deregister_script( 'interface' );
 
 		
-			wp_enqueue_script( 'superedit-jquery',  '/wp-content/plugins/wp-super-edit/js/jquery.pack.js', false, '2135' );
+			wp_enqueue_script( 'jquery',  '/wp-content/plugins/wp-super-edit/js/jquery.pack.js', false, '2135' );
 			wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
 			wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
 
