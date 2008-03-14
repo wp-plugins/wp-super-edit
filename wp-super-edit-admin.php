@@ -17,6 +17,7 @@
 * Function used when to clear settings and deactivate plugin.
 *
 */
+
 function superedit_uninstall() {
 	delete_option('superedit_options');
 	delete_option('superedit_buttons');
@@ -27,6 +28,7 @@ function superedit_deactivate() {
     $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), 'plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
 	wp_redirect( $url );
 }
+
 
 /**
 * Set user configurations from
@@ -257,7 +259,7 @@ function superedit_layout_buttons ( $name, $position ) {
 	if ( $name != '' ) {
 ?>
 			<?php if (!$plugin || $superedit_ini['plugins'][$plugin]['status'] == 'Y' ) : ?>
-			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_ini['buttons'][$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
+			<div id="<?php echo $name; ?>" class="lineitem<?php if ( $superedit_ini['buttons'][$name]['separator'] == 'Y' ) echo ' button_separator'; ?>"><div class="button_info"><img onclick="getButtonInfo('<?php echo $name; ?>');" src="<?php echo $wp_super_edit->core_uri ?>images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('<?php echo $name; ?>');" src="<?php echo $wp_super_edit->core_uri ?>images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" /></div> <?php echo $superedit_ini['buttons'][$name]['desc']; ?></div>
 			<?php endif; ?>
 
 <?php
@@ -291,16 +293,18 @@ function superedit_jobjects ( $settings, $name, $type ) {
 * @global array $superedit_ini 
 */
 function superedit_admin_head() {
-	global $superedit_ini;
+	global $wp_super_edit;
 
 ?>
 
+<script type="text/javascript" src="<?php echo $wp_super_edit->core_uri ?>js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
 
-<link rel="stylesheet" href="<?php bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/css/wp_super_edit.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
 
 <?php
 	do_action('superedit_admin_head');
 }
+
 
 /**
 * Display Advanced WP Super Edit interface
@@ -314,7 +318,7 @@ function superedit_admin_head() {
 * @global array $superedit_plugins
 */
 function superedit_admin_page() {
-	global $superedit_ini;
+	global $wp_super_edit, $superedit_ini;
 		
 	$updated = false;
 		
@@ -329,10 +333,16 @@ function superedit_admin_page() {
 		superedit_deactivate();
 	}
 	
+	if (  $_REQUEST['superedit_action'] == 'install' ) {
+		include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
+		wp_super_edit_db_tables();
+	}	
+	
+	
 	if ( isset( $_POST['superedit_action'] ) && $_REQUEST['superedit_action'] != 'uninstall' ) {
 	
 		if ( function_exists('current_user_can') && !current_user_can('manage_options') ) die(__('Security test failed'));
-		check_admin_referer( '$superedit_nonce', $superedit_nonce );
+		check_admin_referer( '$wp_super_edit_nonce', $wp_super_edit_nonce );
 
 		if (  $_REQUEST['ui'] == 'buttons' ) {
 			$row_order_1 = explode( ',', $_POST['order_row_1'] );
@@ -410,7 +420,7 @@ function superedit_admin_page() {
 		</div>
 		
 		<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
-			<?php superedit_nonce_field('$superedit_nonce', $superedit_nonce); ?>
+			<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
 
 			<?php superedit_submit_button(); ?>	
 
@@ -482,6 +492,21 @@ function superedit_admin_page() {
 
 				<div id="options_tab">			
 					<?php superedit_options_html(); ?>
+					<div id='editorcontainer'><textarea class='' rows='10' cols='40' name='content' tabindex='2' id='content'></textarea></div>
+					<div id='outlog'>
+					<pre>
+					<?php
+					
+					$tinymce_scan = get_option( 'wp_super_edit_tinymce_scan' );
+					
+					print_r( $tinymce_scan );
+					
+					print_r( $wp_super_edit );
+					
+					?>
+					</pre>
+					</div>
+
 				</div>
 		<?php endif; ?>
 				
@@ -491,7 +516,7 @@ function superedit_admin_page() {
 		
 		<div id="wp_super_edit_uninstall">
 			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
-				<?php superedit_nonce_field('$superedit_nonce', $superedit_nonce); ?>
+				<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
 				<input type="hidden" name="superedit_action" value="uninstall" />
 				<?php superedit_submit_button('Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' ); ?>
 			</form>
@@ -500,6 +525,20 @@ function superedit_admin_page() {
 </div>
 
 <?php 
+}
+
+
+
+
+function superedit_options_footer() {
+?>
+<script type="text/javascript">
+	// <![CDATA[
+	
+	// ]]>
+</script> 
+<?php
+	do_action('superedit_options_footer');
 }
 
 /**
@@ -554,7 +593,7 @@ function superedit_admin_footer() {
 	function getButtonInfo(button) {
 	
 		wpsuperedit.GB_show('about:blank', {
-				close_img: "<?php echo bloginfo('wpurl'); ?>/wp-content/plugins/wp-super-edit/images/close.gif",
+				close_img: "<?php echo $wp_super_edit->core_uri ?>images/close.gif",
 				height: 280,
 				width: 300,
 				animation: true,

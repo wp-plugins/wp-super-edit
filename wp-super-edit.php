@@ -53,6 +53,9 @@ $superedit_plugins = array();
 *
 */
 
+
+
+
 /**
 * array_intersect_key function for php4 compatibility
 *
@@ -124,6 +127,49 @@ function superedit_compatibility_notice() {
 </div>
 <?php
 }
+
+if ( !class_exists( 'wp_super_edit_core' ) ) {
+
+    class wp_super_edit_core { 
+ 
+		public $version;
+		public $db_options;
+		public $db_plugins;
+		public $db_buttons;
+		public $db_users;
+		public $core_path;
+		public $core_uri;
+ 
+        function wp_super_edit_core() { // Maintain php4 compatiblity
+        	global $wpdb;
+        	
+        	$this->version = '2.0';
+        	$this->db_options = $wpdb->prefix . 'wp_super_edit_options';
+        	$this->db_plugins =  $wpdb->prefix . 'wp_super_edit_plugins';
+        	$this->db_buttons =  $wpdb->prefix . 'wp_super_edit_buttons';
+        	$this->db_users =  $wpdb->prefix . 'wp_super_edit_users';
+			$this->core_path = ABSPATH . 'wp-content/plugins/wp-super-edit/';
+        	$this->core_uri = get_bloginfo('wpurl') . '/wp-content/plugins/wp-super-edit/';
+        	$this->tinymce_plugins_uri = $this->core_uri . 'tinymce_plugins/';
+
+        }
+        
+    }
+
+    class wp_super_edit_db { 
+    
+        function wp_super_edit_db() { // Maintain php4 compatiblity
+        	$this->verstion = '2.0';
+        	$this->db_table = 'wp_super_edit';
+        }
+        
+    }
+
+$wp_super_edit = new wp_super_edit_core();
+
+}
+
+
 
 /**
 * Load settings
@@ -199,19 +245,6 @@ function superedit_usersettings( $superedit_ini = array() ) {
 	return $returnusersettings;
 }
 
-/**
-* Activate plugin
-*
-* Function used when this plugin is activated in Wordpress.
-*
-*/
-function superedit_activate() {
-	$superedit_ini = superedit_loadsettings();
-	$superedit_current = superedit_usersettings($superedit_ini);
-	add_option('superedit_options', $superedit_current['options']);
-	add_option('superedit_buttons', $superedit_current['buttons']);
-	add_option('superedit_plugins', $superedit_current['plugins']);
-}
 
 /**
 * Set up administration interface
@@ -266,24 +299,30 @@ function superedit_admin_setup() {
 		}
 		
 		$superedit_ini['options']['language'] = $superedit_options['language'];
-						
-		if (function_exists('wp_enqueue_script')) {
+								
+		wp_deregister_script( 'prototype' );
+		wp_deregister_script( 'interface' );
+	
+		wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
+		wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
 		
-			wp_deregister_script( 'prototype' );
-			wp_deregister_script( 'interface' );
-
-		
-			wp_enqueue_script( 'jquery',  '/wp-content/plugins/wp-super-edit/js/jquery.pack.js', false, '2135' );
-			wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
-			wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
-
-		}
-		
-		add_action('admin_head', 'superedit_admin_head');
 		if ( !$_GET['ui'] || $_GET['ui'] == 'buttons' ) add_action('admin_footer', 'superedit_admin_footer');
+
+		add_action('admin_head', 'superedit_admin_head');
 
 		do_action('superedit_admin_setup');
 	}
+}
+
+
+function wp_super_edit_tiny_mce_before_init( $initArray ) {
+	$initArray['disk_cache'] = false;
+	$initArray['compress'] = false;
+	$initArray['wp_super_edit_update_marker'] = true;
+
+	update_option( 'wp_super_edit_tinymce_scan', $initArray );
+	
+	return $initArray;
 }
 
 /**
@@ -371,7 +410,7 @@ function superedit_map_buttons($row, $oldbuttons) {
 * @global array $superedit_plugins
 */
 function superedit_external_plugins() {
-	global $superedit_plugins, $wp_version;
+	global $wp_super_edit, $superedit_plugins, $wp_version;
 	
 
 	if ( is_array( $superedit_plugins ) ) {
@@ -380,7 +419,7 @@ function superedit_external_plugins() {
 	
 		foreach ( $superedit_plugins as $name => $plugin ) {
 			if ( $plugin['status'] == 'Y' ) {
-				echo $tiny_mce_plugin_com . '("' . $name . '", "' . get_bloginfo('wpurl') . '/wp-content/plugins/wp-super-edit/tinymce_plugins/' . $name . '/");'."\n"; 
+				echo $tiny_mce_plugin_com . '("' . $name . '", "' . $wp_super_edit->core_uri . '/tinymce_plugins/' . $name . '/");'."\n"; 
 			} 
 		}
 	}
@@ -523,11 +562,11 @@ function superedit_init() {
 * Start security checks
 */
 if ( !function_exists('wp_nonce_field') ) {
-        function superedit_nonce_field($action = -1) { return; }
-        $superedit_nonce = -1;
+        function wp_super_edit_nonce_field($action = -1) { return; }
+        $wp_super_edit_nonce = -1;
 } else {
-        function superedit_nonce_field($action = -1) { return wp_nonce_field($action); }
-        $superedit_nonce = 'superedit-update-key';
+        function wp_super_edit_nonce_field($action = -1) { return wp_nonce_field($action); }
+        $wp_super_edit_nonce = 'wp-super-edit-update-key';
 }
 
 /**
@@ -537,8 +576,6 @@ if ( !function_exists('wp_nonce_field') ) {
 if ( superedit_compatibility_check() ) {
 
 	load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
-
-    add_action('activate_wp-super-edit/wp-super-edit.php','superedit_activate');
 	
     // Language Check
     add_filter('locale', 'superedit_locale');
@@ -546,14 +583,15 @@ if ( superedit_compatibility_check() ) {
     add_action('init', 'superedit_init', 5);
 	add_action('admin_menu', 'superedit_admin_setup');
     
-    add_action('tinymce_before_init','superedit_external_plugins');
-    add_filter('mce_plugins', 'superedit_mce_plugins', 11);
-    add_filter('mce_buttons', 'superedit_mce_buttons_1', 11);    
-    add_filter('mce_buttons_2', 'superedit_mce_buttons_2', 11);
-    add_filter('mce_buttons_3', 'superedit_mce_buttons_3', 11);
+    add_filter('tiny_mce_before_init','wp_super_edit_tiny_mce_before_init', 99);
+    
+    //add_filter('mce_plugins', 'superedit_mce_plugins', 11);
+    //add_filter('mce_buttons', 'superedit_mce_buttons_1', 11);    
+    //add_filter('mce_buttons_2', 'superedit_mce_buttons_2', 11);
+    //add_filter('mce_buttons_3', 'superedit_mce_buttons_3', 11);
 
 }  else {
 	superedit_compatibility_notice();
-}   
+} 
     
 ?>
