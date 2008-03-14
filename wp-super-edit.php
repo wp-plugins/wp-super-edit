@@ -156,16 +156,55 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         
     }
 
-    class wp_super_edit_db { 
+    class wp_super_edit_db extends wp_super_edit_core { 
     
-        function wp_super_edit_db() { // Maintain php4 compatiblity
-        	$this->verstion = '2.0';
-        	$this->db_table = 'wp_super_edit';
+        
+        function get_option( $option_name ) {
+        	global $wpdb;
+        		
+			$option = $wpdb->get_row("
+				SELECT value FROM $this->db_options
+				WHERE name='$option_name'
+			");
+		
+			$option_value = maybe_unserialize( $option->value );
+			
+			return $option_value;
+        }
+        
+        function set_option( $option_name, $option_value ) {
+        	global $wpdb;
+
+			$result = $wpdb->get_row("
+				SELECT * FROM $this->db_options
+				WHERE name='$option_name'
+			",ARRAY_N);
+			
+			$option_value = maybe_serialize( $option_value );
+			
+			if( count( $result ) == 0 ) {
+				$result = $wpdb->query("
+					INSERT INTO $this->db_options
+					(name, value) 
+					VALUES ('$option_name', '$option_value')
+				");
+				return true;
+			} elseif( count( $result ) > 0 ) {
+				$result = $wpdb->query("
+					UPDATE $this->db_options
+					SET value='$option_value'
+					WHERE name='$option_name'
+					");
+				return true;
+			}
+					
+			return false;
         }
         
     }
 
 $wp_super_edit = new wp_super_edit_core();
+$wp_super_edit_db = new wp_super_edit_db();
 
 }
 
@@ -316,11 +355,16 @@ function superedit_admin_setup() {
 
 
 function wp_super_edit_tiny_mce_before_init( $initArray ) {
-	$initArray['disk_cache'] = false;
-	$initArray['compress'] = false;
-	$initArray['wp_super_edit_update_marker'] = true;
+	global $wp_super_edit_db;
+	
+	$tinymce_scan = $wp_super_edit_db->get_option( 'tinymce_scan' );
 
-	update_option( 'wp_super_edit_tinymce_scan', $initArray );
+	if ( $_GET['wp_super_edit_tinymce_scan'] == 'scan' ||  !is_array($tinymce_scan) ) {
+		$initArray['disk_cache'] = false;
+		$initArray['compress'] = false;
+		$initArray['wp_super_edit_update_marker'] = true;
+		$wp_super_edit_db->set_option( 'tinymce_scan', $initArray );	
+	}
 	
 	return $initArray;
 }
