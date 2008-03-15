@@ -37,6 +37,7 @@ function wp_super_edit_db_tables() {
 	 provider varchar(60) NOT NULL default '',
 	 plugin varchar(60) NOT NULL default '',
 	 status varchar(20) NOT NULL default 'no',
+	 separator varchar(10) NOT NULL default 'no',
 	 row tinyint UNSIGNED NOT NULL default 0,
 	 position tinyint UNSIGNED NOT NULL default 0,
 	 PRIMARY KEY (id,name),
@@ -64,7 +65,8 @@ function wp_super_edit_db_tables() {
 
 
 function wp_super_edit_install_defaults($user_id) {
-	global $wpdb, $wp_super_edit;
+	global $wpdb, $wp_super_edit, $wp_super_edit_db;
+
 
 	// Default category
 	$cat_name = $wpdb->escape(__('Uncategorized'));
