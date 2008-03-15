@@ -360,13 +360,15 @@ function wp_super_edit_tiny_mce_before_init( $initArray ) {
 	$tinymce_scan = $wp_super_edit_db->get_option( 'tinymce_scan' );
 
 	if ( $_GET['wp_super_edit_tinymce_scan'] == 'scan' ||  !is_array($tinymce_scan) ) {
+		$wp_super_edit_db->set_option( 'tinymce_scan', $initArray );
+
 		$initArray['disk_cache'] = false;
 		$initArray['compress'] = false;
 		$initArray['wp_super_edit_update_marker'] = true;
-		$wp_super_edit_db->set_option( 'tinymce_scan', $initArray );	
+		
+		return $initArray;
 	}
 	
-	return $initArray;
 }
 
 /**
