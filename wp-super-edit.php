@@ -142,9 +142,6 @@ function superedit_compatibility_notice() {
 */
 function superedit_loadsettings() {
 
-	$superedit_ini['options'] = parse_ini_file( ABSPATH.'wp-content/plugins/wp-super-edit/wp-super-edit-config.php' );
-	$superedit_ini['buttons'] = parse_ini_file( ABSPATH.'wp-content/plugins/wp-super-edit/wp-super-edit-builtin.php', true );	
-
 	$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/wp-super-edit/tinymce_plugins/';
 	$tinymce_plugins = @ dir($tinymce_plugins_loc);
 	while(($tinymce_plugin = $tinymce_plugins->read()) !== false) {
@@ -280,6 +277,10 @@ function superedit_admin_setup() {
 function wp_super_edit_tiny_mce_before_init( $initArray ) {
 	global $wp_super_edit_db;
 	
+	$tinymce_scan_current_time = time();
+	$tinymce_scan_last_time = $wp_super_edit_db->get_option( 'tinymce_scan_last_time' );
+
+	
 	$tinymce_scan = $wp_super_edit_db->get_option( 'tinymce_scan' );
 
 	if ( $_GET['wp_super_edit_tinymce_scan'] == 'scan' ||  !is_array($tinymce_scan) ) {
@@ -306,12 +307,7 @@ function superedit_locale($locale) {
 	global $superedit_options, $superedit_plugins, $superedit_buttons;
 	
 	if (strstr($_SERVER['REQUEST_URI'], 'tiny_mce_config')) {
-		$superedit_buttons = get_option('superedit_buttons');
-		$superedit_options = get_option('superedit_options');
-				
-		if ( $superedit_options['language'] == 'EN' ) {
-			$locale = 'EN';
-		}
+
 	}
 	
 	return $locale; 
@@ -551,11 +547,9 @@ if ( !function_exists('wp_nonce_field') ) {
 if ( superedit_compatibility_check() ) {
 
 	load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
-	
-    // Language Check
-    add_filter('locale', 'superedit_locale');
     
     add_action('init', 'superedit_init', 5);
+    
 	add_action('admin_menu', 'superedit_admin_setup');
     
     add_filter('tiny_mce_before_init','wp_super_edit_tiny_mce_before_init', 99);

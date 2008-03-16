@@ -336,6 +336,7 @@ function superedit_admin_page() {
 	if (  $_REQUEST['superedit_action'] == 'install' ) {
 		include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
 		wp_super_edit_db_tables();
+		wp_super_edit_install_defaults();
 	}	
 	
 	
