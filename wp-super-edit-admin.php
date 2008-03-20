@@ -11,6 +11,7 @@
 *
 */
 
+
 /**
 * Uninstall plugin
 *
@@ -29,6 +30,33 @@ function superedit_deactivate() {
 	wp_redirect( $url );
 }
 
+
+function wp_super_edit_plugin_folder_scan() {
+	global $wp_super_edit_registry;
+
+	$wp_super_edit_registry = new wp_super_edit_registry();
+
+	$tinymce_plugins = @ dir( $wp_super_edit_registry->tinymce_plugins_path );
+	while( ( $tinymce_plugin = $tinymce_plugins->read() ) !== false) {
+	
+		$tinymce_plugin_path = $wp_super_edit_registry->tinymce_plugins_path . $tinymce_plugin . '/';
+		
+		if ( is_dir( $tinymce_plugin_path ) && is_readable( $tinymce_plugin_path ) ) {
+			if ( $tinymce_plugin{0} == '.' || $tinymce_plugin == '..' ) {
+				continue;
+			}
+			$tinymce_plugin_dir = @ dir( $tinymce_plugin_path );
+			while ( ( $tinymce_plugin_config = $tinymce_plugin_dir->read() ) !== false) {
+				if ( $tinymce_plugin_config == 'config.php' ) {
+				
+					include_once( $tinymce_plugin_path . $tinymce_plugin_config );
+					
+					break;
+				}
+			}
+		}
+	}
+}
 
 /**
 * Set user configurations from
@@ -503,6 +531,8 @@ function superedit_admin_page() {
 					print_r( $tinymce_scan );
 					
 					print_r( $wp_super_edit );
+					
+					wp_super_edit_plugin_folder_scan();
 					
 					?>
 					</pre>

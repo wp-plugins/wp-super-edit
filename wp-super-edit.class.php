@@ -35,24 +35,6 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	global $wpdb;
 /*
 
-	// Plugin Callback functions
-	$superedit_plugins = get_option('superedit_plugins');
-	
-	if ( is_array( $superedit_plugins ) ) {
-		foreach ( $superedit_plugins as $name => $plugin ) {
-			if ( isset( $plugin['callbacks'] ) && $plugin['callbacks'] != "" && $plugin['status'] == 'Y') {
-				$superedit_callbacks = explode(',', $plugin['callbacks']);
-				
-				$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/wp-super-edit/tinymce_plugins/';
-				require( $tinymce_plugins_loc.$name.'/functions.php');
-				
-				foreach ( $superedit_callbacks as $callback => $command ) {
-					call_user_func(trim($command));
-				}
-				
-			}
-		}
-	}
 			$plugins = $wpdb->get_results("
 				SELECT name, callbacks FROM $this->db_plugins
 				WHERE status = 'yes'
@@ -95,31 +77,12 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
 			return $plugins;
         }
-        
-        function plugin_folder_scan() {
+       
 
-			$tinymce_plugins_loc = $this->tinymce_plugins_path;
-			$tinymce_plugins = @ dir( $this->tinymce_plugins_path );
-			while( ( $tinymce_plugin = $tinymce_plugins->read() ) !== false) {
-			
-				$tinymce_plugin_path = $this->tinymce_plugins_path . '/'. $tinymce_plugin;
-				
-				if ( is_dir( $tinymce_plugin_path ) && is_readable( $tinymce_plugin_path ) ) {
-					if ( $tinymce_plugin{0} == '.' || $tinymce_plugin == '..' ) {
-						continue;
-					}
-					$tinymce_plugin_dir = @ dir( $tinymce_plugin_path );
-					while ( ( $tinymce_plugin_config = $tinymce_plugin_dir->read() ) !== false) {
-						if ( $tinymce_plugin_config == 'config.php' ) {
-						
-							include_once( $tinymce_plugin_path . $tinymce_plugin_config );
-							
-							break;
-						}
-					}
-				}
-			}
-
+        function register_tinymce_plugin( $plugin = array() ) {
+        	global $wpdb;
+        	
+        	
         }
 
         function register_tinymce_button( $button = array() ) {

@@ -38,6 +38,7 @@ require_once('wp-super-edit.class.php');
 $wp_super_edit = new wp_super_edit_core();
 $wp_super_edit_db = new wp_super_edit_db();
 
+
 /**
 * Define Global Variables
 */
@@ -142,6 +143,7 @@ function superedit_compatibility_notice() {
 */
 function superedit_loadsettings() {
 
+/*
 	$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/wp-super-edit/tinymce_plugins/';
 	$tinymce_plugins = @ dir($tinymce_plugins_loc);
 	while(($tinymce_plugin = $tinymce_plugins->read()) !== false) {
@@ -167,6 +169,7 @@ function superedit_loadsettings() {
 			}
 		}
 	}
+*/
 	
 	return $superedit_ini;
 }
