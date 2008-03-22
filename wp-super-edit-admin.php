@@ -35,27 +35,31 @@ function wp_super_edit_plugin_folder_scan() {
 	global $wp_super_edit_registry;
 
 	$wp_super_edit_registry = new wp_super_edit_registry();
-
+	$wp_super_edit_registry->get_registered();
+	
 	$tinymce_plugins = @ dir( $wp_super_edit_registry->tinymce_plugins_path );
+	
 	while( ( $tinymce_plugin = $tinymce_plugins->read() ) !== false) {
 	
 		$tinymce_plugin_path = $wp_super_edit_registry->tinymce_plugins_path . $tinymce_plugin . '/';
 		
 		if ( is_dir( $tinymce_plugin_path ) && is_readable( $tinymce_plugin_path ) ) {
-			if ( $tinymce_plugin{0} == '.' || $tinymce_plugin == '..' ) {
-				continue;
-			}
+			if ( $tinymce_plugin{0} == '.' || $tinymce_plugin == '..' ) continue;
+
 			$tinymce_plugin_dir = @ dir( $tinymce_plugin_path );
+			
 			while ( ( $tinymce_plugin_config = $tinymce_plugin_dir->read() ) !== false) {
+			
 				if ( $tinymce_plugin_config == 'config.php' ) {
-				
 					include_once( $tinymce_plugin_path . $tinymce_plugin_config );
-					
 					break;
 				}
+				
 			}
 		}
 	}
+	
+	print_r( $wp_super_edit_registry->registered_buttons );
 }
 
 /**

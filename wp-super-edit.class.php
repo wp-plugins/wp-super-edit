@@ -57,31 +57,45 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
     }
 
     class wp_super_edit_registry extends wp_super_edit_core {
-
-        function get_registered_buttons() {
+        
+        function get_registered() {
         	global $wpdb;
         	
-			$buttons = $wpdb->get_results("
+			$this->registered_buttons = $wpdb->get_results("
 				SELECT name FROM $this->db_buttons
 			");
 			
-			return $buttons;
-        }
-        
-        function get_registered_plugins() {
-        	global $wpdb;
-        	
-			$plugins = $wpdb->get_results("
+			$this->registered_plugins = $wpdb->get_results("
 				SELECT name FROM $this->db_plugins
 			");
 			
-			return $plugins;
         }
-       
 
         function register_tinymce_plugin( $plugin = array() ) {
         	global $wpdb;
-        	
+ 
+         	// Check registered
+			$register_check = $wpdb->get_row("
+				SELECT name FROM $this->db_plugins
+				WHERE name='" . $plugin['name'] ."'
+			");
+			
+			if ( $register_check->name == $plugin['name'] ) return true;
+			
+			$plugin_values = '"' .
+				$plugin['name'] . '", "' . 
+				$plugin['nicename'] . '", "' . 
+				$plugin['description'] . '", "' . 
+				$plugin['provider'] . '", "' . 
+				$plugin['status'] . '", "' . 
+				$plugin['callbacks'] . '"'
+			;
+	
+			$wpdb->query("
+				INSERT INTO $this->db_plugins 
+				(name, nicename, description, provider, status, callbacks) 
+				VALUES ($plugin_values)
+			");
         	
         }
 
@@ -94,7 +108,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				WHERE name='" . $button['name'] ."'
 			");
 			
-			if ( $option->value == $button['name'] ) return true;
+			if ( $register_check->name == $button['name'] ) return true;
 			
 			$button_values = '"' .
 				$button['name'] . '", "' . 
