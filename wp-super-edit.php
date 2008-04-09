@@ -283,10 +283,9 @@ function wp_super_edit_tiny_mce_before_init( $initArray ) {
 	$tinymce_scan_current_time = time();
 	$tinymce_scan_last_time = $wp_super_edit_db->get_option( 'tinymce_scan_last_time' );
 
-	
-	$tinymce_scan = $wp_super_edit_db->get_option( 'tinymce_scan' );
-
-	if ( $_GET['wp_super_edit_tinymce_scan'] == 'scan' ||  !is_array($tinymce_scan) ) {
+	if ( $_GET['wp_super_edit_tinymce_scan'] == 'scan' ||  $tinymce_scan_current_time > $tinymce_scan_last_time + 3600 ) {
+		
+		$wp_super_edit_db->set_option( 'tinymce_scan_last_time', $tinymce_scan_current_time );
 		$wp_super_edit_db->set_option( 'tinymce_scan', $initArray );
 
 		$initArray['disk_cache'] = false;
@@ -497,10 +496,9 @@ function superedit_mce_buttons_3($buttons) {
 *
 */
 function wp_super_edit_init() {
-	
-	$wp_super_edit_init = new wp_super_edit_plugin_init();
+	global $wp_super_edit;
 
-	$plugin_callbacks = $wp_super_edit_init->plugin_init();
+	$plugin_callbacks = $wp_super_edit->plugin_init();
 			
 	if ( !$plugin_callbacks ) return;
 		

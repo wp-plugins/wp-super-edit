@@ -32,7 +32,6 @@ function superedit_deactivate() {
 
 
 function wp_super_edit_plugin_folder_scan() {
-	global $wp_super_edit_registry;
 
 	$wp_super_edit_registry = new wp_super_edit_registry();
 	$wp_super_edit_registry->get_registered();
@@ -59,7 +58,15 @@ function wp_super_edit_plugin_folder_scan() {
 		}
 	}
 	
-	print_r( $wp_super_edit_registry->registered_buttons );
+}
+
+function wp_super_edit_register_defaults() {
+
+	$wp_super_edit_registry = new wp_super_edit_registry();
+	$tinymce_scan = $wp_super_edit_registry->get_option( 'tinymce_scan' );
+	
+	print_r( $tinymce_scan );
+	
 }
 
 /**
@@ -451,6 +458,17 @@ function superedit_admin_page() {
 				<li><a href="<?php echo $wp_super_edit_ui_url; ?>&ui=options"><span>Super Edit Options</span></a></li>
 			</ul>
 		</div>
+
+		<pre>
+		<?php
+		
+		print_r( $wp_super_edit );
+		
+		wp_super_edit_plugin_folder_scan();
+		wp_super_edit_register_defaults();
+		
+		?>
+		</pre>
 		
 		<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
 			<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
@@ -526,22 +544,6 @@ function superedit_admin_page() {
 				<div id="options_tab">			
 					<?php superedit_options_html(); ?>
 					<div id='editorcontainer'><textarea class='' rows='10' cols='40' name='content' tabindex='2' id='content'></textarea></div>
-					<div id='outlog'>
-					<pre>
-					<?php
-					
-					$tinymce_scan = get_option( 'wp_super_edit_tinymce_scan' );
-					
-					print_r( $tinymce_scan );
-					
-					print_r( $wp_super_edit );
-					
-					wp_super_edit_plugin_folder_scan();
-					
-					?>
-					</pre>
-					</div>
-
 				</div>
 		<?php endif; ?>
 				
