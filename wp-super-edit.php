@@ -223,10 +223,10 @@ function superedit_admin_setup() {
 
 	require_once('wp-super-edit-admin.php');
 
-	$page =  preg_replace('/^.*wp-content[\\\\\/]plugins[\\\\\/]/', '',__FILE__);
+	$page =  preg_replace('/^.*wp-content[\\\\\/]plugins[\\\\\/]/', '',__FILE__);	
 	$page = str_replace('\\', '/', $page);
 	
-	add_submenu_page('options-general.php', __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, $page, 'superedit_admin_page');
+	add_options_page( __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, __FILE__, 'superedit_admin_page');
 		
 	if ( $_GET['page'] == $page ) {
 
@@ -492,41 +492,28 @@ function superedit_mce_buttons_3($buttons) {
 /**
 * Superedit Initialization
 *
-* This function used by Wordpress to initialize this application. Some of the 
-* TinyMCE plugins used in WP Super Edit have callback functions that can be run
-* if the editor plugin is activated.
+* This function used by Wordpress to initialize this application. Some TinyMCE
+* plugins used in WP Super Edit may have callback functions that need to run
 *
-* @global array $superedit_options
-* @global array $superedit_buttons
-* @global array $superedit_plugins
 */
-function superedit_init() {
-	global $superedit_plugins;
+function wp_super_edit_init() {
 	
 	$wp_super_edit_init = new wp_super_edit_plugin_init();
 
-	$wp_super_edit_init->plugin_init();
-
-/*
-	// Plugin Callback functions
-	$superedit_plugins = get_option('superedit_plugins');
-	
-	if ( is_array( $superedit_plugins ) ) {
-		foreach ( $superedit_plugins as $name => $plugin ) {
-			if ( isset( $plugin['callbacks'] ) && $plugin['callbacks'] != "" && $plugin['status'] == 'Y') {
-				$superedit_callbacks = explode(',', $plugin['callbacks']);
-				
-				$tinymce_plugins_loc = ABSPATH.'wp-content/plugins/wp-super-edit/tinymce_plugins/';
-				require( $tinymce_plugins_loc.$name.'/functions.php');
-				
-				foreach ( $superedit_callbacks as $callback => $command ) {
-					call_user_func(trim($command));
-				}
-				
-			}
+	$plugin_callbacks = $wp_super_edit_init->plugin_init();
+			
+	if ( !$plugin_callbacks ) return;
+		
+	foreach ( $plugin_callbacks as $number => $plugin ) {
+		$callbacks = explode( ',', $plugin->callbacks );
+		
+		require_once( $wp_super_edit_init->tinymce_plugins_path . $plugin->name . '/functions.php' );
+		
+		foreach ( $callbacks as $callback => $command ) {
+			call_user_func( trim( $command ) );
 		}
+			
 	}
-*/
 
 	do_action('superedit_init');
 }
@@ -551,7 +538,7 @@ if ( superedit_compatibility_check() ) {
 
 	load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
     
-    add_action('init', 'superedit_init', 5);
+    add_action('init', 'wp_super_edit_init', 5);
     
 	add_action('admin_menu', 'superedit_admin_setup');
     
