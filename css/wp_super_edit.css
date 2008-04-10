@@ -25,6 +25,7 @@ div#wp-super-edit-ui-menu ul li {
 
 div.lineitem {
 	width: 120px;
+	float: left;
 	height: 2.4em;
 	margin: 0 4px 8px 0;
 	padding: 1px;
@@ -55,8 +56,7 @@ div.button_info img {
 }	
 
 div.row_container {
-	float: left;
-	width: 155px;
+	width: 100%;
 	margin: 8px 4px 8px 4px;
 	border: 1px solid #ccc;
 }
@@ -68,6 +68,8 @@ div.row_container h3 {
 }
 
 div.disabled_buttons {
+	width: 155px;
+	float: right;
 	border: 1px solid #000;
 	background: #CFEBF7;
 }	
