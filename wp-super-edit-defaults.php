@@ -48,10 +48,7 @@ function wp_super_edit_db_tables() {
 	 id bigint(20) NOT NULL auto_increment,
 	 user_id bigint(20) NOT NULL default 0,
 	 user_name varchar(60) NOT NULL default '',
-	 button_row_1 text NOT NULL default '',
-	 button_row_2 text NOT NULL default '',
-	 button_row_3 text NOT NULL default '',
-	 button_row_4 text NOT NULL default '',
+	 user_type text NOT NULL default '',
 	 editor_options text NOT NULL,
 	 PRIMARY KEY (id,user_name),
 	 UNIQUE KEY id (id)

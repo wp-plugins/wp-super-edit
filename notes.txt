@@ -30,3 +30,29 @@ $wp_super_edit_db->add_tinymce_button( array(
 
 $wp_super_edit_db->add_tinymce_button( $name, $nicename, $description, $provider, $plugin, $status, $separator, $row, $position ) {
 
+
+## Notes for activation ##
+
+READ: http://codex.wordpress.org/Function_Reference/register_activation_hook
+
+## Notes for adding specific admin head based on plugins from wp-hackers ##
+
+READ: http://noteslog.com/post/how-to-load-javascript-in-wordpress-plugins/ 
+
+all of the functions that add plugin menu items to the wp menu:
+
+add_management_page(),
+add_options_page(),
+add_theme_page(),
+add_users_page()
+
+return a $hookname that you append to the action string:
+"admin_print_scripts-"
+
+
+function myplugin_menu() {
+ if ( function_exists('add_management_page') ) {
+   $page = add_management_page( 'myplugin', 'myplugin', 9, __FILE__, 'myplugin_admin_page' );
+   add_action( "admin_print_scripts-$page", 'myplugin_admin_head' );
+ }
+}

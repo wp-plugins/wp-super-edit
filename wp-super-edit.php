@@ -93,6 +93,8 @@ if ( !function_exists('array_intersect_key' ) ) {
 	}
 }
 
+if ( !function_exists('wp_super_edit_compatibility_check' ) ) {
+
 /**
 * Check compatiblity.
 *
@@ -101,7 +103,7 @@ if ( !function_exists('array_intersect_key' ) ) {
 *
 * @global $wp_version
 */
-function superedit_compatibility_check() {
+function wp_super_edit_compatibility_check() {
 	global $wp_version;
 	if ($wp_version >= '2.1' ) {
 		return true;
@@ -109,6 +111,8 @@ function superedit_compatibility_check() {
 		return false;
 	}
 }
+
+
 
 /**
 * Compatiblity notice.
@@ -133,7 +137,7 @@ function superedit_compatibility_notice() {
 <?php
 }
 
-
+}
 /**
 * Load settings
 *
@@ -221,12 +225,10 @@ function superedit_usersettings( $superedit_ini = array() ) {
 function superedit_admin_setup() {
 	global $superedit_ini, $superedit_options, $superedit_buttons, $superedit_plugins;
 
-	require_once('wp-super-edit-admin.php');
-
 	$page =  preg_replace('/^.*wp-content[\\\\\/]plugins[\\\\\/]/', '',__FILE__);	
 	$page = str_replace('\\', '/', $page);
 	
-	add_options_page( __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, __FILE__, 'superedit_admin_page');
+	add_options_page( __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, 'wp-super-edit-admin.php', 'superedit_admin_page');
 		
 	if ( $_GET['page'] == $page ) {
 
@@ -272,7 +274,6 @@ function superedit_admin_setup() {
 
 		add_action('admin_head', 'superedit_admin_head');
 
-		do_action('superedit_admin_setup');
 	}
 }
 
@@ -513,7 +514,19 @@ function wp_super_edit_init() {
 			
 	}
 
-	do_action('superedit_init');
+}
+
+/**
+* WP Super Edit Activation
+*
+* This function used by Wordpress to activate this plugin. 
+*
+*/
+function wp_super_edit_activate() {
+	global $wp_super_edit;
+	
+	wp_super_edit_db_tables();
+	wp_super_edit_install_defaults();
 }
 
 
@@ -532,13 +545,16 @@ if ( !function_exists('wp_nonce_field') ) {
 * Define Wordpress actions and filters
 */
 
-if ( superedit_compatibility_check() ) {
+if ( wp_super_edit_compatibility_check() ) {
 
-	load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
+	//load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
+	
+	register_activation_hook( __FILE__ ,'wp_super_edit_activate');
+
     
     add_action('init', 'wp_super_edit_init', 5);
     
-	add_action('admin_menu', 'superedit_admin_setup');
+	// add_action('admin_menu', 'superedit_admin_setup');
     
     add_filter('tiny_mce_before_init','wp_super_edit_tiny_mce_before_init', 99);
     
