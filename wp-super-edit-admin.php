@@ -19,62 +19,19 @@ $wp_super_edit_admin = new wp_super_edit_ui;
 *
 * Function used by Wordpress to initialize the adminsitrative interface.
 *
-* @global array $superedit_ini
-* @global array $superedit_options
-* @global array $superedit_buttons
-* @global array $superedit_plugins
 */
 function wp_super_edit_admin_setup() {
-	global $superedit_ini, $superedit_options, $superedit_buttons, $superedit_plugins;
 
-	$page =  preg_replace('/^.*wp-content[\\\\\/]plugins[\\\\\/]/', '',__FILE__);	
-	$page = str_replace('\\', '/', $page);
+	$page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 	
-	add_options_page( __('WP Super Edit', 'superedit'), __('WP Super Edit', 'superedit'), 5, 'wp-super-edit-admin.php', 'superedit_admin_page');
-		
-	if ( $_GET['page'] == $page ) {
-
-		$superedit_ini = superedit_loadsettings();
-		$superedit_options = get_option('superedit_options');
-		$superedit_buttons = get_option('superedit_buttons');
-
-		if ( is_array( $superedit_buttons )) {
-			foreach ( $superedit_buttons as $bname => $button_options ) {
-				if ( is_array( $superedit_ini['buttons'][$bname] ) ) {
-					
-					if ( $superedit_plugins[$superedit_ini['buttons'][$bname]['plugin']]['status'] == 'N' ) {
-						$superedit_ini['buttons'][$bname]['status'] = 'N';
-					} else {
-						$superedit_ini['buttons'][$bname]['status'] = $button_options['status'];
-					}
-					
-					$superedit_ini['buttons'][$bname]['row'] = $button_options['row'];
-					$superedit_ini['buttons'][$bname]['position'] = $button_options['position'];
-					$superedit_ini['buttons'][$bname]['separator'] = $button_options['separator'];
-				}
-			}
-		}
-
-		if ( is_array( $superedit_plugins )) {		
-			foreach ( $superedit_plugins as $pname => $plugin_options ) {
-				if ( is_array( $superedit_ini['plugins'][$pname] ) ) {
-					$superedit_ini['plugins'][$pname]['status'] = $plugin_options['status'];
-					$superedit_ini['plugins'][$pname]['callbacks'] = $plugin_options['callbacks'];
-				}
-			}
-		}
-		
-		$superedit_ini['options']['language'] = $superedit_options['language'];
-								
-		wp_deregister_script( 'prototype' );
-		wp_deregister_script( 'interface' );
+	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
 	
 		wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
 		wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
 		
 		if ( !$_GET['ui'] || $_GET['ui'] == 'buttons' ) add_action('admin_footer', 'superedit_admin_footer');
-
-		add_action('admin_head', 'superedit_admin_head');
+		
+		add_action( "admin_print_scripts-$page", 'wp_super_edit_admin_footer' );
 
 	}
 }
@@ -393,7 +350,7 @@ function superedit_admin_head() {
 * @global array $superedit_buttons
 * @global array $superedit_plugins
 */
-function superedit_admin_page() {
+function wp_super_edit_admin_page() {
 	global $wp_super_edit, $superedit_ini;
 		
 	$updated = false;
@@ -621,7 +578,7 @@ function superedit_options_footer() {
 *
 * @global array $superedit_ini 
 */
-function superedit_admin_footer() {
+function wp_super_edit_admin_footer() {
 	global $superedit_ini;
 
 ?>
@@ -761,7 +718,6 @@ function superedit_admin_footer() {
 	// ]]>
 </script> 
 <?php
-	do_action('superedit_admin_footer');
 }
 
 // End - Superedit Admin Panel //

@@ -148,7 +148,7 @@ add_filter('tiny_mce_before_init','wp_super_edit_tiny_mce_before_init', 99);
 * @internal: Conditional activation for WP Super Edit interfaces in WordPress admin panels
 */
 if ( is_admin() ) {
-	add_action('admin_menu', 'wp_super_edit_admin_setup');
+	add_action('admin_init', 'wp_super_edit_admin_setup');
 } 
 
     
