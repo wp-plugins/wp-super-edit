@@ -1,8 +1,20 @@
 <?php
 
-function wp_super_edit_db_tables() {
-	global $wpdb, $wp_super_edit;
-	
+
+/**
+* WP Super Edit Install Database Tables
+*
+* Installs default database tables for WP Super Edit.
+*
+*/
+function wp_super_edit_install_db_tables() {
+	global $wpdb;
+
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+	$wp_super_edit = new wp_super_edit_core();
+
+	if ( $wp_super_edit->is_db_installed ) return;
 
 	if ( $wpdb->supports_collation() ) {
 		if ( ! empty($wpdb->charset) )
@@ -39,34 +51,42 @@ function wp_super_edit_db_tables() {
 	 plugin varchar(60) NOT NULL default '',
 	 status varchar(20) NOT NULL default 'no',
 	 button_separator varchar(10) NOT NULL default 'no',
-	 row tinyint UNSIGNED NOT NULL default 0,
-	 position tinyint UNSIGNED NOT NULL default 0,
+	 row tinyint UNSIGNED NOT NULL default '0',
+	 position tinyint UNSIGNED NOT NULL default '0',
 	 PRIMARY KEY (id,name),
 	 UNIQUE KEY id (id)
 	) $charset_collate;
 	CREATE TABLE $wp_super_edit->db_users (
 	 id bigint(20) NOT NULL auto_increment,
-	 user_id bigint(20) NOT NULL default 0,
+	 user_id bigint(20) NOT NULL default '0',
 	 user_name varchar(60) NOT NULL default '',
 	 user_type text NOT NULL default '',
 	 editor_options text NOT NULL,
 	 PRIMARY KEY (id,user_name),
 	 UNIQUE KEY id (id)
 	) $charset_collate;";
-
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	
 	dbDelta($install_sql);
+		
 }
 
 
 
-
-function wp_super_edit_install_defaults() {
+/**
+* WP Super Edit WordPress Button Defaults
+*
+* Registers known default TinyMCE buttons included in default WordPress installation
+*
+*/
+function wp_super_edit_wordpress_button_defaults() {
+	global $wpdb, $wp_super_edit;
 
 	$wp_super_edit_registry = new wp_super_edit_registry();
+
+	if ( !$wp_super_edit_registry->is_db_installed ) return;
+
 	$wp_super_edit_registry->get_registered();
-	
+		
 	$wp_super_edit_registry->register_tinymce_button( array(
 		'name' => 'bold', 
 		'nicename' => 'Bold', 
@@ -501,6 +521,53 @@ function wp_super_edit_install_defaults() {
 		'position' => 0
 	));
 
+}
+
+/**
+* WP Super Edit Plugin Folder Scan
+*
+* Scans tinymce_plugin folder for config files with registration commands.
+*
+*/
+function wp_super_edit_plugin_folder_scan() {
+
+	$wp_super_edit_registry = new wp_super_edit_registry();
+	$wp_super_edit_registry->get_registered();
+	
+	$tinymce_plugins = @ dir( $wp_super_edit_registry->tinymce_plugins_path );
+	
+	while( ( $tinymce_plugin = $tinymce_plugins->read() ) !== false) {
+	
+		$tinymce_plugin_path = $wp_super_edit_registry->tinymce_plugins_path . $tinymce_plugin . '/';
+		
+		if ( is_dir( $tinymce_plugin_path ) && is_readable( $tinymce_plugin_path ) ) {
+			if ( $tinymce_plugin{0} == '.' || $tinymce_plugin == '..' ) continue;
+
+			$tinymce_plugin_dir = @ dir( $tinymce_plugin_path );
+			
+			while ( ( $tinymce_plugin_config = $tinymce_plugin_dir->read() ) !== false) {
+			
+				if ( $tinymce_plugin_config == 'config.php' ) {
+					include_once( $tinymce_plugin_path . $tinymce_plugin_config );
+					break;
+				}
+				
+			}
+		}
+	}
+	
+}
+
+/**
+* WP Super Edit Activation
+*
+* Creates database tables and installs default settings.
+*
+*/
+function wp_super_edit_activate() {
+	wp_super_edit_install_db_tables();
+	wp_super_edit_wordpress_button_defaults();
+	wp_super_edit_plugin_folder_scan();
 }
 
 ?>
