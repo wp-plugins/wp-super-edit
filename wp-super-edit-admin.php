@@ -31,7 +31,7 @@ function wp_super_edit_admin_setup() {
 		
 		if ( !$_GET['ui'] || $_GET['ui'] == 'buttons' ) add_action('admin_footer', 'superedit_admin_footer');
 		
-		add_action( "admin_print_scripts-$page", 'wp_super_edit_admin_footer' );
+		add_action( "admin_footer", 'wp_super_edit_admin_footer', 99 );
 
 	}
 }
@@ -605,7 +605,6 @@ function wp_super_edit_admin_footer() {
 	var tiny_mce_buttons = new Object();
 	var buttons = new Array();
 	
-<?php array_walk( $superedit_ini['buttons'], 'superedit_jobjects', 'buttons' );?>
 	
 	// Plugin and Button Control Functions
 	
