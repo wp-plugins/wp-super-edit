@@ -12,7 +12,17 @@
 */
 
 
-$wp_super_edit_admin = new wp_super_edit_ui;
+
+/**
+* Start security checks
+*/
+if ( !function_exists('wp_nonce_field') ) {
+        function wp_super_edit_nonce_field($action = -1) { return; }
+        $wp_super_edit_nonce = -1;
+} else {
+        function wp_super_edit_nonce_field($action = -1) { return wp_nonce_field($action); }
+        $wp_super_edit_nonce = 'wp-super-edit-update-key';
+}
 
 /**
 * Set up administration interface
@@ -21,18 +31,29 @@ $wp_super_edit_admin = new wp_super_edit_ui;
 *
 */
 function wp_super_edit_admin_setup() {
-
+	global $wp_super_edit, $wp_super_edit_admin;
+	
+	$wp_super_edit_admin = new wp_super_edit_ui;
+	
+	$wp_super_edit_admin->init_ui();
+	
+	print_r( $wp_super_edit_admin );
+	
 	$page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
-	
+		
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
-	
-		wp_enqueue_script( 'superedit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
-		wp_enqueue_script( 'superedit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
 		
-		if ( !$_GET['ui'] || $_GET['ui'] == 'buttons' ) add_action('admin_footer', 'superedit_admin_footer');
-		
-		add_action( "admin_footer", 'wp_super_edit_admin_footer', 99 );
+		if ( $wp_super_edit_admin->ui == 'buttons' ) {
 
+			wp_enqueue_script( 'wp-super-edit-dimensions',  '/wp-content/plugins/wp-super-edit/js/jquery.dimensions.pack.js', array('jquery'), '2135' );
+			wp_enqueue_script( 'wp-super-edit-ui',  '/wp-content/plugins/wp-super-edit/js/jquery.ui-all-1.5b2.packed.js', false, '2135' );
+
+			wp_enqueue_script( 'wp-super-edit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
+			wp_enqueue_script( 'wp-super-edit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
+			
+			add_action('admin_footer', 'superedit_admin_footer');
+		}
+		
 	}
 }
 
@@ -42,7 +63,6 @@ function wp_super_edit_admin_setup() {
 * Function used when to clear settings and deactivate plugin.
 *
 */
-
 function superedit_uninstall() {
 	delete_option('superedit_options');
 	delete_option('superedit_buttons');
@@ -52,6 +72,18 @@ function superedit_uninstall() {
 function superedit_deactivate() {
     $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), 'plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
 	wp_redirect( $url );
+}
+
+function wp_super_edit_deactivate_ui() {
+?>
+		<div id="wp_super_edit_uninstall">
+			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
+				<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
+				<input type="hidden" name="wp_super_edit_action" value="uninstall" />
+				<?php superedit_submit_button('Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' ); ?>
+			</form>
+		</div>
+<?php
 }
 
 function wp_super_edit_register_defaults() {
@@ -84,17 +116,6 @@ function superedit_postvalues ( &$settings, $name, $type ) {
 	
 }
 
-/**
-* Display title and basic WP Super Edit information.
-*
-* Just to display the title and basic information about the plugin.
-*/
-function superedit_admin_title() {
-?>
-	<h2>WP Super Edit</h2>
-	<p style="padding: 6px; font-size: 98%;">To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a></p>
-<?php
-}
 
 /**
 * Display Update Options button for interface forms
@@ -146,7 +167,7 @@ function superedit_update_message( $message = '' ) {
 *
 * @global $superedit_ini
 */
-function superedit_options_html() {
+function wp_super_edit_options_ui() {
 	global $superedit_ini;
 ?>
 <div id="superedit_options">
@@ -171,6 +192,9 @@ function superedit_options_html() {
 	</fieldset>
 </div>
 <?php
+
+	wp_super_edit_deactivate_ui();
+
 }
 
 /**
@@ -351,34 +375,29 @@ function superedit_admin_head() {
 * @global array $superedit_plugins
 */
 function wp_super_edit_admin_page() {
-	global $wp_super_edit, $superedit_ini;
+	global $wp_super_edit, $wp_super_edit_admin, $superedit_ini;
 		
 	$updated = false;
 		
-	$wp_super_edit_ui = ( !$_REQUEST['ui'] ? 'buttons' : $_REQUEST['ui'] );
 
-	$wp_super_edit_ui_url = htmlspecialchars( $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] );
-	$wp_super_edit_ui_form_url = htmlspecialchars( $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&ui=' . $wp_super_edit_ui );
-			
-	
-	if (  $_REQUEST['superedit_action'] == 'uninstall' ) {
+	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
 		superedit_uninstall();
 		superedit_deactivate();
 	}
 	
-	if (  $_REQUEST['superedit_action'] == 'install' ) {
+	if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
 		include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
 		wp_super_edit_db_tables();
 		wp_super_edit_install_defaults();
 	}	
 	
-	
-	if ( isset( $_POST['superedit_action'] ) && $_REQUEST['superedit_action'] != 'uninstall' ) {
+	if ( isset( $_POST['wp_super_edit_action'] ) && $_REQUEST['wp_super_edit_action'] != 'uninstall' ) {
 	
 		if ( function_exists('current_user_can') && !current_user_can('manage_options') ) die(__('Security test failed'));
+		
 		check_admin_referer( '$wp_super_edit_nonce', $wp_super_edit_nonce );
 
-		if (  $_REQUEST['ui'] == 'buttons' ) {
+		if (  $_REQUEST['wp_super_edit_ui'] == 'buttons' ) {
 			$row_order_1 = explode( ',', $_POST['order_row_1'] );
 			$row_order_2 = explode( ',', $_POST['order_row_2'] );
 			$row_order_3 = explode( ',', $_POST['order_row_3'] );
@@ -392,11 +411,11 @@ function wp_super_edit_admin_page() {
 			array_walk( $superedit_ini['buttons'], 'superedit_set_separator' );
 		}
 		
-		if (  $_REQUEST['ui'] == 'plugins' ) {
+		if (  $_REQUEST['wp_super_edit_ui'] == 'plugins' ) {
 			array_walk( $superedit_ini['plugins'], 'superedit_postvalues', 'plugins' );
 		}
 
-		if (  $_REQUEST['ui'] == 'options' ) {
+		if (  $_REQUEST['wp_super_edit_ui'] == 'options' ) {
 			$superedit_ini['options']['language'] = ( $_POST['superedit_language'] == 'Y' ? 'EN' : 'NO' );
 		}
 		
@@ -442,14 +461,20 @@ function wp_super_edit_admin_page() {
 		
 	// Plugin options form
 	?>
-	<div class="wrap">
+
+			<div class="wrap">
+			<h2>WP Super Edit</h2>
+			
+		<p>
+		To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>
+		</p>
+
 	
-		<?php superedit_admin_title(); ?>
 		<div id="wp-super-edit-ui-menu">
 			<ul>
-				<li><a href="<?php echo $wp_super_edit_ui_url; ?>&ui=buttons"><span>Arrange Editor Buttons</span></a></li>
-				<li><a href="<?php echo $wp_super_edit_ui_url; ?>&ui=plugins"><span>Configure Editor Plugins</span></a></li>
-				<li><a href="<?php echo $wp_super_edit_ui_url; ?>&ui=options"><span>Super Edit Options</span></a></li>
+				<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
+				<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
+				<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
 			</ul>
 		</div>
 
@@ -464,18 +489,21 @@ function wp_super_edit_admin_page() {
 		</pre>
 		
 		<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
+			
 			<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
 
 			<?php superedit_submit_button(); ?>	
 
 
-		<?php if ( !$_GET['ui'] || $_GET['ui'] == 'buttons' ) : ?>
+		<?php if ( !$_GET['wp_super_edit_ui'] || $_GET['wp_super_edit_ui'] == 'buttons' ) : ?>
 
-			<input type="hidden" name="superedit_action" value="buttons" />
+			<input type="hidden" name="wp_super_edit_action" value="buttons" />
 			
-			<input type="hidden" id="o_row_1" name="order_row_1" value="" />
-			<input type="hidden" id="o_row_2" name="order_row_2" value="" />
-			<input type="hidden" id="o_row_3" name="order_row_3" value="" />
+			<input type="hidden" id="i_wp_super_edit_row_1" name="wp_super_edit_row_1" value="" />
+			<input type="hidden" id="i_wp_super_edit_row_2" name="wp_super_edit_row_2" value="" />
+			<input type="hidden" id="i_wp_super_edit_row_3" name="wp_super_edit_row_3" value="" />
+			<input type="hidden" id="i_wp_super_edit_row_4" name="wp_super_edit_row_4" value="" />
+
 			
 			<?php array_walk( $superedit_ini['buttons'], 'superedit_form_hidden', array( 'buttons', 'bval_' ) );?>
 			<?php array_walk( $superedit_ini['buttons'], 'superedit_form_hidden', array( 'separators', 'sval_' ) );?>
@@ -523,20 +551,19 @@ function wp_super_edit_admin_page() {
 				</div>		
 		<?php endif; ?>
 		
-		<?php if ( $_GET['ui'] == 'plugins' ) : ?>	
-				<input type="hidden" name="superedit_action" value="plugins" />
+		<?php if ( $_GET['wp_super_edit_ui'] == 'plugins' ) : ?>	
+				<input type="hidden" name="wp_super_edit_action" value="plugins" />
 
 				<div id="plugins_tab">
 					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>	
 				</div>
 		<?php endif; ?>
 		
-		<?php if ( $_GET['ui'] == 'options' ) : ?>	
-				<input type="hidden" name="superedit_action" value="options" />
+		<?php if ( $_GET['wp_super_edit_ui'] == 'options' ) : ?>	
+				<input type="hidden" name="wp_super_edit_action" value="options" />
 
 				<div id="options_tab">			
-					<?php superedit_options_html(); ?>
-					<div id='editorcontainer'><textarea class='' rows='10' cols='40' name='content' tabindex='2' id='content'></textarea></div>
+					<?php wp_super_edit_options_ui(); ?>
 				</div>
 		<?php endif; ?>
 				
@@ -552,7 +579,7 @@ function wp_super_edit_admin_page() {
 			</form>
 		</div>
 		
-</div>
+			</div>
 
 <?php 
 }

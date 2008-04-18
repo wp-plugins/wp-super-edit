@@ -125,17 +125,6 @@ function wp_super_edit_tiny_mce_before_init( $initArray ) {
 
 
 /**
-* Start security checks
-*/
-if ( !function_exists('wp_nonce_field') ) {
-        function wp_super_edit_nonce_field($action = -1) { return; }
-        $wp_super_edit_nonce = -1;
-} else {
-        function wp_super_edit_nonce_field($action = -1) { return wp_nonce_field($action); }
-        $wp_super_edit_nonce = 'wp-super-edit-update-key';
-}
-
-/**
 * @internal: Define core Wordpress actions and filters
 */
 

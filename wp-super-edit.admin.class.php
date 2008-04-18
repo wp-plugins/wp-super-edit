@@ -142,36 +142,54 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
     
     class wp_super_edit_ui extends wp_super_edit_core {
 
-		public $version;
-		public $title;
+		public $ui;
+		public $ui_url;
+		public $ui_form_url;
 
-		function get_plugin_info() {
-        	$data = get_plugin_data( 'wp-super-edit.php' );
-        	
-        	$this->version = $data[ 'Version' ];
-        	$this->title = $data[ 'Title' ];
-        }
- 
-		/**
-		* Begin user administrative interface area for WordPress
-		* @param string $title page title
-		*/
-		function admin_begin($title) {
-?>
-			<div class="wrap">
-			<h2><?php echo $title ?></h2>
-<?php 
+		function init_ui() {
+
+			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'buttons' : $_REQUEST['wp_super_edit_ui'] );			
+			if ( !$this->is_db_installed ) $this->ui = 'options';
+		
+			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
+			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
+			
+			
+
 		}
 		
+
 		/**
-		* End user administrative interface area for WordPress
+		* Display text in enclosed <p> with classes
+		* @param string $text text to display
 		*/
-		function admin_end(){
+		function admin_p( $text, $class = '' ) {
+			if ( $class != '' ) $class_text = ' class="' . $class . '"';
 ?>
-			</div>
+			<p<?php echo $class_text; ?>><?php echo $text; ?></p>
 <?php 
 		}
- 
+
+		/**
+		* Display text in enclosed <p> with classes
+		* @param string $text text to display
+		*/
+		function html_input( $html_options = array() ) {
+
+			$html_attributes = '';
+			
+			if ( $html_options['id'] != '' ) $html_attributes .= ' id="' . $html_options['id'] . '"';
+			if ( $html_options['type'] != '' ) $html_attributes .= ' type="' . $html_options['type'] . '"';
+			if ( $html_options['name'] != '' ) $html_attributes .= ' name="' . $html_options['name'] . '"';
+			if ( $html_options['class'] != '' ) $html_attributes .= ' class="' . $html_options['class'] . '"';
+			if ( $html_options['value'] != '' ) $html_attributes .= ' value="' . $html_options['value'] . '"';
+
+
+?>
+			<?php echo $html_options['text']; ?> <input<?php echo $html_attributes; ?>/>
+<?php 
+		}
+		 
  
     }
 
