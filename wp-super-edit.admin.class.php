@@ -147,17 +147,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		public $ui_form_url;
 
 		function init_ui() {
-
 			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'buttons' : $_REQUEST['wp_super_edit_ui'] );			
 			if ( !$this->is_db_installed ) $this->ui = 'options';
-		
 			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
-			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
-			
-			
-
+			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;	
 		}
-		
 
 		/**
 		* Display text in enclosed <p> with classes
@@ -169,6 +163,27 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			<p<?php echo $class_text; ?>><?php echo $text; ?></p>
 <?php 
 		}
+		
+		/**
+		* Start WP Super Edit admin form
+		* @param string $text text to display
+		*/
+		function form_start() {
+?>
+			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $this->ui_form_url; ?>" method="post">
+				<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
+<?php
+		}
+
+		/**
+		* End WP Super Edit admin form
+		* @param string $text text to display
+		*/
+		function form_end() {
+?>
+			</form>
+<?php
+		}
 
 		/**
 		* Display text in enclosed <p> with classes
@@ -178,18 +193,63 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			$html_attributes = '';
 			
-			if ( $html_options['id'] != '' ) $html_attributes .= ' id="' . $html_options['id'] . '"';
-			if ( $html_options['type'] != '' ) $html_attributes .= ' type="' . $html_options['type'] . '"';
-			if ( $html_options['name'] != '' ) $html_attributes .= ' name="' . $html_options['name'] . '"';
-			if ( $html_options['class'] != '' ) $html_attributes .= ' class="' . $html_options['class'] . '"';
-			if ( $html_options['value'] != '' ) $html_attributes .= ' value="' . $html_options['value'] . '"';
-
-
+			foreach ( $html_options as $name => $option ) {
+				if ( $name == 'text' ) continue;
+				if ( $name == 'return' ) continue;
+				$html_attributes .= ' ' . $name . '="' . $option . '"';
+			}
+			
+			if ( $html_options['return'] == true ) return $html_options['text'] . "<input$html_attributes />";
 ?>
 			<?php echo $html_options['text']; ?> <input<?php echo $html_attributes; ?>/>
 <?php 
 		}
-		 
+
+		/**
+		* Display submit button
+		* @param string $button_text button value
+		* @param string $message description text
+		*/
+		function submit_button( $button_text = 'Update Options &raquo;', $message = '' ) {
+			$button = $this->html_input ( array(
+				'type' => 'submit',
+				'name' => 'wp_super_edit_submit',
+				'id' => 'wp_super_edit_submit_id',
+				'value' => $button_text,
+				'text' => $message,
+				'return' => true,
+			) );
+			$this->admin_p( $button, 'submit clearer' );
+		}
+
+		/**
+		* WP Super Edit hidden action
+		* @param string $value set value for wp_super_edit_action hidden form input
+		*/
+		function wp_super_edit_action( $value = '' ) {
+			$this->html_input ( array(
+				'type' => 'hidden',
+				'name' => 'wp_super_edit_action',
+				'id' => 'wp_super_edit_action_id',
+				'value' => $value
+			) );
+		}
+
+
+		/**
+		* Create deactivation user interface
+		* @param string $text text to display
+		*/
+		function uninstall_ui() {
+?>
+		<div id="wp_super_edit_deactivate">
+			<?php $this->form_start(); ?>
+			<?php $this->wp_super_edit_action( 'uninstall' ); ?>
+			<?php $this->submit_button( 'Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' ); ?>
+			<?php $this->form_end(); ?>
+		</div>
+<?php
+		}
  
     }
 

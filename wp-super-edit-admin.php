@@ -54,13 +54,33 @@ function wp_super_edit_admin_setup() {
 			add_action('admin_footer', 'superedit_admin_footer');
 		}
 		
+		add_action('admin_head', 'wp_super_edit_admin_head');
+
+		
 	}
+}
+
+/**
+* Add javascript and css to the HEAD area
+*
+* Some complex CSS and javascript functions to operate the WP Super Edit advanced interface.
+*
+* @global array $superedit_ini 
+*/
+function wp_super_edit_admin_head() {
+	global $wp_super_edit;
+?>
+
+	<script type="text/javascript" src="<?php echo $wp_super_edit->core_uri ?>js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
+	<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
+
+<?php
 }
 
 /**
 * Uninstall plugin
 *
-* Function used when to clear settings and deactivate plugin.
+* Function used when to clear settings.
 *
 */
 function superedit_uninstall() {
@@ -69,22 +89,19 @@ function superedit_uninstall() {
 	delete_option('superedit_plugins');
 }
 
+/**
+* Deactivate plugin
+*
+* Function used to redirect to Plugin Administration Panel and deactivate plugin.
+*
+*/
 function superedit_deactivate() {
     $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), 'plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
 	wp_redirect( $url );
 }
 
-function wp_super_edit_deactivate_ui() {
-?>
-		<div id="wp_super_edit_uninstall">
-			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
-				<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
-				<input type="hidden" name="wp_super_edit_action" value="uninstall" />
-				<?php superedit_submit_button('Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' ); ?>
-			</form>
-		</div>
-<?php
-}
+
+
 
 function wp_super_edit_register_defaults() {
 
@@ -116,19 +133,6 @@ function superedit_postvalues ( &$settings, $name, $type ) {
 	
 }
 
-
-/**
-* Display Update Options button for interface forms
-*
-* Just to display the form button for the WP Super Edit admin interfaces.
-*/
-function superedit_submit_button( $button_text = 'Update Options &raquo;', $message = '' ) {
-?>
-	<p class="submit clearer">
-		<?php echo $message; ?> <input type="submit" name="update_superedit" value="<?php echo $button_text; ?>" />
-	</p>
-<?php
-}
 
 /**
 * Display messages on options update.
@@ -343,23 +347,25 @@ function superedit_jobjects ( $settings, $name, $type ) {
 }
 
 /**
-* Add javascript and css to the HEAD area
+* WP Super Edit admin menu
 *
-* Some complex CSS and javascript functions to operate the WP Super Edit advanced interface.
+* Display menu items for different WP Super Edit options.
 *
-* @global array $superedit_ini 
+* @global object $wp_super_edit_admin 
 */
-function superedit_admin_head() {
-	global $wp_super_edit;
-
+function wp_super_edit_admin_menu_ui() {
+	global $wp_super_edit_admin;
+	
+	if ( !$wp_super_edit_admin->is_db_installed ) return;
 ?>
-
-<script type="text/javascript" src="<?php echo $wp_super_edit->core_uri ?>js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
-
-<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
-
+	<div id="wp-super-edit-ui-menu">
+		<ul>
+			<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
+			<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
+			<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
+		</ul>
+	</div>
 <?php
-	do_action('superedit_admin_head');
 }
 
 
@@ -378,6 +384,11 @@ function wp_super_edit_admin_page() {
 	global $wp_super_edit, $wp_super_edit_admin, $superedit_ini;
 		
 	$updated = false;
+	
+	if ( !$wp_super_edit_admin->is_db_installed ) {
+		echo 'NOT INSTALLED';
+		return;
+	}
 		
 
 	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
@@ -463,21 +474,26 @@ function wp_super_edit_admin_page() {
 	?>
 
 			<div class="wrap">
-			<h2>WP Super Edit</h2>
-			
-		<p>
-		To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>
-		</p>
 
-	
-		<div id="wp-super-edit-ui-menu">
-			<ul>
-				<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
-				<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
-				<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
-			</ul>
-		</div>
 
+		
+				<h2>WP Super Edit</h2>
+					
+				<p>
+				To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>
+				</p>
+				
+				<?php wp_super_edit_admin_menu_ui(); ?>
+
+<?php 
+
+$wp_super_edit_admin->html_input ( array(
+	'name' => 'tester_name',
+	'id' => 'tester_id',
+	'value' => 'tester_value',
+	'text' => 'Test Text'
+) );
+?>
 		<pre>
 		<?php
 		
@@ -488,12 +504,9 @@ function wp_super_edit_admin_page() {
 		?>
 		</pre>
 		
-		<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
+				<?php $wp_super_edit_admin->form_start(); ?>
 			
-			<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
-
-			<?php superedit_submit_button(); ?>	
-
+				<?php $wp_super_edit_admin->submit_button(); ?>
 
 		<?php if ( !$_GET['wp_super_edit_ui'] || $_GET['wp_super_edit_ui'] == 'buttons' ) : ?>
 
@@ -567,17 +580,12 @@ function wp_super_edit_admin_page() {
 				</div>
 		<?php endif; ?>
 				
-				<?php superedit_submit_button(); ?>
+				<?php $wp_super_edit_admin->submit_button(); ?>
 				
-		</form>
-		
-		<div id="wp_super_edit_uninstall">
-			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $wp_super_edit_ui_form_url; ?>" method="post">
-				<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
-				<input type="hidden" name="superedit_action" value="uninstall" />
-				<?php superedit_submit_button('Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' ); ?>
-			</form>
-		</div>
+				<?php $wp_super_edit_admin->form_end(); ?>
+				
+				<?php $wp_super_edit_admin->uninstall_ui(); ?>
+
 		
 			</div>
 
@@ -595,7 +603,6 @@ function superedit_options_footer() {
 	// ]]>
 </script> 
 <?php
-	do_action('superedit_options_footer');
 }
 
 /**
