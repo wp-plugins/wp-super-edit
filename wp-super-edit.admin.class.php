@@ -154,6 +154,62 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
+		* Display html tag with attributes
+		* @param array $html_options options and content to display
+		*/
+		
+		/*
+			$format = 'The %2$s contains %1$d monkeys.
+					   That\'s a nice %2$s full of %1$d monkeys.';
+			printf($format, $num, $location);
+			
+			echo "var is ".($var < 0 ? "negative" : "positive"); 
+		*/
+		function html_tag( $html_options = array() ) {
+
+			$attributes = '';
+			$composite = '';
+			
+			foreach ( $html_options as $name => $option ) {
+				if ( $name == 'tag' ) continue;
+				if ( $name == 'content' ) continue;
+				if ( $name == 'return' ) continue;
+				if ( $name == 'tag_type' ) continue;
+				$html_attributes .= sprintf( ' %s="%s"', $name, $option );
+			}
+			
+			$format = ( $html_options['tag_type'] != 'single' ? '<%1$s%2$s>%3$s</%1$s>' : '%3$s <%1$s%2$s />' ); 
+						
+			$composite = sprintf( $format, $html_options['tag'], $html_attributes, $html_options['content'] );
+			
+			if ( $html_options['return'] == true ) return $composite ;
+			
+			echo $composite;
+		}
+		
+		
+		
+		/**
+		* Display html input tag with attributes
+		* @param string $text text to display
+		*/
+		function html_input( $html_options = array() ) {
+
+			$html_attributes = '';
+			
+			foreach ( $html_options as $name => $option ) {
+				if ( $name == 'text' ) continue;
+				if ( $name == 'return' ) continue;
+				$html_attributes .= ' ' . $name . '="' . $option . '"';
+			}
+			
+			if ( $html_options['return'] == true ) return $html_options['text'] . "<input$html_attributes />";
+?>
+			<?php echo $html_options['text']; ?> <input<?php echo $html_attributes; ?>/>
+<?php 
+		}
+		
+		/**
 		* Display text in enclosed <p> with classes
 		* @param string $text text to display
 		*/
@@ -183,26 +239,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 ?>
 			</form>
 <?php
-		}
-
-		/**
-		* Display text in enclosed <p> with classes
-		* @param string $text text to display
-		*/
-		function html_input( $html_options = array() ) {
-
-			$html_attributes = '';
-			
-			foreach ( $html_options as $name => $option ) {
-				if ( $name == 'text' ) continue;
-				if ( $name == 'return' ) continue;
-				$html_attributes .= ' ' . $name . '="' . $option . '"';
-			}
-			
-			if ( $html_options['return'] == true ) return $html_options['text'] . "<input$html_attributes />";
-?>
-			<?php echo $html_options['text']; ?> <input<?php echo $html_attributes; ?>/>
-<?php 
 		}
 
 		/**

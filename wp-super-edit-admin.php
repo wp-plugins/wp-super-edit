@@ -487,12 +487,25 @@ function wp_super_edit_admin_page() {
 
 <?php 
 
-$wp_super_edit_admin->html_input ( array(
-	'name' => 'tester_name',
+echo $wp_super_edit_admin->html_tag ( array(
+	'class' => 'tester_class',
 	'id' => 'tester_id',
-	'value' => 'tester_value',
-	'text' => 'Test Text'
+	'align' => 'right',
+	'content' => 'Test Text',
+	'tag' => 'p',
+	'return' => true
 ) );
+
+echo $wp_super_edit_admin->html_tag ( array(
+	'class' => 'tester_class',
+	'id' => 'tester_id',
+	'value' => 'right',
+	'content' => 'Test Text',
+	'tag' => 'input',
+	'tag_type' => 'single',
+	'return' => true
+) );
+
 ?>
 		<pre>
 		<?php
