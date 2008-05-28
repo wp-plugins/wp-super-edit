@@ -23,17 +23,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->tinymce_plugins_path = $this->core_path . 'tinymce_plugins/';
         	$this->tinymce_plugins_uri = $this->core_uri . 'tinymce_plugins/';
         	
-        	$this->is_db_installed = $this->is_db_installed();
+        	$this->is_installed = $this->is_db_installed();
         	
         }
 
         function is_db_installed() {
         	global $wpdb;
-        	
         	if( $wpdb->get_var( "SHOW TABLES LIKE '$this->db_options'") == $this->db_options ) return true;
-        							
 			return false;
-						
         }
 
         function plugin_init() {

@@ -558,16 +558,4 @@ function wp_super_edit_plugin_folder_scan() {
 	
 }
 
-/**
-* WP Super Edit Activation
-*
-* Creates database tables and installs default settings.
-*
-*/
-function wp_super_edit_activate() {
-	wp_super_edit_install_db_tables();
-	wp_super_edit_wordpress_button_defaults();
-	wp_super_edit_plugin_folder_scan();
-}
-
 ?>

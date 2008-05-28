@@ -12,18 +12,6 @@
 */
 
 
-
-/**
-* Start security checks
-*/
-if ( !function_exists('wp_nonce_field') ) {
-        function wp_super_edit_nonce_field($action = -1) { return; }
-        $wp_super_edit_nonce = -1;
-} else {
-        function wp_super_edit_nonce_field($action = -1) { return wp_nonce_field($action); }
-        $wp_super_edit_nonce = 'wp-super-edit-update-key';
-}
-
 /**
 * Set up administration interface
 *
@@ -346,27 +334,6 @@ function superedit_jobjects ( $settings, $name, $type ) {
 	}
 }
 
-/**
-* WP Super Edit admin menu
-*
-* Display menu items for different WP Super Edit options.
-*
-* @global object $wp_super_edit_admin 
-*/
-function wp_super_edit_admin_menu_ui() {
-	global $wp_super_edit_admin;
-	
-	if ( !$wp_super_edit_admin->is_db_installed ) return;
-?>
-	<div id="wp-super-edit-ui-menu">
-		<ul>
-			<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
-			<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
-			<li><a href="<?php echo $wp_super_edit_admin->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
-		</ul>
-	</div>
-<?php
-}
 
 
 /**
@@ -385,11 +352,11 @@ function wp_super_edit_admin_page() {
 		
 	$updated = false;
 	
-	if ( !$wp_super_edit_admin->is_db_installed ) {
+	if ( !$wp_super_edit_admin->is_installed && $_REQUEST['wp_super_edit_action'] != 'install' ) {
 		echo 'NOT INSTALLED';
+		$wp_super_edit_admin->install_ui();
 		return;
 	}
-		
 
 	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
 		superedit_uninstall();
@@ -397,16 +364,19 @@ function wp_super_edit_admin_page() {
 	}
 	
 	if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
+		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+
 		include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
-		wp_super_edit_db_tables();
-		wp_super_edit_install_defaults();
+		wp_super_edit_install_db_tables();
+		wp_super_edit_wordpress_button_defaults();
+		wp_super_edit_plugin_folder_scan();
 	}	
 	
-	if ( isset( $_POST['wp_super_edit_action'] ) && $_REQUEST['wp_super_edit_action'] != 'uninstall' ) {
+	if ( $_REQUEST['wp_super_edit_action'] == 'settings' ) {
 	
 		if ( function_exists('current_user_can') && !current_user_can('manage_options') ) die(__('Security test failed'));
 		
-		check_admin_referer( '$wp_super_edit_nonce', $wp_super_edit_nonce );
+		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
 
 		if (  $_REQUEST['wp_super_edit_ui'] == 'buttons' ) {
 			$row_order_1 = explode( ',', $_POST['order_row_1'] );
@@ -483,7 +453,7 @@ function wp_super_edit_admin_page() {
 				To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>
 				</p>
 				
-				<?php wp_super_edit_admin_menu_ui(); ?>
+				<?php $wp_super_edit_admin->admin_menu_ui() ?>
 
 <?php 
 

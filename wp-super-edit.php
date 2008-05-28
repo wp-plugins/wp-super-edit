@@ -61,7 +61,10 @@ if ( is_admin() ) {
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-defaults.php' );
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-admin.php' );
-} 
+	$wp_super_edit = new wp_super_edit_core();
+} else {
+	$wp_super_edit = new wp_super_edit_core();
+}
 
 
 /**

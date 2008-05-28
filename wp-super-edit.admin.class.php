@@ -145,12 +145,18 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		public $ui;
 		public $ui_url;
 		public $ui_form_url;
+		public $nonce;
 
 		function init_ui() {
 			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'buttons' : $_REQUEST['wp_super_edit_ui'] );			
 			if ( !$this->is_db_installed ) $this->ui = 'options';
 			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
-			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;	
+			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
+			$this->nonce = 'wp-super-edit-update-key';
+		}
+
+		function nonce_field($action = -1) { 
+			return wp_nonce_field($action);
 		}
 
 		/**
@@ -225,9 +231,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* @param string $text text to display
 		*/
 		function form_start() {
+			global $wp_super_edit_nonce;
 ?>
 			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $this->ui_form_url; ?>" method="post">
-				<?php wp_super_edit_nonce_field('$wp_super_edit_nonce', $wp_super_edit_nonce); ?>
+				<?php $this->nonce_field('wp_super_edit_nonce-' . $this->nonce); ?>
 <?php
 		}
 
@@ -274,7 +281,22 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 		/**
 		* Create deactivation user interface
-		* @param string $text text to display
+		* 
+		*/
+		function install_ui() {
+?>
+		<div id="wp_super_edit_install">
+			<?php $this->form_start(); ?>
+			<?php $this->wp_super_edit_action( 'install' ); ?>
+			<?php $this->submit_button( 'Install WP Super Edit', '<strong>Install default settings and database tables for WP Super Edit.</strong>' ); ?>
+			<?php $this->form_end(); ?>
+		</div>
+<?php
+		}
+
+		/**
+		* Create deactivation user interface
+		* 
 		*/
 		function uninstall_ui() {
 ?>
@@ -286,6 +308,23 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		</div>
 <?php
 		}
+		
+		/**
+		* Create administration menu
+		* 
+		*/
+		function admin_menu_ui() {			
+?>
+			<div id="wp-super-edit-ui-menu">
+				<ul>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
+				</ul>
+			</div>
+<?php
+		}
+		
  
     }
 
