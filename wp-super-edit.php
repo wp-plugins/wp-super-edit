@@ -61,11 +61,7 @@ if ( is_admin() ) {
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-defaults.php' );
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-admin.php' );
-	$wp_super_edit = new wp_super_edit_core();
-} else {
-	$wp_super_edit = new wp_super_edit_core();
-}
-
+} 
 
 /**
 * WP Super Edit Initialization
@@ -105,25 +101,20 @@ function wp_super_edit_init() {
 *
 */
 function wp_super_edit_tiny_mce_before_init( $initArray ) {
-	$wp_super_edit_db = new wp_super_edit_db();
+	global $wp_super_edit;
 	
-	if ( !$wp_super_edit_db->is_db_installed ) return;
+	if ( !$wp_super_edit->is_installed ) return $initArray;
 
-	$tinymce_scan_current_time = time();
-	$tinymce_scan_last_time = $wp_super_edit_db->get_option( 'tinymce_scan_last_time' );
-
-	if ( $_GET['wp_super_edit_tinymce_scan'] == 'scan' ||  $tinymce_scan_current_time > $tinymce_scan_last_time + 3600 ) {
+	if ( $_GET['wp_super_edit_tinymce_scan'] == 'scan' ) {
 		
-		$wp_super_edit_db->set_option( 'tinymce_scan_last_time', $tinymce_scan_current_time );
-		$wp_super_edit_db->set_option( 'tinymce_scan', $initArray );
-
+		$wp_super_edit->set_option( 'tinymce_scan', $initArray );
 		$initArray['disk_cache'] = false;
 		$initArray['compress'] = false;
 		$initArray['wp_super_edit_update_marker'] = true;
 		
-		return $initArray;
 	}
-	
+
+	return $initArray;
 }
 
 

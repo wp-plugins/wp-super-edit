@@ -63,7 +63,36 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
 			return $option_value;
         }
-        
+
+        function set_option( $option_name, $option_value ) {
+        	global $wpdb;
+
+			$result = $wpdb->get_row("
+				SELECT * FROM $this->db_options
+				WHERE name='$option_name'
+			",ARRAY_N);
+			
+			$option_value = maybe_serialize( $option_value );
+			
+			if( count( $result ) == 0 ) {
+				$result = $wpdb->query("
+					INSERT INTO $this->db_options
+					(name, value) 
+					VALUES ('$option_name', '$option_value')
+				");
+				return true;
+			} elseif( count( $result ) > 0 ) {
+				$result = $wpdb->query("
+					UPDATE $this->db_options
+					SET value='$option_value'
+					WHERE name='$option_name'
+					");
+				return true;
+			}
+					
+			return false;
+        }
+
     }
 
 

@@ -24,9 +24,7 @@ function wp_super_edit_admin_setup() {
 	$wp_super_edit_admin = new wp_super_edit_ui;
 	
 	$wp_super_edit_admin->init_ui();
-	
-	print_r( $wp_super_edit_admin );
-	
+		
 	$page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 		
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
@@ -39,8 +37,12 @@ function wp_super_edit_admin_setup() {
 			wp_enqueue_script( 'wp-super-edit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
 			wp_enqueue_script( 'wp-super-edit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
 			
+
+			
 			add_action('admin_footer', 'superedit_admin_footer');
 		}
+		
+		wp_enqueue_script( 'wp-super-edit-tinymcescan', '/wp-includes/js/tinymce/tiny_mce_config.php?wp_super_edit_tinymce_scan=scan', false, rand(101, 199) );
 		
 		add_action('admin_head', 'wp_super_edit_admin_head');
 
@@ -59,7 +61,6 @@ function wp_super_edit_admin_head() {
 	global $wp_super_edit;
 ?>
 
-	<script type="text/javascript" src="<?php echo $wp_super_edit->core_uri ?>js/superedit.js?up=<?php echo rand(101, 199); ?>"></script>
 	<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
 
 <?php
