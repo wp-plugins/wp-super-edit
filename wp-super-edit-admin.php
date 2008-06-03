@@ -41,9 +41,8 @@ function wp_super_edit_admin_setup() {
 			
 			add_action('admin_footer', 'superedit_admin_footer');
 		}
-		
-		wp_enqueue_script( 'wp-super-edit-tinymcescan', '/wp-includes/js/tinymce/tiny_mce_config.php?wp_super_edit_tinymce_scan=scan', false, rand(101, 199) );
-		
+
+
 		add_action('admin_head', 'wp_super_edit_admin_head');
 
 		
@@ -62,6 +61,22 @@ function wp_super_edit_admin_head() {
 ?>
 
 	<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
+
+	<script type='text/javascript'>
+	/* <![CDATA[ */
+
+	var wpsuperedit = jQuery.noConflict();
+
+	wpsuperedit(document).ready(
+		function() {
+		  wpsuperedit("#null").load("/wptrunk/wp-includes/js/tinymce/tiny_mce_config.php?ver=wp_super_edit_tinymce_scan");
+
+		}
+	);
+
+
+	/* ]]> */
+	</script>
 
 <?php
 }
