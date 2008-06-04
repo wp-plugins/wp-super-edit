@@ -164,36 +164,27 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			echo $composite;
 		}
 		
-		
-		
+
 		/**
 		* Display html input tag with attributes
 		* @param string $text text to display
 		*/
-		function html_input( $html_options = array() ) {
+		function html_select( $html_options = array() ) {
 
 			$html_attributes = '';
 			
 			foreach ( $html_options as $name => $option ) {
 				if ( $name == 'text' ) continue;
 				if ( $name == 'return' ) continue;
+				if ( $name == 'select_options' ) continue;
+				if ( $name == 'selected' ) continue;
+				
 				$html_attributes .= ' ' . $name . '="' . $option . '"';
 			}
 			
-			if ( $html_options['return'] == true ) return $html_options['text'] . "<input$html_attributes />";
+			if ( $html_options['return'] == true ) return $html_options['text'] . "<select$html_attributes />";
 ?>
-			<?php echo $html_options['text']; ?> <input<?php echo $html_attributes; ?>/>
-<?php 
-		}
-		
-		/**
-		* Display text in enclosed <p> with classes
-		* @param string $text text to display
-		*/
-		function admin_p( $text, $class = '' ) {
-			if ( $class != '' ) $class_text = ' class="' . $class . '"';
-?>
-			<p<?php echo $class_text; ?>><?php echo $text; ?></p>
+			<?php echo $html_options['text']; ?> <select<?php echo $html_attributes; ?>/>
 <?php 
 		}
 		
@@ -225,15 +216,22 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* @param string $message description text
 		*/
 		function submit_button( $button_text = 'Update Options &raquo;', $message = '' ) {
-			$button = $this->html_input ( array(
+			$button = $this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single',
 				'type' => 'submit',
 				'name' => 'wp_super_edit_submit',
 				'id' => 'wp_super_edit_submit_id',
+				'class' => 'button',
 				'value' => $button_text,
-				'text' => $message,
+				'content' => $message,
 				'return' => true,
 			) );
-			$this->admin_p( $button, 'submit clearer' );
+			$this->html_tag( array(
+				'tag' => 'p',
+				'class' => 'submit clearer',
+				'content' => $button
+			) );
 		}
 
 		/**
@@ -241,14 +239,32 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* @param string $value set value for wp_super_edit_action hidden form input
 		*/
 		function wp_super_edit_action( $value = '' ) {
-			$this->html_input ( array(
+			$this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single',
 				'type' => 'hidden',
 				'name' => 'wp_super_edit_action',
 				'id' => 'wp_super_edit_action_id',
-				'value' => $value
+				'class' => 'button',
+				'value' => $value,
 			) );
 		}
 
+		/**
+		* Create administration menu
+		* 
+		*/
+		function admin_menu_ui() {			
+?>
+			<div id="wp-super-edit-ui-menu">
+				<ul>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
+				</ul>
+			</div>
+<?php
+		}
 
 		/**
 		* Create deactivation user interface
@@ -280,22 +296,31 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 <?php
 		}
 		
+
 		/**
-		* Create administration menu
+		* Create deactivation user interface
 		* 
 		*/
-		function admin_menu_ui() {			
+		function options_ui() {
 ?>
-			<div id="wp-super-edit-ui-menu">
-				<ul>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
-				</ul>
-			</div>
+		<div id="wp_super_edit_options">
+			<?php $this->form_start(); ?>
+			<?php $this->wp_super_edit_action( 'options' ); ?>
+			
+<label>Manage editor buttons using: 
+<select name="wp_super_edit_options_button_manage" id="wp_super_edit_options_button_manage">
+    <option value="single">One editor setting for all users</option>
+    <option value="roles">Role based editor settings</option>
+    <option value="users">Individual user editor settings</option>
+  </select>
+ </label>
+			
+			<?php $this->submit_button( 'Update Options' ); ?>
+			<?php $this->form_end(); ?>
+			<?php $this->uninstall_ui(); ?>
+		</div>
 <?php
 		}
-		
  
     }
 

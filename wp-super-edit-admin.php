@@ -169,43 +169,6 @@ function superedit_update_message( $message = '' ) {
 }
 
 /**
-* Display common options: Language.
-*
-* Allows changes to Language options.
-*
-* @global $superedit_ini
-*/
-function wp_super_edit_options_ui() {
-	global $superedit_ini;
-?>
-<div id="superedit_options">
-	<fieldset class="options">
-		<legend>WP Super Edit Options</legend>
-			<table width="100%" cellspacing="2" cellpadding="5" class="editform">
-				<tr valign="top">
-					<th width="45%" scope="row">Use English as the default language</th>
-					<td width="5%" style="background: #ccc;"><input name="superedit_language" type="checkbox" value="Y" <?php if ($superedit_ini['options']['language'] == 'EN' ) { echo 'checked="checked"' ;} ?> /></td>
-					<td width="60%" scope="row">
-					<p>
-					The Wordpress visual editor does have international language support, but language files 
-					for the plugins may need to be installed manually.
-					</p>
-					<p>
-					Currently this plugin only ships with English language files to make the archive smaller. Please <a href="http://factory.funroe.net/projects/wp-super-edit/using/">see the WP Super Edit Custom Language Documentation</a>
-					for more information.
-					</p>
-					</td>
-				</tr>
-			</table>
-	</fieldset>
-</div>
-<?php
-
-	wp_super_edit_deactivate_ui();
-
-}
-
-/**
 * Get status for a plugin or button.
 *
 * Takes an option name and type and returns the status value
@@ -469,30 +432,9 @@ function wp_super_edit_admin_page() {
 				To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>
 				</p>
 				
-				<?php $wp_super_edit_admin->admin_menu_ui() ?>
+				<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 
-<?php 
 
-echo $wp_super_edit_admin->html_tag ( array(
-	'class' => 'tester_class',
-	'id' => 'tester_id',
-	'align' => 'right',
-	'content' => 'Test Text',
-	'tag' => 'p',
-	'return' => true
-) );
-
-echo $wp_super_edit_admin->html_tag ( array(
-	'class' => 'tester_class',
-	'id' => 'tester_id',
-	'value' => 'right',
-	'content' => 'Test Text',
-	'tag' => 'input',
-	'tag_type' => 'single',
-	'return' => true
-) );
-
-?>
 		<pre>
 		<?php
 		
@@ -503,9 +445,6 @@ echo $wp_super_edit_admin->html_tag ( array(
 		?>
 		</pre>
 		
-				<?php $wp_super_edit_admin->form_start(); ?>
-			
-				<?php $wp_super_edit_admin->submit_button(); ?>
 
 		<?php if ( !$_GET['wp_super_edit_ui'] || $_GET['wp_super_edit_ui'] == 'buttons' ) : ?>
 
@@ -566,25 +505,15 @@ echo $wp_super_edit_admin->html_tag ( array(
 		<?php if ( $_GET['wp_super_edit_ui'] == 'plugins' ) : ?>	
 				<input type="hidden" name="wp_super_edit_action" value="plugins" />
 
-				<div id="plugins_tab">
 					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>	
-				</div>
 		<?php endif; ?>
 		
 		<?php if ( $_GET['wp_super_edit_ui'] == 'options' ) : ?>	
-				<input type="hidden" name="wp_super_edit_action" value="options" />
 
-				<div id="options_tab">			
-					<?php wp_super_edit_options_ui(); ?>
-				</div>
+					<?php $wp_super_edit_admin->options_ui(); ?>
+
 		<?php endif; ?>
 				
-				<?php $wp_super_edit_admin->submit_button(); ?>
-				
-				<?php $wp_super_edit_admin->form_end(); ?>
-				
-				<?php $wp_super_edit_admin->uninstall_ui(); ?>
-
 		
 			</div>
 
