@@ -558,4 +558,14 @@ function wp_super_edit_plugin_folder_scan() {
 	
 }
 
+/**
+* WP Super Edit Default User
+*
+* Sets default user settings from most recent tinymce scan
+*
+*/
+function wp_super_edit_set_user_default() {
+
+}
+
 ?>

@@ -21,31 +21,26 @@
 function wp_super_edit_admin_setup() {
 	global $wp_super_edit, $wp_super_edit_admin;
 	
-	$wp_super_edit_admin = new wp_super_edit_ui;
+	$wp_super_edit_admin = new wp_super_edit_admin;
 	
 	$wp_super_edit_admin->init_ui();
 		
-	$page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
+	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 		
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
 		
 		if ( $wp_super_edit_admin->ui == 'buttons' ) {
 
 			wp_enqueue_script( 'wp-super-edit-dimensions',  '/wp-content/plugins/wp-super-edit/js/jquery.dimensions.pack.js', array('jquery'), '2135' );
-			wp_enqueue_script( 'wp-super-edit-ui',  '/wp-content/plugins/wp-super-edit/js/jquery.ui-all-1.5b2.packed.js', false, '2135' );
-
+			wp_enqueue_script( 'wp-super-edit-ui',  '/wp-content/plugins/wp-super-edit/js/jquery-ui-all-1.5rc1.packed.js', false, '2135' );
 			wp_enqueue_script( 'wp-super-edit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
 			wp_enqueue_script( 'wp-super-edit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
-			
-
 			
 			add_action('admin_footer', 'superedit_admin_footer');
 		}
 
-
 		add_action('admin_head', 'wp_super_edit_admin_head');
 
-		
 	}
 }
 
@@ -80,31 +75,6 @@ function wp_super_edit_admin_head() {
 
 <?php
 }
-
-/**
-* Uninstall plugin
-*
-* Function used when to clear settings.
-*
-*/
-function superedit_uninstall() {
-	delete_option('superedit_options');
-	delete_option('superedit_buttons');
-	delete_option('superedit_plugins');
-}
-
-/**
-* Deactivate plugin
-*
-* Function used to redirect to Plugin Administration Panel and deactivate plugin.
-*
-*/
-function superedit_deactivate() {
-    $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), 'plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
-	wp_redirect( $url );
-}
-
-
 
 
 function wp_super_edit_register_defaults() {
@@ -327,7 +297,7 @@ function superedit_jobjects ( $settings, $name, $type ) {
 * @global array $superedit_plugins
 */
 function wp_super_edit_admin_page() {
-	global $wp_super_edit, $wp_super_edit_admin, $superedit_ini;
+	global $wp_super_edit, $wp_super_edit_admin;
 		
 	$updated = false;
 	
@@ -338,8 +308,9 @@ function wp_super_edit_admin_page() {
 	}
 
 	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
-		superedit_uninstall();
-		superedit_deactivate();
+		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+		$wp_super_edit_admin->uninstall();
+		$wp_super_edit_admin->deactivate();
 	}
 	
 	if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
@@ -389,34 +360,7 @@ function wp_super_edit_admin_page() {
 
 	}
 	
-	// User Notification
-	if ($updated) superedit_update_message();
-		
-	// Construct Button containers
-	$buttonrow1 = array();
-	$buttonrow2 = array();
-	$buttonrow3 = array();
-	$buttonrowdefault = array();
 
-	foreach ( $superedit_ini['buttons'] as $name => $button_options ) {
-	
-		if ( $button_options['row'] == 1 && $button_options['status'] == 'Y' ) {
-			$buttonrow1[$button_options['position']] = $name;
-		} elseif ( $button_options['row'] == 2 && $button_options['status'] == 'Y' ) {
-			$buttonrow2[$button_options['position']] = $name;
-		} elseif ( $button_options['row'] == 3 && $button_options['status'] == 'Y' ) {
-			$buttonrow3[$button_options['position']] = $name;
-		} else {
-			$buttonrowdefault[] = $name;
-		}
-		
-	}
-
-	ksort( $buttonrow1 );
-	ksort( $buttonrow2 );
-	ksort( $buttonrow3 );
-	ksort( $buttonrowdefault );
-	
 
 		
 	// Plugin options form
@@ -434,19 +378,9 @@ function wp_super_edit_admin_page() {
 				
 				<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 
-
-		<pre>
-		<?php
-		
-		print_r( $wp_super_edit );
-		
-		wp_super_edit_register_defaults();
-		
-		?>
-		</pre>
 		
 
-		<?php if ( !$_GET['wp_super_edit_ui'] || $_GET['wp_super_edit_ui'] == 'buttons' ) : ?>
+		<?php if ( !$wp_super_edit_admin->ui || $wp_super_edit_admin->ui == 'buttons' ) : ?>
 
 			<input type="hidden" name="wp_super_edit_action" value="buttons" />
 			
@@ -502,18 +436,31 @@ function wp_super_edit_admin_page() {
 				</div>		
 		<?php endif; ?>
 		
-		<?php if ( $_GET['wp_super_edit_ui'] == 'plugins' ) : ?>	
+		<?php if ( $wp_super_edit_admin->ui == 'plugins' ) : ?>	
 				<input type="hidden" name="wp_super_edit_action" value="plugins" />
 
-					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>	
+					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>
 		<?php endif; ?>
 		
-		<?php if ( $_GET['wp_super_edit_ui'] == 'options' ) : ?>	
+		<?php if ( $wp_super_edit_admin->ui == 'options' ) : ?>	
 
 					<?php $wp_super_edit_admin->options_ui(); ?>
 
 		<?php endif; ?>
 				
+
+		<!-- START DEBUG -->
+		<pre>
+		<?php 
+		
+		print_r( $wp_super_edit );
+		
+		print_r( $wp_super_edit_admin );
+
+		?>
+		</pre>
+		<!-- END DEBUG -->
+
 		
 			</div>
 

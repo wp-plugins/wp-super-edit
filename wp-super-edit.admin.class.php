@@ -1,49 +1,26 @@
 <?php
 
 if ( class_exists( 'wp_super_edit_core' ) ) {
-
-    class wp_super_edit_db extends wp_super_edit_core { 
     
-
-        function set_user_settings( $username = 'default' ) {
-        	global $wpdb;
-
-			$button_values = '"' .
-				$button['name'] . '", "' . 
-				$button['nicename'] . '", "' . 
-				$button['description'] . '", "' . 
-				$button['provider'] . '", "' . 
-				$button['plugin'] . '", "' . 
-				$button['status'] . '", "' . 
-				$button['separator'] . '", ' . 
-				$button['row'] . ', ' . 
-				$button['position']
-			;
-			
-			$wpdb->query("
-				INSERT INTO $this->db_buttons 
-				(name, nicename, description, provider, plugin, status, button_separator, row, position) 
-				VALUES ($button_values)
-			");
-		
-		}
-        
-    }
-    
-    class wp_super_edit_registry extends wp_super_edit_db {
+    class wp_super_edit_registry extends wp_super_edit_core {
         
         function check_registered( $type, $name ) {
         	global $wpdb;
  
+			$name_col = 'name';
+			
 			if ( $type == 'plugin' ) {
 				$db_table = $this->db_plugins;
-			} else {
+			} elseif ( $type == 'button' ) {
 				$db_table = $this->db_buttons;
+			} elseif ( $type == 'user' ) {
+				$db_table = $this->db_users;
+				$name_col = 'user_name';
 			}
 			
 			$register_check = $wpdb->get_row("
 				SELECT name FROM $db_table
-				WHERE name='$name'
+				WHERE $name_col='$name'
 			");
 			
 			if ( $register_check->name == $name ) return true;
@@ -109,9 +86,32 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			");
 		}
 
+        function register_user_settings( $user_name = 'default', $user_settings ) {
+        	global $wpdb;
+
+			$button_values = '"' .
+				$button['name'] . '", "' . 
+				$button['nicename'] . '", "' . 
+				$button['description'] . '", "' . 
+				$button['provider'] . '", "' . 
+				$button['plugin'] . '", "' . 
+				$button['status'] . '", "' . 
+				$button['separator'] . '", ' . 
+				$button['row'] . ', ' . 
+				$button['position']
+			;
+			
+			$wpdb->query("
+				INSERT INTO $this->db_buttons 
+				(name, nicename, description, provider, plugin, status, button_separator, row, position) 
+				VALUES ($button_values)
+			");
+		
+		}
+
     }
     
-    class wp_super_edit_ui extends wp_super_edit_core {
+    class wp_super_edit_admin extends wp_super_edit_core {
 
 		public $ui;
 		public $ui_url;
@@ -119,8 +119,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		public $nonce;
 
 		function init_ui() {
-			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'buttons' : $_REQUEST['wp_super_edit_ui'] );			
-			if ( !$this->is_db_installed ) $this->ui = 'options';
+			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
+			if ( !$this->is_installed ) $this->ui = 'options';
 			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
 			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
 			$this->nonce = 'wp-super-edit-update-key';
@@ -129,6 +129,32 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function nonce_field($action = -1) { 
 			return wp_nonce_field($action);
 		}
+		
+		/**
+		* Deactivate plugin
+		*
+		* Function used to redirect to Plugin Administration Panel and deactivate plugin.
+		*
+		*/
+		function deactivate() {
+			$url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), 'plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
+			wp_redirect( $url );
+		}
+
+		/**
+		* Uninstall plugin
+		*
+		* Function used when to clear settings.
+		*
+		*/
+		function uninstall() {
+			global $wpdb;
+			
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_options );
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_plugins );
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_buttons );
+		}
+
 
 		/**
 		* Display html tag with attributes
@@ -258,9 +284,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 ?>
 			<div id="wp-super-edit-ui-menu">
 				<ul>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=buttons"><span>Arrange Editor Buttons</span></a></li>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=plugins"><span>Configure Editor Plugins</span></a></li>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=options"><span>Super Edit Options</span></a></li>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=buttons">Arrange Editor Buttons</a></li>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=plugins">Configure Editor Plugins</a></li>
+					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=options">Super Edit Options</a></li>
 				</ul>
 			</div>
 <?php
@@ -304,16 +330,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function options_ui() {
 ?>
 		<div id="wp_super_edit_options">
+			<h3>WP Super Edit Options</h3>
 			<?php $this->form_start(); ?>
 			<?php $this->wp_super_edit_action( 'options' ); ?>
 			
-<label>Manage editor buttons using: 
-<select name="wp_super_edit_options_button_manage" id="wp_super_edit_options_button_manage">
-    <option value="single">One editor setting for all users</option>
-    <option value="roles">Role based editor settings</option>
-    <option value="users">Individual user editor settings</option>
-  </select>
- </label>
+			<label for="wp_super_edit_management_mode">Manage editor buttons using: </label>
+			<select name="wp_super_edit_management_mode" id="wp_super_edit_management_mode">
+				<option value="single">One editor setting for all users</option>
+				<option value="roles">Role based editor settings</option>
+				<option value="users">Individual user editor settings</option>
+			</select>
+			
 			
 			<?php $this->submit_button( 'Update Options' ); ?>
 			<?php $this->form_end(); ?>

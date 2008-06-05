@@ -22,8 +22,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->core_uri = get_bloginfo('wpurl') . '/wp-content/plugins/wp-super-edit/';
         	$this->tinymce_plugins_path = $this->core_path . 'tinymce_plugins/';
         	$this->tinymce_plugins_uri = $this->core_uri . 'tinymce_plugins/';
-        	
         	$this->is_installed = $this->is_db_installed();
+        	
+        	if ( !$this->is_installed ) return;
+        	
+        	$this->management_mode = $this->get_option( 'management_mode' );
+        	
+        	
+
         	
         }
 
