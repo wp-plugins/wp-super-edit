@@ -59,7 +59,6 @@ $wp_super_edit = new wp_super_edit_core();
 */
 if ( is_admin() ) {
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
-	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-defaults.php' );
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-admin.php' );
 } 
 
@@ -103,12 +102,17 @@ function wp_super_edit_init() {
 function wp_super_edit_tiny_mce_before_init( $initArray ) {
 	global $wp_super_edit;
 	
-	if ( !$wp_super_edit->is_installed ) return $initArray;
-
-	if ( $_GET['ver'] == 'wp_super_edit_tinymce_scan' ) {
-		$wp_super_edit->set_option( 'tinymce_scan', $initArray );
-		$initArray['disk_cache'] = false;
-		$initArray['compress'] = false;
+	if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
+		if ( !$wp_super_edit->is_installed ) {
+			add_option( 'wp_super_edit_tinymce_scan', $initArray );
+			$initArray['disk_cache'] = false;
+			$initArray['compress'] = false;
+			return $initArray;
+		} else {
+			$wp_super_edit->set_option( 'tinymce_scan', $initArray );
+			$initArray['disk_cache'] = false;
+			$initArray['compress'] = false;
+		}
 	}
 
 	return $initArray;

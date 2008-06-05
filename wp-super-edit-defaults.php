@@ -58,7 +58,7 @@ function wp_super_edit_install_db_tables() {
 	) $charset_collate;
 	CREATE TABLE $wp_super_edit->db_users (
 	 id bigint(20) NOT NULL auto_increment,
-	 user_id bigint(20) NOT NULL default '0',
+	 user_id varchar(60) NOT NULL default '',
 	 user_name varchar(60) NOT NULL default '',
 	 user_type text NOT NULL default '',
 	 editor_options text NOT NULL,
@@ -79,7 +79,7 @@ function wp_super_edit_install_db_tables() {
 *
 */
 function wp_super_edit_wordpress_button_defaults() {
-	global $wpdb, $wp_super_edit;
+	global $wpdb;
 
 	$wp_super_edit_registry = new wp_super_edit_registry();
 
@@ -566,6 +566,14 @@ function wp_super_edit_plugin_folder_scan() {
 */
 function wp_super_edit_set_user_default() {
 
+	$wp_super_edit_registry = new wp_super_edit_registry();
+	
+	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
+	
+	$wp_super_edit_registry->register_user_settings( 'wp_super_edit_default', $tiny_mce_scan, 'single' );
+	$wp_super_edit_registry->set_option( 'tinymce_scan', $tiny_mce_scan );
+	
+	delete_option( 'wp_super_edit_tinymce_scan' );
 }
 
 ?>

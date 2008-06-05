@@ -64,7 +64,7 @@ function wp_super_edit_admin_head() {
 
 	wpsuperedit(document).ready(
 		function() {
-		  wpsuperedit("#null").load("/wptrunk/wp-includes/js/tinymce/tiny_mce_config.php?ver=wp_super_edit_tinymce_scan");
+		  wpsuperedit("#wp-super-edit-null").load("<?php bloginfo( 'wpurl' ); ?>/wp-includes/js/tinymce/tiny_mce_config.php?scan=wp_super_edit_tinymce_scan");
 
 		}
 	);
@@ -301,25 +301,29 @@ function wp_super_edit_admin_page() {
 		
 	$updated = false;
 	
+	$wp_super_edit_admin->ui_header();
+	
 	if ( !$wp_super_edit_admin->is_installed && $_REQUEST['wp_super_edit_action'] != 'install' ) {
-		echo 'NOT INSTALLED';
 		$wp_super_edit_admin->install_ui();
+		$wp_super_edit_admin->ui_footer();
 		return;
 	}
 
 	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
 		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
 		$wp_super_edit_admin->uninstall();
-		$wp_super_edit_admin->deactivate();
+		$wp_super_edit_admin->install_ui();
+		$wp_super_edit_admin->ui_footer();
+		return;
 	}
 	
 	if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
 		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
-
 		include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
 		wp_super_edit_install_db_tables();
 		wp_super_edit_wordpress_button_defaults();
 		wp_super_edit_plugin_folder_scan();
+		wp_super_edit_set_user_default();
 	}	
 	
 	if ( $_REQUEST['wp_super_edit_action'] == 'settings' ) {
@@ -366,20 +370,7 @@ function wp_super_edit_admin_page() {
 	// Plugin options form
 	?>
 
-			<div class="wrap">
-
-
 		
-				<h2>WP Super Edit</h2>
-					
-				<p>
-				To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>
-				</p>
-				
-				<?php $wp_super_edit_admin->admin_menu_ui(); ?>
-
-		
-
 		<?php if ( !$wp_super_edit_admin->ui || $wp_super_edit_admin->ui == 'buttons' ) : ?>
 
 			<input type="hidden" name="wp_super_edit_action" value="buttons" />
@@ -462,7 +453,7 @@ function wp_super_edit_admin_page() {
 		<!-- END DEBUG -->
 
 		
-			</div>
+		<?php $wp_super_edit_admin->ui_footer(); ?>
 
 <?php 
 }

@@ -86,27 +86,25 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			");
 		}
 
-        function register_user_settings( $user_name = 'default', $user_settings ) {
+        function register_user_settings( $user_name = 'wp_super_edit_default', $user_settings, $type = 'single',  $user_id = 'wp_super_edit' ) {
         	global $wpdb;
-
-			$button_values = '"' .
-				$button['name'] . '", "' . 
-				$button['nicename'] . '", "' . 
-				$button['description'] . '", "' . 
-				$button['provider'] . '", "' . 
-				$button['plugin'] . '", "' . 
-				$button['status'] . '", "' . 
-				$button['separator'] . '", ' . 
-				$button['row'] . ', ' . 
-				$button['position']
+			
+			$settings = maybe_serialize( $user_settings );
+			$settings = $wpdb->escape( $settings );
+			
+			$user_values = '"' .
+				$user_id . '", "' . 
+				$user_name . '", "' . 
+				$type . '", "' . 
+				$settings . '"'
 			;
 			
 			$wpdb->query("
-				INSERT INTO $this->db_buttons 
-				(name, nicename, description, provider, plugin, status, button_separator, row, position) 
-				VALUES ($button_values)
+				INSERT INTO $this->db_users 
+				(user_id, user_name, user_type, editor_options) 
+				VALUES ($user_values)
 			");
-		
+					
 		}
 
     }
@@ -130,16 +128,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			return wp_nonce_field($action);
 		}
 		
-		/**
-		* Deactivate plugin
-		*
-		* Function used to redirect to Plugin Administration Panel and deactivate plugin.
-		*
-		*/
-		function deactivate() {
-			$url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), 'plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
-			wp_redirect( $url );
-		}
 
 		/**
 		* Uninstall plugin
@@ -153,6 +141,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_options );
 			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_plugins );
 			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_buttons );
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_users );
+
+			// $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), get_bloginfo('wpurl') . '/wp-admin/plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
+			// wp_redirect( $url );
+
 		}
 
 
@@ -181,8 +174,21 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				$html_attributes .= sprintf( ' %s="%s"', $name, $option );
 			}
 			
-			$format = ( $html_options['tag_type'] != 'single' ? '<%1$s%2$s>%3$s</%1$s>' : '%3$s <%1$s%2$s />' ); 
-						
+			switch ( $html_options['tag_type'] ) {
+				case 'single':
+					$format = '%3$s <%1$s%2$s />' ;
+					break;
+				case 'open':
+					$format = '<%1$s%2$s>%3$s';
+					break;
+				case 'close':
+					$format = '%3$s</%1$s>';
+					break;
+				default:
+					$format = '<%1$s%2$s>%3$s</%1$s>';
+					break;
+			}
+				
 			$composite = sprintf( $format, $html_options['tag'], $html_attributes, $html_options['content'] );
 			
 			if ( $html_options['return'] == true ) return $composite ;
@@ -215,15 +221,61 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 		
 		/**
+		* WP Super Edit admin display header and information
+		* @param string $text text to display
+		*/
+		function ui_header() {
+		
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'class' => 'wrap',
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'h2',
+				'content' => 'WP Super Edit',
+			) );
+
+			$this->html_tag( array(
+				'tag' => 'p',
+				'content' => 'To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>',
+			) );
+			
+			$this->admin_menu_ui();
+		}
+
+		/**
+		* WP Super Edit admin display footer
+		* @param string $text text to display
+		*/
+		function ui_footer() {
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close',
+			) );
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => 'wp-super-edit-null',
+			) );
+		}
+		
+		/**
 		* Start WP Super Edit admin form
 		* @param string $text text to display
 		*/
 		function form_start() {
 			global $wp_super_edit_nonce;
-?>
-			<form id="tinymce_controller" enctype="application/x-www-form-urlencoded" action="<?php echo $this->ui_form_url; ?>" method="post">
-				<?php $this->nonce_field('wp_super_edit_nonce-' . $this->nonce); ?>
-<?php
+			
+			$this->html_tag( array(
+				'tag' => 'form',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_controller',
+				'enctype' => 'application/x-www-form-urlencoded',
+				'action' => $this->ui_form_url,
+				'method' => 'post'
+			) );
+			$this->nonce_field('wp_super_edit_nonce-' . $this->nonce);
 		}
 
 		/**
@@ -231,9 +283,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* @param string $text text to display
 		*/
 		function form_end() {
-?>
-			</form>
-<?php
+			$this->html_tag( array(
+				'tag' => 'form',
+				'tag_type' => 'close',
+			) );
 		}
 
 		/**

@@ -1,3 +1,7 @@
+div#wp-super-edit-null {
+	display: none;
+}
+
 div#wp-super-edit-ui-menu {
 	border-bottom: 1px solid #ccc;
 	background: #F9FCFE;
