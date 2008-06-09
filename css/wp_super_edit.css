@@ -1,18 +1,45 @@
+div#wp_super_edit_installer {
+	width: 100%;
+	background: #FF9;
+	text-align: center;
+	border: 1px solid #F00;
+}
+
+div#wp_super_edit_scanner {
+	margin: 2em;
+	padding: 1em;
+	text-align: center;
+	font-weight: bold;
+	border: 1px solid #F00;
+	background: #333;
+	color: #CCC;
+}
+
+div#wp_super_edit_install_wait {
+	margin: 2em;
+	padding: 1em;
+	text-align: center;
+	font-weight: bold;
+	border: 1px solid #FF3;
+	background: #F00;
+	color: #FF3;
+}
+
 div#wp-super-edit-null {
 	display: none;
 }
 
-div#wp-super-edit-ui-menu {
+div#wp_super_edit_ui_menu {
 	border-bottom: 1px solid #ccc;
 	background: #F9FCFE;
 } 
 
-div#wp-super-edit-ui-menu ul {
+div#wp_super_edit_ui_menu ul {
 	margin: 0;
 	padding: 0;
 } 
 
-div#wp-super-edit-ui-menu ul li {
+div#wp_super_edit_ui_menu ul li {
 	display: inline;
 	list-style-type: none;
 	margin: .5em 1em 0 1em;
@@ -148,4 +175,3 @@ div#button_rows {
   cursor: pointer;
   cursor: hand;
 }
-

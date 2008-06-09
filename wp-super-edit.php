@@ -72,7 +72,7 @@ if ( is_admin() ) {
 function wp_super_edit_init() {
 	global $wp_super_edit;
 	
-	if ( !$wp_super_edit->is_db_installed ) return;
+	if ( !$wp_super_edit->is_installed ) return;
 	
 	$plugin_callbacks = $wp_super_edit->plugin_init();
 			
@@ -91,42 +91,44 @@ function wp_super_edit_init() {
 
 }
 
-/**
-* TinyMCE before init filter
-*
-* This function is a filter used by Wordpress when the TinyMCE javascript is accessed. This
-* filter performs scans of TinyMCE settings ( hopefully to get info about other plugins ), and 
-* this filter performs the work of modifying the TinyMCE editor.
-*
-*/
-function wp_super_edit_tiny_mce_before_init( $initArray ) {
-	global $wp_super_edit;
+function wp_super_edit_tinymce_filter( $initArray ) {
 	
 	if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
-		if ( !$wp_super_edit->is_installed ) {
-			add_option( 'wp_super_edit_tinymce_scan', $initArray );
-			$initArray['disk_cache'] = false;
-			$initArray['compress'] = false;
-			return $initArray;
-		} else {
-			$wp_super_edit->set_option( 'tinymce_scan', $initArray );
-			$initArray['disk_cache'] = false;
-			$initArray['compress'] = false;
+	
+		if ( !is_array( $initArray ) ) return $initArray;
+		
+		$tinymce_cache_path = WP_CONTENT_DIR . '/uploads/js_cache';
+		$tinymce_cache = @ dir( $tinymce_cache_path );
+		
+		while( ( $tinymce_cache_files = $tinymce_cache->read() ) !== false) {
+			if ( strpos( $tinymce_cache_files, 'tinymce_' ) !== false ) {
+				$tinymce_cache_file = "$tinymce_cache_path/$tinymce_cache_files";
+				if ( is_readable( $tinymce_cache_file ) ) @unlink( $tinymce_cache_file );
+			}
 		}
-	}
 
+		add_option( 'wp_super_edit_tinymce_scan', $initArray );
+
+		unset( $initArray['disk_cache'] );
+		unset( $initArray['compress'] );
+	}
+	
 	return $initArray;
 }
-
 
 /**
 * @internal: Define core Wordpress actions and filters
 */
 
 //load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
-	
+
 add_action('init', 'wp_super_edit_init', 5);
-add_filter('tiny_mce_before_init','wp_super_edit_tiny_mce_before_init', 99);    
+
+if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) !== false ) {
+	add_action('mce_options', 'wp_super_edit_mce_options', 5);
+	add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
+}
+
 
 /**
 * @internal: Conditional activation for WP Super Edit interfaces in WordPress admin panels
@@ -134,6 +136,5 @@ add_filter('tiny_mce_before_init','wp_super_edit_tiny_mce_before_init', 99);
 if ( is_admin() ) {
 	add_action('admin_init', 'wp_super_edit_admin_setup');
 } 
-
     
 ?>

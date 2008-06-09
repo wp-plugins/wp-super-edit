@@ -142,6 +142,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_plugins );
 			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_buttons );
 			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_users );
+			
+			delete_option( 'wp_super_edit_tinymce_scan' );
+			
+			$this->is_installed = false;
 
 			// $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), get_bloginfo('wpurl') . '/wp-admin/plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
 			// wp_redirect( $url );
@@ -241,8 +245,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'p',
 				'content' => 'To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>',
 			) );
-			
-			$this->admin_menu_ui();
+						
 		}
 
 		/**
@@ -333,16 +336,51 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* Create administration menu
 		* 
 		*/
-		function admin_menu_ui() {			
-?>
-			<div id="wp-super-edit-ui-menu">
-				<ul>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=buttons">Arrange Editor Buttons</a></li>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=plugins">Configure Editor Plugins</a></li>
-					<li><a href="<?php echo $this->ui_url; ?>&wp_super_edit_ui=options">Super Edit Options</a></li>
-				</ul>
-			</div>
-<?php
+		function admin_menu_ui() {
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_ui_menu'
+			) );		
+		
+		
+			$ui_tabs['buttons'] = $this->html_tag( array(
+				'tag' => 'a',
+				'href' => $this->ui_url . '&wp_super_edit_ui=buttons',
+				'content' => 'Arrange Editor Buttons',
+				'return' => true
+			) );
+			$ui_tabs['plugins'] = $this->html_tag( array(
+				'tag' => 'a',
+				'href' => $this->ui_url . '&wp_super_edit_ui=plugins',
+				'content' => 'Configure Editor Plugins',
+				'return' => true
+			) );
+			$ui_tabs['options'] = $this->html_tag( array(
+				'tag' => 'a',
+				'href' => $this->ui_url . '&wp_super_edit_ui=options',
+				'content' => 'Super Edit Options',
+				'return' => true
+			) );
+			
+			foreach ( $ui_tabs as $ui_tab => $ui_tab_html ) {
+				$ui_tab_list .= $this->html_tag( array(
+					'tag' => 'li',
+					'content' => $ui_tab_html,
+					'return' => true
+				) );
+			}
+			
+			$this->html_tag( array(
+				'tag' => 'ul',
+				'content' => $ui_tab_list
+			) );
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+			
 		}
 
 		/**
@@ -350,14 +388,44 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* 
 		*/
 		function install_ui() {
-?>
-		<div id="wp_super_edit_install">
-			<?php $this->form_start(); ?>
-			<?php $this->wp_super_edit_action( 'install' ); ?>
-			<?php $this->submit_button( 'Install WP Super Edit', '<strong>Install default settings and database tables for WP Super Edit.</strong>' ); ?>
-			<?php $this->form_end(); ?>
-		</div>
-<?php
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_installer'
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => 'wp_super_edit_scanner',
+				'content' => 'Click here to start the WP Super Edit installation by scanning your editor settings.'
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => 'wp_super_edit_install_wait',
+				'content' => 'Please wait while we check your editor settings!'
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_install',
+			) );
+			$this->form_start();
+			$this->wp_super_edit_action( 'install' );
+			$this->submit_button( 'Install WP Super Edit', '<strong>Install default settings and database tables for WP Super Edit.</strong>' );
+			$this->form_end();
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+			
 		}
 
 		/**
@@ -365,14 +433,16 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* 
 		*/
 		function uninstall_ui() {
-?>
-		<div id="wp_super_edit_deactivate">
-			<?php $this->form_start(); ?>
-			<?php $this->wp_super_edit_action( 'uninstall' ); ?>
-			<?php $this->submit_button( 'Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' ); ?>
-			<?php $this->form_end(); ?>
-		</div>
-<?php
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_deactivate',
+			) );
+			
+			$this->form_start();
+			$this->wp_super_edit_action( 'uninstall' );
+			$this->submit_button( 'Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' );
+			$this->form_end();
 		}
 		
 

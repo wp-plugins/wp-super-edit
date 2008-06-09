@@ -52,26 +52,38 @@ function wp_super_edit_admin_setup() {
 * @global array $superedit_ini 
 */
 function wp_super_edit_admin_head() {
-	global $wp_super_edit;
+	global $wp_super_edit_admin;
 ?>
 
-	<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
-
+	<link rel="stylesheet" href="<?php echo $wp_super_edit_admin->core_uri ?>css/wp_super_edit.css" type="text/css" />
+	
+	<?php if ( $wp_super_edit_admin->is_installed == true ) return; ?>
+	
 	<script type='text/javascript'>
 	/* <![CDATA[ */
+		jQuery(document).ready( function() {
+						
+			jQuery( '#wp_super_edit_install' ).hide();
+			jQuery( '#wp_super_edit_install_wait' ).hide();
 
-	var wpsuperedit = jQuery.noConflict();
+			jQuery( '#wp_super_edit_scanner' ).click( function() {
+			
+				jQuery( '#wp_super_edit_scanner' ).fadeOut();
+				jQuery( '#wp_super_edit_install_wait' ).fadeIn();
 
-	wpsuperedit(document).ready(
-		function() {
-		  wpsuperedit("#wp-super-edit-null").load("<?php bloginfo( 'wpurl' ); ?>/wp-includes/js/tinymce/tiny_mce_config.php?scan=wp_super_edit_tinymce_scan");
-
-		}
-	);
-
-
+				jQuery( '#wp-super-edit-null' ).load( 
+					'<?php bloginfo( 'wpurl' ); ?>/wp-includes/js/tinymce/tiny_mce_config.php', 
+					{ scan: 'wp_super_edit_tinymce_scan', uncache: <?php echo rand( 100, 500 ); ?> },
+					function() {
+						jQuery( '#wp_super_edit_install_wait' ).fadeOut();
+						jQuery( '#wp_super_edit_install' ).show();
+					}
+				);
+			} );
+		} );
 	/* ]]> */
 	</script>
+
 
 <?php
 }
@@ -312,6 +324,7 @@ function wp_super_edit_admin_page() {
 	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
 		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
 		$wp_super_edit_admin->uninstall();
+		$wp_super_edit_admin->is_installed = false;
 		$wp_super_edit_admin->install_ui();
 		$wp_super_edit_admin->ui_footer();
 		return;
@@ -372,6 +385,8 @@ function wp_super_edit_admin_page() {
 
 		
 		<?php if ( !$wp_super_edit_admin->ui || $wp_super_edit_admin->ui == 'buttons' ) : ?>
+					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
+
 
 			<input type="hidden" name="wp_super_edit_action" value="buttons" />
 			
@@ -428,13 +443,15 @@ function wp_super_edit_admin_page() {
 		<?php endif; ?>
 		
 		<?php if ( $wp_super_edit_admin->ui == 'plugins' ) : ?>	
+					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
+
 				<input type="hidden" name="wp_super_edit_action" value="plugins" />
 
 					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>
 		<?php endif; ?>
 		
 		<?php if ( $wp_super_edit_admin->ui == 'options' ) : ?>	
-
+					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 					<?php $wp_super_edit_admin->options_ui(); ?>
 
 		<?php endif; ?>

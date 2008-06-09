@@ -28,7 +28,6 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	
         	$this->management_mode = $this->get_option( 'management_mode' );
         	
-        	
 
         	
         }
@@ -79,6 +78,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			",ARRAY_N);
 			
 			$option_value = maybe_serialize( $option_value );
+			$option_value = $wpdb->escape( $option_value );
 			
 			if( count( $result ) == 0 ) {
 				$result = $wpdb->query("
