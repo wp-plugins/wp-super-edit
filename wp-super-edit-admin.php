@@ -11,23 +11,6 @@
 *
 */
 
-/**
-* Admin init process requests
-*
-* Function used by Wordpress to process requests
-*
-*/
-function wp_super_edit_admin_init() {
-	global $wp_super_edit, $wp_super_edit_admin;
-
-	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
-		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
-		$wp_super_edit_admin->uninstall();
-		$wp_super_edit_admin->is_installed = false;
-		return;
-	}
-
-}
 
 /**
 * Set up administration interface
@@ -45,6 +28,12 @@ function wp_super_edit_admin_setup() {
 	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 		
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
+	
+		if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+			$wp_super_edit_admin->uninstall();
+			$wp_super_edit_admin->is_installed = false;
+		}
 		
 		if ( $wp_super_edit_admin->ui == 'buttons' ) {
 
@@ -56,7 +45,6 @@ function wp_super_edit_admin_setup() {
 			add_action('admin_footer', 'superedit_admin_footer');
 		}
 
-		add_action('admin_init', 'wp_super_edit_admin_init');
 		add_action('admin_head', 'wp_super_edit_admin_head');
 
 	}
@@ -74,6 +62,8 @@ function wp_super_edit_admin_head() {
 ?>
 
 	<link rel="stylesheet" href="<?php echo $wp_super_edit_admin->core_uri ?>css/wp_super_edit.css" type="text/css" />
+	
+	<!-- <?php echo "HERE:: $wp_super_edit_admin->is_installed"; ?> -->
 	
 	<?php if ( $wp_super_edit_admin->is_installed == true ) return; ?>
 	

@@ -135,6 +135,7 @@ if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) !== false ) {
 */
 if ( is_admin() ) {
 	add_action('admin_init', 'wp_super_edit_admin_setup');
+	
 } 
     
 ?>
