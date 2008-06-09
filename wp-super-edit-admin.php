@@ -11,6 +11,23 @@
 *
 */
 
+/**
+* Admin init process requests
+*
+* Function used by Wordpress to process requests
+*
+*/
+function wp_super_edit_admin_init() {
+	global $wp_super_edit, $wp_super_edit_admin;
+
+	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
+		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+		$wp_super_edit_admin->uninstall();
+		$wp_super_edit_admin->is_installed = false;
+		return;
+	}
+
+}
 
 /**
 * Set up administration interface
@@ -39,6 +56,7 @@ function wp_super_edit_admin_setup() {
 			add_action('admin_footer', 'superedit_admin_footer');
 		}
 
+		add_action('admin_init', 'wp_super_edit_admin_init');
 		add_action('admin_head', 'wp_super_edit_admin_head');
 
 	}
@@ -322,9 +340,6 @@ function wp_super_edit_admin_page() {
 	}
 
 	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
-		check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
-		$wp_super_edit_admin->uninstall();
-		$wp_super_edit_admin->is_installed = false;
 		$wp_super_edit_admin->install_ui();
 		$wp_super_edit_admin->ui_footer();
 		return;
