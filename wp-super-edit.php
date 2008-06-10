@@ -92,22 +92,15 @@ function wp_super_edit_init() {
 }
 
 function wp_super_edit_tinymce_filter( $initArray ) {
-	
-	if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
-	
-		if ( !is_array( $initArray ) ) return $initArray;
-		
-		$tinymce_cache_path = WP_CONTENT_DIR . '/uploads/js_cache';
-		$tinymce_cache = @ dir( $tinymce_cache_path );
-		
-		while( ( $tinymce_cache_files = $tinymce_cache->read() ) !== false) {
-			if ( strpos( $tinymce_cache_files, 'tinymce_' ) !== false ) {
-				$tinymce_cache_file = "$tinymce_cache_path/$tinymce_cache_files";
-				if ( is_readable( $tinymce_cache_file ) ) @unlink( $tinymce_cache_file );
-			}
-		}
+	global $wp_super_edit;
 
-		add_option( 'wp_super_edit_tinymce_scan', $initArray );
+	if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
+
+		if ( !$wp_super_edit->is_installed ) {
+			add_option( 'wp_super_edit_tinymce_scan', $initArray );
+		} else {
+			$wp_super_edit->set_option( 'tinymce_scan', $initArray );	
+		}
 
 		unset( $initArray['disk_cache'] );
 		unset( $initArray['compress'] );

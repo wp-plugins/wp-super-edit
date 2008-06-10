@@ -565,12 +565,13 @@ function wp_super_edit_plugin_folder_scan() {
 *
 */
 function wp_super_edit_set_user_default() {
-
 	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
 	
 	$wp_super_edit_registry = new wp_super_edit_registry();
 	$wp_super_edit_registry->register_user_settings( 'wp_super_edit_default', $tiny_mce_scan, 'single' );
-	$wp_super_edit_registry->set_option( 'tinymce_scan', $tiny_mce_scan );	
+	$wp_super_edit_registry->set_option( 'tinymce_scan', $tiny_mce_scan );
+	
+	delete_option( 'wp_super_edit_tinymce_scan' );
 }
 
 ?>
