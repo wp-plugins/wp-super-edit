@@ -78,20 +78,20 @@ function wp_super_edit_admin_head() {
 	/* <![CDATA[ */
 		jQuery(document).ready( function() {
 						
-			jQuery( '#wp_super_edit_install' ).hide();
+			jQuery( '#wp_super_edit_install_form' ).hide();
 			jQuery( '#wp_super_edit_install_wait' ).hide();
 
-			jQuery( '#wp_super_edit_scanner' ).click( function() {
+			jQuery( '#wp_super_edit_install_scanner' ).click( function() {
 			
-				jQuery( '#wp_super_edit_scanner' ).fadeOut();
+				jQuery( '#wp_super_edit_install_scanner' ).fadeOut();
 				jQuery( '#wp_super_edit_install_wait' ).fadeIn();
 
-				jQuery( '#wp-super-edit-null' ).load( 
+				jQuery( '#wp_super_edit_null' ).load( 
 					'<?php bloginfo( 'wpurl' ); ?>/wp-includes/js/tinymce/tiny_mce_config.php', 
 					{ scan: 'wp_super_edit_tinymce_scan', uncache: <?php echo rand( 100, 500 ); ?> },
 					function() {
 						jQuery( '#wp_super_edit_install_wait' ).fadeOut();
-						jQuery( '#wp_super_edit_install' ).show();
+						jQuery( '#wp_super_edit_install_form' ).fadeIn();
 					}
 				);
 			} );

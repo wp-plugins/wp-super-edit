@@ -125,7 +125,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		function nonce_field($action = -1) { 
-			return wp_nonce_field($action);
+			return wp_nonce_field( $action, "_wpnonce", true , false );
 		}
 		
 
@@ -259,10 +259,46 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 			$this->html_tag( array(
 				'tag' => 'div',
-				'id' => 'wp-super-edit-null',
+				'id' => 'wp_super_edit_null',
 			) );
 		}
 		
+		/**
+		* Start WP Super Edit admin form
+		* @param string $text text to display
+		*/
+		function form( $action = '', $content = '', $return = false ) {
+			global $wp_super_edit_nonce;
+			
+			$form_contents = $this->nonce_field('wp_super_edit_nonce-' . $this->nonce);
+			
+			$form_contents .= $this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single',
+				'type' => 'hidden',
+				'name' => 'wp_super_edit_action',
+				'value' => $action,
+				'return' => true
+			) );
+			
+			$form_contents .= $content;
+			
+			$form_array =  array(
+				'tag' => 'form',
+				'id' => 'wp_super_edit_controller',
+				'enctype' => 'application/x-www-form-urlencoded',
+				'action' => htmlentities( $this->ui_form_url ),
+				'method' => 'post',
+				'content' => $form_contents,
+				'return' => $return
+			);
+			
+			if ( $return == true ) return $this->html_tag( $form_array );
+			
+			$this->html_tag( $form_array );
+			
+		}
+
 		/**
 		* Start WP Super Edit admin form
 		* @param string $text text to display
@@ -288,7 +324,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function form_end() {
 			$this->html_tag( array(
 				'tag' => 'form',
-				'tag_type' => 'close',
+				'tag_type' => 'close'
+			) );
+		}
+
+		/**
+		* End WP Super Edit admin form
+		* @param string $text text to display
+		*/
+		function form_table( $content = '' ) {
+			$this->html_tag( array(
+				'tag' => 'table',
+				'class' => 'form-table',
+				'content' => $content
 			) );
 		}
 
@@ -297,8 +345,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* @param string $button_text button value
 		* @param string $message description text
 		*/
-		function submit_button( $button_text = 'Update Options &raquo;', $message = '' ) {
-			$button = $this->html_tag( array(
+		function submit_button( $button_text = 'Update Options &raquo;', $message = '', $return = false ) {
+			$content_array = array(
 				'tag' => 'input',
 				'tag_type' => 'single',
 				'type' => 'submit',
@@ -307,13 +355,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'class' => 'button',
 				'value' => $button_text,
 				'content' => $message,
-				'return' => true,
-			) );
-			$this->html_tag( array(
-				'tag' => 'p',
-				'class' => 'submit clearer',
-				'content' => $button
-			) );
+				'return' => $return,
+			);
+
+			if ( $return == true ) return $this->html_tag( $content_array );
+			
+			$this->html_tag( $content_array );
 		}
 
 		/**
@@ -397,25 +444,29 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$this->html_tag( array(
 				'tag' => 'div',
-				'id' => 'wp_super_edit_scanner',
+				'id' => 'wp_super_edit_install_scanner',
+				'class' => 'wp_super_edit_install',
 				'content' => 'Click here to start the WP Super Edit installation by scanning your editor settings.'
 			) );
 			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'id' => 'wp_super_edit_install_wait',
+				'class' => 'wp_super_edit_install',
 				'content' => 'Please wait while we check your editor settings!'
 			) );
 			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
-				'id' => 'wp_super_edit_install',
+				'id' => 'wp_super_edit_install_form',
+				'class' => 'wp_super_edit_install'
 			) );
-			$this->form_start();
-			$this->wp_super_edit_action( 'install' );
-			$this->submit_button( 'Install WP Super Edit', '<strong>Install default settings and database tables for WP Super Edit.</strong>' );
-			$this->form_end();
+			
+			$button = $this->submit_button( 'Install WP Super Edit', '<strong>Install default settings and database tables for WP Super Edit.</strong>', true );
+			
+			$this->form( 'install', $button );
+			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'close'
@@ -438,11 +489,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag_type' => 'open',
 				'id' => 'wp_super_edit_deactivate',
 			) );
-			
-			$this->form_start();
-			$this->wp_super_edit_action( 'uninstall' );
-			$this->submit_button( 'Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>' );
-			$this->form_end();
+						
+			$button = $this->submit_button( 'Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>', true );
+
+			$this->form( 'uninstall', $button );
+
 		}
 		
 

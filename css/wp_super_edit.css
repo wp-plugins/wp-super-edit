@@ -1,14 +1,18 @@
 div#wp_super_edit_installer {
+	position: relative;
 	width: 100%;
-	background: #FF9;
-	text-align: center;
-	border: 1px solid #F00;
 }
 
-div#wp_super_edit_scanner {
+div.wp_super_edit_install {
+	width: 100%;	
+	position: absolute;
+	top: 0;
 	margin: 2em;
 	padding: 1em;
 	text-align: center;
+}
+
+div#wp_super_edit_install_scanner {
 	font-weight: bold;
 	border: 1px solid #F00;
 	background: #333;
@@ -16,16 +20,19 @@ div#wp_super_edit_scanner {
 }
 
 div#wp_super_edit_install_wait {
-	margin: 2em;
-	padding: 1em;
-	text-align: center;
 	font-weight: bold;
 	border: 1px solid #FF3;
 	background: #F00;
 	color: #FF3;
 }
 
-div#wp-super-edit-null {
+div#wp_super_edit_install_form {
+	text-align: center;
+	background: #FF3;
+	border: 1px solid #F00;
+}
+
+div#wp_super_edit_null {
 	display: none;
 }
 
