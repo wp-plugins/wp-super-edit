@@ -43,6 +43,11 @@ function wp_super_edit_admin_setup() {
 			wp_super_edit_plugin_folder_scan();
 			wp_super_edit_set_user_default();
 		}
+		
+		if (  $_REQUEST['wp_super_edit_action'] == 'options' ) {
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+			$wp_super_edit_admin->do_options();
+		}		
 	
 		if ( $wp_super_edit_admin->ui == 'buttons' ) {
 

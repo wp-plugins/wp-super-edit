@@ -152,6 +152,18 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 		}
 
+		/**
+		* Uninstall plugin
+		*
+		* Function used when to clear settings.
+		*
+		*/
+		function do_options() {
+			global $wpdb;
+			
+			$this->set_option( 'management_mode', $wpdb->escape( $_REQUEST['wp_super_edit_management_mode'] ) );
+
+		}
 
 		/**
 		* Display html tag with attributes
@@ -200,29 +212,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			echo $composite;
 		}
 		
-
-		/**
-		* Display html input tag with attributes
-		* @param string $text text to display
-		*/
-		function html_select( $html_options = array() ) {
-
-			$html_attributes = '';
-			
-			foreach ( $html_options as $name => $option ) {
-				if ( $name == 'text' ) continue;
-				if ( $name == 'return' ) continue;
-				if ( $name == 'select_options' ) continue;
-				if ( $name == 'selected' ) continue;
-				
-				$html_attributes .= ' ' . $name . '="' . $option . '"';
-			}
-			
-			if ( $html_options['return'] == true ) return $html_options['text'] . "<select$html_attributes />";
-?>
-			<?php echo $html_options['text']; ?> <select<?php echo $html_attributes; ?>/>
-<?php 
-		}
 		
 		/**
 		* WP Super Edit admin display header and information
@@ -300,46 +289,81 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Start WP Super Edit admin form
+		* Form Table
 		* @param string $text text to display
 		*/
-		function form_start() {
-			global $wp_super_edit_nonce;
+		function form_table( $content = '', $return = false ) {
 			
-			$this->html_tag( array(
-				'tag' => 'form',
-				'tag_type' => 'open',
-				'id' => 'wp_super_edit_controller',
-				'enctype' => 'application/x-www-form-urlencoded',
-				'action' => $this->ui_form_url,
-				'method' => 'post'
-			) );
-			$this->nonce_field('wp_super_edit_nonce-' . $this->nonce);
-		}
-
-		/**
-		* End WP Super Edit admin form
-		* @param string $text text to display
-		*/
-		function form_end() {
-			$this->html_tag( array(
-				'tag' => 'form',
-				'tag_type' => 'close'
-			) );
-		}
-
-		/**
-		* End WP Super Edit admin form
-		* @param string $text text to display
-		*/
-		function form_table( $content = '' ) {
-			$this->html_tag( array(
+			$content_array = array(
 				'tag' => 'table',
 				'class' => 'form-table',
-				'content' => $content
-			) );
+				'content' => $content,
+				'return' => $return
+			);
+			
+			if ( $return == true ) return $this->html_tag( $content_array );
+			
+			$this->html_tag( $content_array );			
 		}
 
+		/**
+		* Form Table Row
+		* @param string $text text to display
+		*/
+		function form_table_row( $header = '', $content = '', $return = false ) {
+			
+			$row_content = $this->html_tag( array(
+				'tag' => 'th',
+				'scope' => 'row',
+				'content' => $header,
+				'return' => true
+			) );
+			
+			$row_content .= $this->html_tag( array(
+				'tag' => 'td',
+				'content' => $content,
+				'return' => true
+			) );
+			
+			$content_array = array(
+				'tag' => 'tr',
+				'valign' => 'top',
+				'content' => $row_content,
+				'return' => $return
+			);
+			
+			if ( $return == true ) return $this->html_tag( $content_array );
+			
+			$this->html_tag( $content_array );
+		}
+
+		/**
+		* Form Select
+		* @param string $text text to display
+		*/
+		function form_select( $option_name = '', $options = array(), $selected = '', $return = false ) {
+			
+			foreach( $options as $option_value => $option_text ) {
+				$option_content .= $this->html_tag( array(
+					'tag' => 'option',
+					'value' => $option_value,
+					'content' => $option_text,
+					'return' => true
+				) );				
+			}
+			
+			$content_array = array(
+				'tag' => 'select',
+				'name' => $option_name,
+				'id' => $option_name,
+				'content' => $option_content,
+				'return' => $return
+			);
+			
+			if ( $return == true ) return $this->html_tag( $content_array );
+			
+			$this->html_tag( $content_array );
+		}
 		/**
 		* Display submit button
 		* @param string $button_text button value
@@ -364,22 +388,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* WP Super Edit hidden action
-		* @param string $value set value for wp_super_edit_action hidden form input
-		*/
-		function wp_super_edit_action( $value = '' ) {
-			$this->html_tag( array(
-				'tag' => 'input',
-				'tag_type' => 'single',
-				'type' => 'hidden',
-				'name' => 'wp_super_edit_action',
-				'id' => 'wp_super_edit_action_id',
-				'class' => 'button',
-				'value' => $value,
-			) );
-		}
-
-		/**
 		* Create administration menu
 		* 
 		*/
@@ -393,29 +401,43 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		
 			$ui_tabs['buttons'] = $this->html_tag( array(
 				'tag' => 'a',
-				'href' => $this->ui_url . '&wp_super_edit_ui=buttons',
+				'href' => htmlentities( $this->ui_url . '&wp_super_edit_ui=buttons' ),
 				'content' => 'Arrange Editor Buttons',
 				'return' => true
 			) );
 			$ui_tabs['plugins'] = $this->html_tag( array(
 				'tag' => 'a',
-				'href' => $this->ui_url . '&wp_super_edit_ui=plugins',
+				'href' => htmlentities( $this->ui_url . '&wp_super_edit_ui=plugins' ),
 				'content' => 'Configure Editor Plugins',
 				'return' => true
 			) );
 			$ui_tabs['options'] = $this->html_tag( array(
 				'tag' => 'a',
-				'href' => $this->ui_url . '&wp_super_edit_ui=options',
+				'href' => htmlentities( $this->ui_url . '&wp_super_edit_ui=options' ),
 				'content' => 'Super Edit Options',
 				'return' => true
 			) );
 			
 			foreach ( $ui_tabs as $ui_tab => $ui_tab_html ) {
-				$ui_tab_list .= $this->html_tag( array(
+
+				if ( $ui_tab == $this->ui ) {
+					$current_tab_html = $this->html_tag( array(
+						'tag' => 'h3',
+						'content' => $ui_tab_html,
+						'return' => true
+					) );
+					$ui_tab_html = $current_tab_html;
+				}
+				
+				$list = array(
 					'tag' => 'li',
 					'content' => $ui_tab_html,
 					'return' => true
-				) );
+				);
+				
+				if ( $ui_tab == $this->ui ) $list['class'] = 'wp_super_edit_ui_current';
+				
+				$ui_tab_list .= $this->html_tag( $list );
 			}
 			
 			$this->html_tag( array(
@@ -487,13 +509,18 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
-				'id' => 'wp_super_edit_deactivate',
+				'id' => 'wp_super_edit_deactivate'
 			) );
 						
 			$button = $this->submit_button( 'Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>', true );
 
 			$this->form( 'uninstall', $button );
 
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+			
 		}
 		
 
@@ -502,25 +529,43 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* 
 		*/
 		function options_ui() {
-?>
-		<div id="wp_super_edit_options">
-			<h3>WP Super Edit Options</h3>
-			<?php $this->form_start(); ?>
-			<?php $this->wp_super_edit_action( 'options' ); ?>
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_options'
+			) );
+
 			
-			<label for="wp_super_edit_management_mode">Manage editor buttons using: </label>
-			<select name="wp_super_edit_management_mode" id="wp_super_edit_management_mode">
-				<option value="single">One editor setting for all users</option>
-				<option value="roles">Role based editor settings</option>
-				<option value="users">Individual user editor settings</option>
-			</select>
+			$submit_button = $this->submit_button( 'Update Options', '', true );
 			
+			$submit_button_group = $this->html_tag( array(
+				'tag' => 'p',
+				'class' => 'submit',
+				'content' => $submit_button,
+				'return' => true
+			) );
 			
-			<?php $this->submit_button( 'Update Options' ); ?>
-			<?php $this->form_end(); ?>
-			<?php $this->uninstall_ui(); ?>
-		</div>
-<?php
+			$management_modes = array(
+				'single' => 'One editor setting for all users',
+				'roles' => 'Role based editor settings',
+				'users' => 'Individual user editor settings'
+			);
+			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $management_modes, '', true );
+			
+			$table_row = $this->form_table_row( 'Manage editor buttons using:', $mode_select, true );
+			
+			$form_content .= $this->form_table( $table_row, true );
+			$form_content .= $submit_button_group;
+			
+			$this->form( 'options', $form_content );
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+			
+			$this->uninstall_ui();
+
 		}
  
     }

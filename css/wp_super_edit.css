@@ -27,7 +27,6 @@ div#wp_super_edit_install_wait {
 }
 
 div#wp_super_edit_install_form {
-	text-align: center;
 	background: #FF3;
 	border: 1px solid #F00;
 }
@@ -37,29 +36,54 @@ div#wp_super_edit_null {
 }
 
 div#wp_super_edit_ui_menu {
+	margin: .5em;
+	padding: .5em;
 	border-bottom: 1px solid #ccc;
-	background: #F9FCFE;
 } 
 
 div#wp_super_edit_ui_menu ul {
 	margin: 0;
 	padding: 0;
+	clear: both;
 } 
 
 div#wp_super_edit_ui_menu ul li {
 	display: inline;
 	list-style-type: none;
+}
+
+div#wp_super_edit_ui_menu ul li a {
+	margin: 1em 2em;
+	padding: .3em;
+	text-decoration: none;
+}
+
+div#wp_super_edit_ui_menu ul li a:hover {
+	background: #c1c1c1;
+}
+
+div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 {
+	display: inline;
 	margin: .5em 1em 0 1em;
 	padding: .5em;
-	font-size: 1.1em;
-	font-weight: bold;
 	border-top: 1px solid #ccc;
 	border-right: 1px solid #ccc;
 	border-left: 1px solid #ccc;
 	background: #fff;
-
 }
 
+div#wp_super_edit_deactivate {
+	margin: .5em;
+	padding: .5em;
+	background: #FF3;
+	border: 1px solid #ccc;
+}
+
+div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 a {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
 
 div.lineitem {
 	width: 120px;
