@@ -24,11 +24,15 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->tinymce_plugins_uri = $this->core_uri . 'tinymce_plugins/';
         	$this->is_installed = $this->is_db_installed();
         	
+        	$this->management_modes = array(
+				'single' => 'One editor setting for all users',
+				'roles' => 'Role based editor settings',
+				'users' => 'Individual user editor settings'
+			);
+			
         	if ( !$this->is_installed ) return;
         	
         	$this->management_mode = $this->get_option( 'management_mode' );
-        	
-
         	
         }
 

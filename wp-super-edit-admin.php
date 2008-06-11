@@ -453,7 +453,6 @@ function wp_super_edit_admin_page() {
 		<?php if ( $wp_super_edit_admin->ui == 'plugins' ) : ?>	
 					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 
-				<input type="hidden" name="wp_super_edit_action" value="plugins" />
 
 					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>
 		<?php endif; ?>
@@ -461,9 +460,7 @@ function wp_super_edit_admin_page() {
 		<?php if ( $wp_super_edit_admin->ui == 'options' ) : ?>	
 					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 					<?php $wp_super_edit_admin->options_ui(); ?>
-
 		<?php endif; ?>
-				
 
 		<!-- START DEBUG -->
 		<pre>

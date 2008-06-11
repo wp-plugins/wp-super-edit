@@ -122,12 +122,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
 			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
 			$this->nonce = 'wp-super-edit-update-key';
+			
+			if ( $this->ui == 'plugins' ) {
+				 $this->get_plugins();
+			}
 		}
 
-		function nonce_field($action = -1) { 
-			return wp_nonce_field( $action, "_wpnonce", true , false );
-		}
-		
+        function get_plugins() {
+        	global $wpdb;
+        	
+			$this->plugins = $wpdb->get_results("
+				SELECT name, nicename, description, provider, status FROM $this->db_plugins
+			");
+        }
 
 		/**
 		* Uninstall plugin
@@ -162,6 +169,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			global $wpdb;
 			
 			$this->set_option( 'management_mode', $wpdb->escape( $_REQUEST['wp_super_edit_management_mode'] ) );
+			$this->management_mode = $this->get_option( 'management_mode' );
 
 		}
 
@@ -211,7 +219,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			echo $composite;
 		}
-		
+
+		/**
+		* WP Super Edit admin nonce field generator for form security
+		* @param string $action nonce action to make keys
+		*/		
+		function nonce_field($action = -1) { 
+			return wp_nonce_field( $action, "_wpnonce", true , false );
+		}
 		
 		/**
 		* WP Super Edit admin display header and information
@@ -341,15 +356,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* Form Select
 		* @param string $text text to display
 		*/
-		function form_select( $option_name = '', $options = array(), $selected = '', $return = false ) {
+		function form_select( $option_name = '', $options = array(), $return = false ) {
 			
 			foreach( $options as $option_value => $option_text ) {
-				$option_content .= $this->html_tag( array(
+				$option_array = array(
 					'tag' => 'option',
 					'value' => $option_value,
 					'content' => $option_text,
 					'return' => true
-				) );				
+				);			
+				
+				if ( $option_value == $this->management_mode ) $option_array['selected'] = 'selected';
+				
+				$option_content .= $this->html_tag( $option_array );
 			}
 			
 			$content_array = array(
@@ -453,6 +472,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
+		* Show the management mode
+		* 
+		*/
+		function display_management_mode() {
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => 'wp_super_edit_management_mode',
+				'content' => 'Management Mode: ' . $this->management_modes[ $this->management_mode ]
+			) );
+		}
+		/**
 		* Create deactivation user interface
 		* 
 		*/
@@ -525,7 +555,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		
 
 		/**
-		* Create deactivation user interface
+		* WP Super Edit Options Interface
 		* 
 		*/
 		function options_ui() {
@@ -535,9 +565,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_options'
 			) );
 
+			$this->display_management_mode();
 			
 			$submit_button = $this->submit_button( 'Update Options', '', true );
-			
 			$submit_button_group = $this->html_tag( array(
 				'tag' => 'p',
 				'class' => 'submit',
@@ -545,12 +575,44 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'return' => true
 			) );
 			
-			$management_modes = array(
-				'single' => 'One editor setting for all users',
-				'roles' => 'Role based editor settings',
-				'users' => 'Individual user editor settings'
-			);
-			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $management_modes, '', true );
+			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $this->management_modes, true );
+			
+			$table_row = $this->form_table_row( 'Manage editor buttons using:', $mode_select, true );
+			
+			$form_content .= $this->form_table( $table_row, true );
+			$form_content .= $submit_button_group;
+			
+			$this->form( 'options', $form_content );
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+			
+			$this->uninstall_ui();
+
+		}
+		
+		/**
+		* WP Super Edit Options Interface
+		* 
+		*/
+		function plugins_ui() {
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_plugins'
+			) );
+			
+			$submit_button = $this->submit_button( 'Update Options', '', true );
+			$submit_button_group = $this->html_tag( array(
+				'tag' => 'p',
+				'class' => 'submit',
+				'content' => $submit_button,
+				'return' => true
+			) );
+			
+			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $this->management_modes, true );
 			
 			$table_row = $this->form_table_row( 'Manage editor buttons using:', $mode_select, true );
 			
