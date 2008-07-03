@@ -216,39 +216,7 @@ function superedit_set_separator ( &$settings, $name ) {
 	}
 }
 
-/**
-* Build tables for plugins and buttons with javascript functions
-*
-* Uses array_walk to build table, rows, and cells for either buttons or plugins.
-* Includes javascript functions for drag drop button interface
-*
-* @param $title Title for fieldset block.
-* @param $option Array for button or plugin.
-* @param $superedit_settings Users currently set settings.
-* @param $value Defines the name for the checkbox.
-* @param $description Optional description for fieldset block.
-*/
-function superedit_layout_html ( $title, $option, $value ) {
-?>
-<div id="superedit_<?php echo $value; ?>">
 
-	<fieldset class="options">
-		<legend><?php echo $title; ?></legend>
-			<table width="100%" cellspacing="2" cellpadding="5" class="editform">
-
-		<?php foreach ( $option as $name => $settings ) : ?>
-			<tr valign="top">
-				<th width="45%" scope="row"><?php echo $settings['desc']; ?></th>
-				<td width="5%" style="background: #ccc;"><input id="<?php echo $name; ?>" name="<?php echo $value.'['.$name.']'; ?>" type="checkbox" value="Y" <?php if ($settings['status'] == 'Y' ) { echo 'checked="checked"' ;} ?> /></td>
-				<td width="60%" scope="row"><?php echo $settings['notice']; ?></td>
-			</tr>
-		<?php endforeach; ?>
-
-			</table>
-	</fieldset>
-</div>
-<?php
-}
 
 /**
 * Creates hidden form elements
@@ -451,15 +419,13 @@ function wp_super_edit_admin_page() {
 		<?php endif; ?>
 		
 		<?php if ( $wp_super_edit_admin->ui == 'plugins' ) : ?>	
-					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
-
-
-					<?php superedit_layout_html( 'TinyMCE Plugins', $superedit_ini['plugins'], 'plugins' ); ?>
+			<?php $wp_super_edit_admin->admin_menu_ui(); ?>
+			<?php $wp_super_edit_admin->plugins_ui(); ?>
 		<?php endif; ?>
 		
 		<?php if ( $wp_super_edit_admin->ui == 'options' ) : ?>	
-					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
-					<?php $wp_super_edit_admin->options_ui(); ?>
+			<?php $wp_super_edit_admin->admin_menu_ui(); ?>
+			<?php $wp_super_edit_admin->options_ui(); ?>
 		<?php endif; ?>
 
 		<!-- START DEBUG -->

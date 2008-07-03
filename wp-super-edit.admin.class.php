@@ -202,6 +202,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				case 'single':
 					$format = '%3$s <%1$s%2$s />' ;
 					break;
+				case 'single-after':
+					$format = '<%1$s%2$s /> %3$s' ;
+					break;
 				case 'open':
 					$format = '<%1$s%2$s>%3$s';
 					break;
@@ -598,6 +601,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* 
 		*/
 		function plugins_ui() {
+		
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
@@ -612,10 +616,27 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'return' => true
 			) );
 			
-			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $this->management_modes, true );
 			
-			$table_row = $this->form_table_row( 'Manage editor buttons using:', $mode_select, true );
-			
+			foreach ( $this->plugins as $plugin ) {
+				
+				$plugin_check_box_options = array(
+					'tag' => 'input',
+					'tag_type' => 'single-after',
+					'type' => 'checkbox',
+					'name' => "wp_super_edit_plugin[$plugin->name]",
+					'id' => "wp_super_edit_plugin-$plugin->name",
+					'content' => "<br /> $plugin->description",
+					'return' => true
+				);
+				
+				if ( $plugin->status == 'yes' ) $plugin_check_box_options['checked'] = 'checked';
+				
+				$plugin_check_box = $this->html_tag( $plugin_check_box_options );
+
+				$table_row .= $this->form_table_row( $plugin->nicename , $plugin_check_box, true );
+			}
+
+
 			$form_content .= $this->form_table( $table_row, true );
 			$form_content .= $submit_button_group;
 			
@@ -625,8 +646,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'tag_type' => 'close'
 			) );
-			
-			$this->uninstall_ui();
 
 		}
  
