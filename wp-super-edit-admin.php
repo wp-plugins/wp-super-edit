@@ -28,12 +28,6 @@ function wp_super_edit_admin_setup() {
 	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 		
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
-	
-		if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
-			$wp_super_edit_admin->uninstall();
-			$wp_super_edit_admin->is_installed = false;
-		}
 
 		if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
@@ -44,10 +38,21 @@ function wp_super_edit_admin_setup() {
 			wp_super_edit_set_user_default();
 		}
 		
+		if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+			$wp_super_edit_admin->uninstall();
+			$wp_super_edit_admin->is_installed = false;
+		}
+		
 		if (  $_REQUEST['wp_super_edit_action'] == 'options' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
 			$wp_super_edit_admin->do_options();
-		}		
+		}
+		
+		if (  $_REQUEST['wp_super_edit_action'] == 'plugins' ) {
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+			$wp_super_edit_admin->do_plugins();
+		}
 	
 		if ( $wp_super_edit_admin->ui == 'buttons' ) {
 
@@ -353,9 +358,6 @@ function wp_super_edit_admin_page() {
 
 	}
 	
-
-
-		
 	// Plugin options form
 	?>
 

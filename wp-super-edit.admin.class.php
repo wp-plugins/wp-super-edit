@@ -160,9 +160,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Uninstall plugin
+		* Options 
 		*
-		* Function used when to clear settings.
+		* Function used to set options from form.
 		*
 		*/
 		function do_options() {
@@ -170,6 +170,38 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$this->set_option( 'management_mode', $wpdb->escape( $_REQUEST['wp_super_edit_management_mode'] ) );
 			$this->management_mode = $this->get_option( 'management_mode' );
+
+		}
+		
+		/**
+		* Options 
+		*
+		* Function used to set options from form.
+		*
+		*/
+		function do_plugins() {
+			global $wpdb;
+			
+			$query = '';
+			foreach ( $this->plugins as $plugin ) {
+				if ( $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
+					$result = $wpdb->query( "
+						UPDATE $this->db_plugins
+						SET status='yes'
+						WHERE name='$plugin->name'
+						" );
+				} else {
+					$result = $wpdb->query( "
+						UPDATE $this->db_plugins
+						SET status='no'
+						WHERE name='$plugin->name'
+						" );
+				}
+			}
+						
+			$wpdb->print_error();
+			
+			$this->get_plugins();
 
 		}
 
@@ -623,8 +655,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'tag' => 'input',
 					'tag_type' => 'single-after',
 					'type' => 'checkbox',
-					'name' => "wp_super_edit_plugin[$plugin->name]",
-					'id' => "wp_super_edit_plugin-$plugin->name",
+					'name' => "wp_super_edit_plugins[$plugin->name]",
+					'id' => "wp_super_edit_plugins-$plugin->name",
+					'value' => 'yes',
 					'content' => "<br /> $plugin->description",
 					'return' => true
 				);
@@ -640,7 +673,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$form_content .= $this->form_table( $table_row, true );
 			$form_content .= $submit_button_group;
 			
-			$this->form( 'options', $form_content );
+			$this->form( 'plugins', $form_content );
 
 			$this->html_tag( array(
 				'tag' => 'div',

@@ -81,7 +81,7 @@ function wp_super_edit_init() {
 	foreach ( $plugin_callbacks as $number => $plugin ) {
 		$callbacks = explode( ',', $plugin->callbacks );
 		
-		require_once( $wp_super_edit_init->tinymce_plugins_path . $plugin->name . '/functions.php' );
+		require_once( $wp_super_edit->tinymce_plugins_path . $plugin->name . '/functions.php' );
 		
 		foreach ( $callbacks as $callback => $command ) {
 			call_user_func( trim( $command ) );
