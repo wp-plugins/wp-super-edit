@@ -126,6 +126,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			if ( $this->ui == 'plugins' ) {
 				 $this->get_plugins();
 			}
+		
 		}
 
         function get_plugins() {
@@ -182,7 +183,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function do_plugins() {
 			global $wpdb;
 			
-			$query = '';
 			foreach ( $this->plugins as $plugin ) {
 				if ( $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
 					$result = $wpdb->query( "
@@ -198,11 +198,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 						" );
 				}
 			}
-						
-			$wpdb->print_error();
-			
+									
 			$this->get_plugins();
-
 		}
 
 		/**

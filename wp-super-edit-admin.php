@@ -26,7 +26,11 @@ function wp_super_edit_admin_setup() {
 	$wp_super_edit_admin->init_ui();
 		
 	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
-		
+
+    if ( $wp_super_edit_admin->management_mode == 'users' ) {
+		$wp_super_edit_user_page = add_submenu_page('profile.php', __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 0, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
+	}
+	
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
 
 		if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
@@ -361,9 +365,9 @@ function wp_super_edit_admin_page() {
 	// Plugin options form
 	?>
 
-		
+		<?php $wp_super_edit_admin->admin_menu_ui(); ?>
+
 		<?php if ( !$wp_super_edit_admin->ui || $wp_super_edit_admin->ui == 'buttons' ) : ?>
-					<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 
 
 			<input type="hidden" name="wp_super_edit_action" value="buttons" />
@@ -421,27 +425,12 @@ function wp_super_edit_admin_page() {
 		<?php endif; ?>
 		
 		<?php if ( $wp_super_edit_admin->ui == 'plugins' ) : ?>	
-			<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 			<?php $wp_super_edit_admin->plugins_ui(); ?>
 		<?php endif; ?>
 		
 		<?php if ( $wp_super_edit_admin->ui == 'options' ) : ?>	
-			<?php $wp_super_edit_admin->admin_menu_ui(); ?>
 			<?php $wp_super_edit_admin->options_ui(); ?>
 		<?php endif; ?>
-
-		<!-- START DEBUG -->
-		<pre>
-		<?php 
-		
-		print_r( $wp_super_edit );
-		
-		print_r( $wp_super_edit_admin );
-
-		?>
-		</pre>
-		<!-- END DEBUG -->
-
 		
 		<?php $wp_super_edit_admin->ui_footer(); ?>
 
