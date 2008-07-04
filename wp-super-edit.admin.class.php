@@ -126,7 +126,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			if ( $this->ui == 'plugins' ) {
 				 $this->get_plugins();
 			}
-		
+			if ( $this->ui == 'buttons' ) {
+				 $this->get_buttons();
+			}
 		}
 
         function get_plugins() {
@@ -134,6 +136,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         	
 			$this->plugins = $wpdb->get_results("
 				SELECT name, nicename, description, provider, status FROM $this->db_plugins
+			");
+        }
+        
+        function get_buttons() {
+        	global $wpdb;
+        	
+			$this->buttons = $wpdb->get_results("
+				SELECT name, nicename, description, provider, status FROM $this->db_buttons
 			");
         }
 
@@ -671,6 +681,166 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$form_content .= $submit_button_group;
 			
 			$this->form( 'plugins', $form_content );
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+
+		}
+		/**
+		* Creates Javascript array for buttons and plugins.
+		*
+		* Javascript arrays are used for various client side actions including button positioning and dialog boxes.
+		*
+		* @param $settings Button or plugin array.
+		* @param $name Button or plugin name.
+		* @param $type Define as button or plugin.
+		* @global array $superedit_ini
+		*/
+		function buttons_js_objects() {
+			foreach ( $this->buttons as $button ) {
+				printf("\t\ttiny_mce_buttons['%s'] = new wp_super_edit_button( '%s', '%s' );\n", $button->name, $button->nicename, $button->description );
+			}
+		}
+		
+		/**
+		* WP Super Edit Options Interface
+		* 
+		*/
+		function buttons_ui() {
+		
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_buttons'
+			) );
+			
+			$submit_button = $this->submit_button( 'Update Options', '', true );
+			$submit_button_group = $this->html_tag( array(
+				'tag' => 'p',
+				'class' => 'submit',
+				'content' => $submit_button,
+				'return' => true
+			) );
+			
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'button_rows'
+			) );
+
+?>
+<input type="hidden" id="i_wp_super_edit_row_1" name="wp_super_edit_row_1" value="" />
+<input type="hidden" id="i_wp_super_edit_row_2" name="wp_super_edit_row_2" value="" />
+<input type="hidden" id="i_wp_super_edit_row_3" name="wp_super_edit_row_3" value="" />
+<input type="hidden" id="i_wp_super_edit_row_4" name="wp_super_edit_row_4" value="" />
+	
+	<div class="row_container disabled_buttons">
+		<h3>Disabled Buttons</h3>
+		<div id="tinymce_buttons" class="section">
+
+			<div id="removeformat" class="lineitem">
+				<div class="button_info">
+					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Remove HTML Formatting
+			</div>
+			<div id="cleanup" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Clean up HTML
+			</div>
+			<div id="charmap" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Special Characters
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row_container">
+		<h3>Editor Button Row 1</h3>
+		<div id="row1" class="section">
+
+			<div id="removeformat" class="lineitem">
+				<div class="button_info">
+					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Remove HTML Formatting
+			</div>
+			<div id="cleanup" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Clean up HTML
+			</div>
+			<div id="charmap" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Special Characters
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row_container">
+		<h3>Editor Button Row 2</h3>
+		<div id="row2" class="section">
+		
+			<div id="removeformat" class="lineitem">
+				<div class="button_info">
+					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Remove HTML Formatting
+			</div>
+			<div id="cleanup" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Clean up HTML
+			</div>
+			<div id="charmap" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Special Characters
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="row_container">
+		<h3>Editor Button Row 3</h3>
+		<div id="row3" class="section">
+
+			<div id="removeformat" class="lineitem">
+				<div class="button_info">
+					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Remove HTML Formatting
+			</div>
+			<div id="cleanup" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Clean up HTML
+			</div>
+			<div id="charmap" class="lineitem button_separator">
+				<div class="button_info">
+					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+				</div>Special Characters
+			</div>
+
+		</div>
+	</div>
+	
+	<br class="clearer" />
+
+<?php
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+			
+			$form_content .= $this->form_table( $table_row, true );
+			$form_content .= $submit_button_group;
+			
+			$this->form( 'buttons', $form_content );
 
 			$this->html_tag( array(
 				'tag' => 'div',
