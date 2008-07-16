@@ -10,7 +10,7 @@
 
 // WP Super Edit options for this plugin
 
-$wp_super_edit_registry->register_tinymce_plugin( array(
+$wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'style', 
 	'nicename' => 'Advanced CSS / styles Plugin', 
 	'description' => 'Allows access to properties that can be used in a STYLE attribute. Provides the Style Properties Button.', 
@@ -21,7 +21,7 @@ $wp_super_edit_registry->register_tinymce_plugin( array(
 
 // Tiny MCE Buttons provided by this plugin
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'superstyleprops', 
 	'nicename' => 'Style Properties', 
 	'description' => 'Interface for properties that can be manipulated using the STYLE attribute.', 

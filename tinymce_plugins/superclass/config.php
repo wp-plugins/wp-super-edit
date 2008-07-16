@@ -10,7 +10,7 @@
 
 // WP Super Edit options for this plugin
 
-$wp_super_edit_registry->register_tinymce_plugin( array(
+$wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'superclass', 
 	'nicename' => 'Custom CSS Classes', 
 	'description' => 'Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.', 
@@ -21,7 +21,7 @@ $wp_super_edit_registry->register_tinymce_plugin( array(
 
 // Tiny MCE Buttons provided by this plugin
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'styleselect', 
 	'nicename' => 'Custom CSS Classes', 
 	'description' => 'Shows a drop down list of CSS Classes that the editor has access to.', 

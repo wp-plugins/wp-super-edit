@@ -8,8 +8,11 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		public $db_plugins;
 		public $db_buttons;
 		public $db_users;
+		
 		public $core_path;
 		public $core_uri;
+		
+		public $current_user;
  
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
@@ -102,9 +105,25 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					
 			return false;
         }
+        
+        function get_user_settings( $user_name = 'wp_super_edit_default' ) {
+        	global $wpdb;
+        	
+			$user_settings = $wpdb->get_results("
+				SELECT user_name, editor_options 
+				FROM $this->db_users
+				WHERE user_name = '$user_name'
+			");
+			
+			$this->current_user['editor_options'] = maybe_unserialize( $user_settings[0]->editor_options );
+
+			for ( $button_rows = 1; $button_rows <= 4; $button_rows += 1) {
+				$this->current_user['buttons'][$button_rows] = explode( ',', $this->current_user['editor_options']['theme_advanced_buttons' . $button_rows] );
+			}
+
+        }
 
     }
-
 
 }
 

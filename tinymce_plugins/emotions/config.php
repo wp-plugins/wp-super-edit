@@ -10,7 +10,7 @@
 
 // WP Super Edit options for this plugin
 
-$wp_super_edit_registry->register_tinymce_plugin( array(
+$wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'emotions', 
 	'nicename' => 'Custom Emoticon / Icon Plugin', 
 	'description' => 'Customized Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button.', 
@@ -21,7 +21,7 @@ $wp_super_edit_registry->register_tinymce_plugin( array(
 
 // Tiny MCE Buttons provided by this plugin
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'superemotions', 
 	'nicename' => 'Emoticon / Icons', 
 	'description' => 'Interface for Customized Wordpress Emoticon / Icon images. Uses Wordpress icon set.', 

@@ -19,22 +19,20 @@
 *
 */
 function wp_super_edit_admin_setup() {
-	global $wp_super_edit, $wp_super_edit_admin;
-	
-	$wp_super_edit_admin = new wp_super_edit_admin;
-	
-	$wp_super_edit_admin->init_ui();
+	global $wp_super_edit;
+		
+	$wp_super_edit->init_ui();
 		
 	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 
-    if ( $wp_super_edit_admin->management_mode == 'users' ) {
+    if ( $wp_super_edit->management_mode == 'users' ) {
 		$wp_super_edit_user_page = add_submenu_page('profile.php', __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 0, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 	}
 	
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
 
 		if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
 			include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
 			wp_super_edit_install_db_tables();
 			wp_super_edit_wordpress_button_defaults();
@@ -43,22 +41,22 @@ function wp_super_edit_admin_setup() {
 		}
 		
 		if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
-			$wp_super_edit_admin->uninstall();
-			$wp_super_edit_admin->is_installed = false;
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			$wp_super_edit->uninstall();
+			$wp_super_edit->is_installed = false;
 		}
 		
 		if (  $_REQUEST['wp_super_edit_action'] == 'options' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
-			$wp_super_edit_admin->do_options();
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			$wp_super_edit->do_options();
 		}
 		
 		if (  $_REQUEST['wp_super_edit_action'] == 'plugins' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit_admin->nonce );
-			$wp_super_edit_admin->do_plugins();
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			$wp_super_edit->do_plugins();
 		}
 	
-		if ( $wp_super_edit_admin->ui == 'buttons' ) {
+		if ( $wp_super_edit->ui == 'buttons' ) {
 
 			wp_enqueue_script( 'wp-super-edit-dimensions',  '/wp-content/plugins/wp-super-edit/js/jquery.dimensions.pack.js', array('jquery'), '2135' );
 			wp_enqueue_script( 'wp-super-edit-ui',  '/wp-content/plugins/wp-super-edit/js/jquery-ui-all-1.5rc1.packed.js', false, '2135' );
@@ -81,12 +79,12 @@ function wp_super_edit_admin_setup() {
 * @global array $superedit_ini 
 */
 function wp_super_edit_admin_head() {
-	global $wp_super_edit_admin;
+	global $wp_super_edit;
 ?>
 
-	<link rel="stylesheet" href="<?php echo $wp_super_edit_admin->core_uri ?>css/wp_super_edit.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
 		
-	<?php if ( $wp_super_edit_admin->is_installed == true ) return; ?>
+	<?php if ( $wp_super_edit->is_installed == true ) return; ?>
 	
 	<script type='text/javascript'>
 	/* <![CDATA[ */
@@ -162,42 +160,42 @@ function superedit_update_message( $message = '' ) {
 * @global array $superedit_plugins
 */
 function wp_super_edit_admin_page() {
-	global $wp_super_edit, $wp_super_edit_admin;
+	global $wp_super_edit;
 		
 	$updated = false;
 	
-	$wp_super_edit_admin->ui_header();
+	$wp_super_edit->ui_header();
 	
-	if ( !$wp_super_edit_admin->is_installed && $_REQUEST['wp_super_edit_action'] != 'install' ) {
-		$wp_super_edit_admin->install_ui();
-		$wp_super_edit_admin->ui_footer();
+	if ( !$wp_super_edit->is_installed && $_REQUEST['wp_super_edit_action'] != 'install' ) {
+		$wp_super_edit->install_ui();
+		$wp_super_edit->ui_footer();
 		return;
 	}
 
 	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
-		$wp_super_edit_admin->install_ui();
-		$wp_super_edit_admin->ui_footer();
+		$wp_super_edit->install_ui();
+		$wp_super_edit->ui_footer();
 		return;
 	}	
 	
 	// Plugin options form
 	?>
 
-		<?php $wp_super_edit_admin->admin_menu_ui(); ?>
+		<?php $wp_super_edit->admin_menu_ui(); ?>
 
-		<?php if ( !$wp_super_edit_admin->ui || $wp_super_edit_admin->ui == 'buttons' ) : ?>
-			<?php $wp_super_edit_admin->buttons_ui(); ?>
+		<?php if ( !$wp_super_edit->ui || $wp_super_edit->ui == 'buttons' ) : ?>
+			<?php $wp_super_edit->buttons_ui(); ?>
 		<?php endif; ?>
 		
-		<?php if ( $wp_super_edit_admin->ui == 'plugins' ) : ?>	
-			<?php $wp_super_edit_admin->plugins_ui(); ?>
+		<?php if ( $wp_super_edit->ui == 'plugins' ) : ?>	
+			<?php $wp_super_edit->plugins_ui(); ?>
 		<?php endif; ?>
 		
-		<?php if ( $wp_super_edit_admin->ui == 'options' ) : ?>	
-			<?php $wp_super_edit_admin->options_ui(); ?>
+		<?php if ( $wp_super_edit->ui == 'options' ) : ?>	
+			<?php $wp_super_edit->options_ui(); ?>
 		<?php endif; ?>
 		
-		<?php $wp_super_edit_admin->ui_footer(); ?>
+		<?php $wp_super_edit->ui_footer(); ?>
 
 <?php 
 }
@@ -211,7 +209,7 @@ function wp_super_edit_admin_page() {
 * @global array $superedit_ini 
 */
 function wp_super_edit_admin_footer() {
-	global $wp_super_edit_admin;
+	global $wp_super_edit;
 
 ?>
 
@@ -233,12 +231,13 @@ function wp_super_edit_admin_footer() {
 		this.plugin = plugin;
 	  }
 	
-	<?php $wp_super_edit_admin->buttons_js_objects(); ?>
 	
 	var data;
 	var tiny_mce_buttons = new Object();
 	var buttons = new Array();
 	
+	<?php $wp_super_edit->buttons_js_objects(); ?>
+
 	
 	// Plugin and Button Control Functions
 	

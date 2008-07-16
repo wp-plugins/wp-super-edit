@@ -10,7 +10,7 @@
 
 // WP Super Edit options for this plugin
 
-$wp_super_edit_registry->register_tinymce_plugin( array(
+$wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'table', 
 	'nicename' => 'Tables Plugin', 
 	'description' => 'Allows the creation and manipulation of tables using the TABLE HTML tag. Provides the Tables and Table Controls Buttons.', 
@@ -21,7 +21,7 @@ $wp_super_edit_registry->register_tinymce_plugin( array(
 
 // Tiny MCE Buttons provided by this plugin
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'table', 
 	'nicename' => 'Tables', 
 	'description' => 'Interface to create and change table, row, and cell properties.', 
@@ -33,7 +33,7 @@ $wp_super_edit_registry->register_tinymce_button( array(
 	'position' => 0
 ));
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'tablecontrols', 
 	'nicename' => 'Table controls', 
 	'description' => 'Interface to manipulate tables and access to cell and row properties.', 

@@ -2,8 +2,110 @@
 
 if ( class_exists( 'wp_super_edit_core' ) ) {
     
-    class wp_super_edit_registry extends wp_super_edit_core {
+    class wp_super_edit_admin extends wp_super_edit_core {
+
+		public $ui;
+		public $ui_url;
+		public $ui_form_url;
+		public $nonce;
+
+		function init_ui() {
+			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
+			if ( !$this->is_installed ) $this->ui = 'options';
+			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
+			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
+			$this->nonce = 'wp-super-edit-update-key';
+			
+			if ( $this->ui == 'plugins' ) {
+				 $this->get_plugins();
+			}
+			if ( $this->ui == 'buttons' ) {
+				 $this->get_buttons();
+			}
+		}
+
+        function get_plugins() {
+        	global $wpdb;
+        	
+			$this->plugins = $wpdb->get_results("
+				SELECT name, nicename, description, provider, status FROM $this->db_plugins
+			");
+        }
         
+        function get_buttons() {
+        	global $wpdb;
+        	
+			$this->buttons = $wpdb->get_results("
+				SELECT name, nicename, description, provider, status FROM $this->db_buttons
+			");
+        }
+        
+
+		/**
+		* Uninstall plugin
+		*
+		* Function used when to clear settings.
+		*
+		*/
+		function uninstall() {
+			global $wpdb;
+			
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_options );
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_plugins );
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_buttons );
+			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_users );
+			
+			delete_option( 'wp_super_edit_tinymce_scan' );
+			
+			$this->is_installed = false;
+
+			// $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), get_bloginfo('wpurl') . '/wp-admin/plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
+			// wp_redirect( $url );
+
+		}
+
+		/**
+		* Options 
+		*
+		* Function used to set options from form.
+		*
+		*/
+		function do_options() {
+			global $wpdb;
+			
+			$this->set_option( 'management_mode', $wpdb->escape( $_REQUEST['wp_super_edit_management_mode'] ) );
+			$this->management_mode = $this->get_option( 'management_mode' );
+
+		}
+		
+		/**
+		* Options 
+		*
+		* Function used to set options from form.
+		*
+		*/
+		function do_plugins() {
+			global $wpdb;
+			
+			foreach ( $this->plugins as $plugin ) {
+				if ( $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
+					$result = $wpdb->query( "
+						UPDATE $this->db_plugins
+						SET status='yes'
+						WHERE name='$plugin->name'
+						" );
+				} else {
+					$result = $wpdb->query( "
+						UPDATE $this->db_plugins
+						SET status='no'
+						WHERE name='$plugin->name'
+						" );
+				}
+			}
+									
+			$this->get_plugins();
+		}
+
         function check_registered( $type, $name ) {
         	global $wpdb;
  
@@ -107,110 +209,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					
 		}
 
-    }
-    
-    class wp_super_edit_admin extends wp_super_edit_core {
-
-		public $ui;
-		public $ui_url;
-		public $ui_form_url;
-		public $nonce;
-
-		function init_ui() {
-			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
-			if ( !$this->is_installed ) $this->ui = 'options';
-			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
-			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
-			$this->nonce = 'wp-super-edit-update-key';
-			
-			if ( $this->ui == 'plugins' ) {
-				 $this->get_plugins();
-			}
-			if ( $this->ui == 'buttons' ) {
-				 $this->get_buttons();
-			}
-		}
-
-        function get_plugins() {
-        	global $wpdb;
-        	
-			$this->plugins = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status FROM $this->db_plugins
-			");
-        }
-        
-        function get_buttons() {
-        	global $wpdb;
-        	
-			$this->buttons = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status FROM $this->db_buttons
-			");
-        }
-
-		/**
-		* Uninstall plugin
-		*
-		* Function used when to clear settings.
-		*
-		*/
-		function uninstall() {
-			global $wpdb;
-			
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_options );
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_plugins );
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_buttons );
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_users );
-			
-			delete_option( 'wp_super_edit_tinymce_scan' );
-			
-			$this->is_installed = false;
-
-			// $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), get_bloginfo('wpurl') . '/wp-admin/plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
-			// wp_redirect( $url );
-
-		}
-
-		/**
-		* Options 
-		*
-		* Function used to set options from form.
-		*
-		*/
-		function do_options() {
-			global $wpdb;
-			
-			$this->set_option( 'management_mode', $wpdb->escape( $_REQUEST['wp_super_edit_management_mode'] ) );
-			$this->management_mode = $this->get_option( 'management_mode' );
-
-		}
-		
-		/**
-		* Options 
-		*
-		* Function used to set options from form.
-		*
-		*/
-		function do_plugins() {
-			global $wpdb;
-			
-			foreach ( $this->plugins as $plugin ) {
-				if ( $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
-					$result = $wpdb->query( "
-						UPDATE $this->db_plugins
-						SET status='yes'
-						WHERE name='$plugin->name'
-						" );
-				} else {
-					$result = $wpdb->query( "
-						UPDATE $this->db_plugins
-						SET status='no'
-						WHERE name='$plugin->name'
-						" );
-				}
-			}
-									
-			$this->get_plugins();
-		}
 
 		/**
 		* Display html tag with attributes
@@ -710,11 +708,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
 		function buttons_ui() {
 		
+			$this->get_user_settings();
+			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
 				'id' => 'wp_super_edit_buttons'
 			) );
+			
+
+			print_r( $this->current_user );
+			
 			
 			$submit_button = $this->submit_button( 'Update Options', '', true );
 			$submit_button_group = $this->html_tag( array(
@@ -724,6 +728,13 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'return' => true
 			) );
 			
+			
+			$this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single',
+				'type' => 'hidden',
+				'id' => 'button_rows'
+			) );			
 			
 			$this->html_tag( array(
 				'tag' => 'div',

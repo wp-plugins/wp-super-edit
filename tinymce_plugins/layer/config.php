@@ -10,7 +10,7 @@
 
 // WP Super Edit options for this plugin
 
-$wp_super_edit_registry->register_tinymce_plugin( array(
+$wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'layer', 
 	'nicename' => 'Layers (DIV) Plugin', 
 	'description' => 'Insert layers using DIV HTML tag. This plugin will change the editor to allow all DIV tags. Provides the Insert Layer, Move Layer Forward, Move Layer Backward, and Toggle Layer Positioning Buttons.', 
@@ -21,7 +21,7 @@ $wp_super_edit_registry->register_tinymce_plugin( array(
 
 // Tiny MCE Buttons provided by this plugin
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'insertlayer', 
 	'nicename' => 'Insert Layer', 
 	'description' => 'Insert a layer using the DIV HTML tag. Be careful layers are tricky to position.', 
@@ -33,7 +33,7 @@ $wp_super_edit_registry->register_tinymce_button( array(
 	'position' => 0
 ));
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'moveforward', 
 	'nicename' => 'Move Layer Forward', 
 	'description' => 'Move selected layer forward in stacked view.', 
@@ -45,7 +45,7 @@ $wp_super_edit_registry->register_tinymce_button( array(
 	'position' => 0
 ));
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'movebackward', 
 	'nicename' => 'Move Layer Backward', 
 	'description' => 'Move selected layer backward in stacked view.', 
@@ -57,7 +57,7 @@ $wp_super_edit_registry->register_tinymce_button( array(
 	'position' => 0
 ));
 
-$wp_super_edit_registry->register_tinymce_button( array(
+$wp_super_edit->register_tinymce_button( array(
 	'name' => 'absolute', 
 	'nicename' => 'Toggle Layer Positioning', 
 	'description' => 'Toggle the layer positioning as absolute or relative. Be careful layers are tricky to position.', 
