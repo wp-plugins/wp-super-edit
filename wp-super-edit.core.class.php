@@ -118,6 +118,12 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			$this->current_user['editor_options'] = maybe_unserialize( $user_settings[0]->editor_options );
 
 			for ( $button_rows = 1; $button_rows <= 4; $button_rows += 1) {
+				
+				if ( $this->current_user['editor_options']['theme_advanced_buttons' . $button_rows] == '' ) {
+					$this->current_user['buttons'][$button_rows] = array();
+					continue;
+				}
+				
 				$this->current_user['buttons'][$button_rows] = explode( ',', $this->current_user['editor_options']['theme_advanced_buttons' . $button_rows] );
 			}
 

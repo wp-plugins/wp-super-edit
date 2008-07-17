@@ -35,9 +35,13 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function get_buttons() {
         	global $wpdb;
         	
-			$this->buttons = $wpdb->get_results("
+			$buttons = $wpdb->get_results("
 				SELECT name, nicename, description, provider, status FROM $this->db_buttons
 			");
+			
+			foreach( $buttons as $button ) {
+				$this->buttons[$button->name] = $button;
+			}
         }
         
 
@@ -718,6 +722,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 
 			print_r( $this->current_user );
+			print_r( $this->buttons );
+
 			
 			
 			$submit_button = $this->submit_button( 'Update Options', '', true );
@@ -726,15 +732,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'class' => 'submit',
 				'content' => $submit_button,
 				'return' => true
-			) );
-			
-			
-			$this->html_tag( array(
-				'tag' => 'input',
-				'tag_type' => 'single',
-				'type' => 'hidden',
-				'id' => 'button_rows'
-			) );			
+			) );		
 			
 			$this->html_tag( array(
 				'tag' => 'div',
@@ -742,11 +740,81 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'button_rows'
 			) );
 
+			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
+
+				$this->html_tag( array(
+					'tag' => 'div',
+					'tag_type' => 'open',
+					'class' => 'row_container'
+				) );
+				
+				$this->html_tag( array(
+					'tag' => 'h3',
+					'content' => "Editor Button Row $button_row"
+				) );
+			
+				$this->html_tag( array(
+					'tag' => 'input',
+					'tag_type' => 'single',
+					'type' => 'hidden',
+					'id' => 'i_wp_super_edit_row_' . $button_row,
+					'name' => 'wp_super_edit_row_' . $button_row,
+					'value' => ''
+				) );
+				
+				foreach( $this->current_user['buttons'][$button_row] as $button ) {
+					
+					if ( $button == '|' ) continue;
+					
+					$button_info = $this->html_tag( array(
+						'tag' => 'img',
+						'tag_type' => 'single',
+						'src' => $this->core_uri . 'images/info.png',
+						'width' => '14',
+						'height' => '16',
+						'alt' => 'Button info for ' . $this->buttons[$button]->nicename,
+						'title' => 'Button info for ' . $this->buttons[$button]->nicename,
+						'onClick' => "getButtonInfo('$button');",
+						'return' => true
+					) );
+					
+					$button_separator_toggle = $this->html_tag( array(
+						'tag' => 'img',
+						'tag_type' => 'single',
+						'src' => $this->core_uri . 'images/separator.png',
+						'width' => '14',
+						'height' => '7',
+						'alt' => 'Toggle separator for' . $this->buttons[$button]->nicename,
+						'title' => 'Toggle separator for ' . $this->buttons[$button]->nicename,
+						'onClick' => "toggleSeparator('$button');",
+						'return' => true
+					) );
+					
+					$button_options = $this->html_tag( array(
+						'tag' => 'div',
+						'class' => 'button_info',
+						'content' => $button_info . $button_separator,
+						'return' => true
+					) );
+					
+					$this->html_tag( array(
+						'tag' => 'div',
+						'id' => $button,
+						'class' => 'lineitem',
+						'content' => $button_options . $this->buttons[$button]->nicename,
+					) );
+				
+				}
+			
+				$this->html_tag( array(
+					'tag' => 'div',
+					'tag_type' => 'close'
+				) );
+			
+				//$this->current_user['buttons'][$button_rows] = explode( ',', $this->current_user['editor_options']['theme_advanced_buttons' . $button_rows] );
+			}
+
 ?>
-<input type="hidden" id="i_wp_super_edit_row_1" name="wp_super_edit_row_1" value="" />
-<input type="hidden" id="i_wp_super_edit_row_2" name="wp_super_edit_row_2" value="" />
-<input type="hidden" id="i_wp_super_edit_row_3" name="wp_super_edit_row_3" value="" />
-<input type="hidden" id="i_wp_super_edit_row_4" name="wp_super_edit_row_4" value="" />
 	
 	<div class="row_container disabled_buttons">
 		<h3>Disabled Buttons</h3>
@@ -764,7 +832,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			</div>
 			<div id="charmap" class="lineitem button_separator">
 				<div class="button_info">
-					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
+					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" />
+					<img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
 				</div>Special Characters
 			</div>
 

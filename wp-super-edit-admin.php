@@ -11,6 +11,57 @@
 *
 */
 
+/**
+* WP Super Edit Plugin Folder Scan
+*
+* Scans tinymce_plugin folder for config files with registration commands.
+*
+*/
+function wp_super_edit_plugin_folder_scan() {
+	global $wp_super_edit;
+
+	$wp_super_edit->get_registered();
+	
+	$tinymce_plugins = @ dir( $wp_super_edit->tinymce_plugins_path );
+	
+	while( ( $tinymce_plugin = $tinymce_plugins->read() ) !== false) {
+	
+		$tinymce_plugin_path = $wp_super_edit->tinymce_plugins_path . $tinymce_plugin . '/';
+		
+		if ( is_dir( $tinymce_plugin_path ) && is_readable( $tinymce_plugin_path ) ) {
+			if ( $tinymce_plugin{0} == '.' || $tinymce_plugin == '..' ) continue;
+
+			$tinymce_plugin_dir = @ dir( $tinymce_plugin_path );
+			
+			while ( ( $tinymce_plugin_config = $tinymce_plugin_dir->read() ) !== false) {
+			
+				if ( $tinymce_plugin_config == 'config.php' ) {
+					include_once( $tinymce_plugin_path . $tinymce_plugin_config );
+					break;
+				}
+				
+			}
+		}
+	}
+	
+}
+
+/**
+* WP Super Edit Default User
+*
+* Sets default user settings from most recent tinymce scan
+*
+*/
+function wp_super_edit_set_user_default() {
+	global $wp_super_edit;
+
+	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
+	
+	$wp_super_edit->register_user_settings( 'wp_super_edit_default', $tiny_mce_scan, 'single' );
+	$wp_super_edit->set_option( 'tinymce_scan', $tiny_mce_scan );
+	
+	delete_option( 'wp_super_edit_tinymce_scan' );
+}
 
 /**
 * Set up administration interface
