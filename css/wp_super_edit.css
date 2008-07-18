@@ -85,6 +85,13 @@ div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 a {
 	border: none;
 }
 
+div#button_rows {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 75%;
+}
+
 div.button_control {
 	width: 120px;
 	float: left;
@@ -120,9 +127,7 @@ div.button_info img {
 
 div.row_container {
 	clear: both;
-	width: 100%;
 	margin: 8px 4px 8px 4px;
-	border: 1px solid #ccc;
 }
 
 div.row_container h3 {
@@ -131,22 +136,26 @@ div.row_container h3 {
 	margin: 4px 8px 0 4px;
 }
 
-div.disabled_buttons {
-	width: 155px;
+div#disabled_buttons {
+	width: 25%;
+	margin: 0;
+	padding: 0;
 	float: right;
-	border: 1px solid #000;
 	background: #CFEBF7;
-}	
+}
+
+div#disabled_buttons div.button_control {
+	float: none;
+	clear: both;
+}
 
 div.row_section {
 	clear: both;
 	width: 100%;
 	padding: 8px;
+	border: 1px solid #ccc;
 }
-
-div#button_rows {
-	width: 100%;
-}	
+	
 
 .clearer {
 	clear: both;

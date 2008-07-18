@@ -328,7 +328,7 @@ function wp_super_edit_admin_footer() {
 			// Controls Drag + Drop
 			wpsuperedit('#row_section_1').sortable(
 				{
-					connectWith: ['#tinymce_buttons', '#row_section_2', '#row_section_3', '#row_section_4' ],
+					connectWith: ['#row_section_disabled', '#row_section_2', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
@@ -337,7 +337,7 @@ function wp_super_edit_admin_footer() {
 	
 			wpsuperedit('#row_section_2').sortable(
 				{
-					connectWith: ['#tinymce_buttons', '#row_section_1', '#row_section_3', '#row_section_4' ],
+					connectWith: ['#row_section_disabled', '#row_section_1', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
@@ -346,7 +346,7 @@ function wp_super_edit_admin_footer() {
 			
 			wpsuperedit('#row_section_3').sortable(
 				{
-					connectWith: ['#tinymce_buttons', '#row_section_1', '#row_section_2', '#row_section_4' ],
+					connectWith: ['#row_section_disabled', '#row_section_1', '#row_section_2', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
@@ -355,14 +355,14 @@ function wp_super_edit_admin_footer() {
 			
 			wpsuperedit('#row_section_4').sortable(
 				{
-					connectWith: ['#tinymce_buttons', '#row_section_1', '#row_section_2', '#row_section_3' ],
+					connectWith: ['#row_section_disabled', '#row_section_1', '#row_section_2', '#row_section_3' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
 				}
 			);
 			
-			wpsuperedit('#tinymce_buttons').sortable(
+			wpsuperedit('#row_section_disabled').sortable(
 				{
 					connectWith: ['#row_section_1', '#row_section_2', '#row_section_3', '#row_section_4' ],
 					scroll: true,

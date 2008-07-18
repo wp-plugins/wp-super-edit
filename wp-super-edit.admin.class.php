@@ -726,14 +726,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag_type' => 'open',
 				'id' => 'wp_super_edit_buttons'
 			) );
-			
-			$submit_button = $this->submit_button( 'Update Options', '', true );
-			$submit_button_group = $this->html_tag( array(
-				'tag' => 'p',
-				'class' => 'submit',
-				'content' => $submit_button,
-				'return' => true
-			) );		
+				
 			
 			$this->html_tag( array(
 				'tag' => 'div',
@@ -838,12 +831,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
-				'class' => 'row_container disabled_buttons'
+				'id' => 'disabled_buttons'
 			) );
 			
 			$this->html_tag( array(
 				'tag' => 'h3',
 				'content' => "Disabled Buttons"
+			) );
+		
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'row_section_disabled',
+				'class' => 'row_section'
 			) );
 			
 			foreach ( $this->buttons as $button => $button_options ) {
@@ -851,17 +851,27 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			
 			}
-							
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );							
 
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'close'
 			) );
+
+
+			$submit_button = $this->submit_button( 'Update Options', '', true );
+			$submit_button_group = $this->html_tag( array(
+				'tag' => 'p',
+				'class' => 'submit clearer',
+				'content' => $submit_button,
+				'return' => true
+			) );	
 			
-			$form_content .= $this->form_table( $table_row, true );
-			$form_content .= $submit_button_group;
-			
-			$this->form( 'buttons', $form_content );
+			$this->form( 'buttons', $submit_button_group );
 
 			$this->html_tag( array(
 				'tag' => 'div',
