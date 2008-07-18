@@ -114,14 +114,21 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         	global $wpdb;
  
 			$name_col = 'name';
-			
-			if ( $type == 'plugin' ) {
-				$db_table = $this->db_plugins;
-			} elseif ( $type == 'button' ) {
-				$db_table = $this->db_buttons;
-			} elseif ( $type == 'user' ) {
-				$db_table = $this->db_users;
-				$name_col = 'user_name';
+	
+			switch ( $type ) {
+				case 'plugin':
+					$db_table = $this->db_plugins;
+					break;
+				case 'button':
+					if ( $this->buttons[$name]->name == $name ) return true;
+					$db_table = $this->db_buttons;
+					break;
+				case 'user':
+					$db_table = $this->db_users;
+					$name_col = 'user_name';
+					break;
+				default:
+					return false;
 			}
 			
 			$register_check = $wpdb->get_row("
@@ -720,12 +727,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_buttons'
 			) );
 			
-
-			print_r( $this->current_user );
-			print_r( $this->buttons );
-
-			
-			
 			$submit_button = $this->submit_button( 'Update Options', '', true );
 			$submit_button_group = $this->html_tag( array(
 				'tag' => 'p',
@@ -762,7 +763,16 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'value' => ''
 				) );
 				
+				$this->html_tag( array(
+					'tag' => 'div',
+					'tag_type' => 'open',
+					'id' => 'row_section_' . $button_row,
+					'class' => 'row_section'
+				) );				
+				
 				foreach( $this->current_user['buttons'][$button_row] as $button ) {
+									
+					if ( !$this->check_registered( 'button', $button ) ) continue;
 					
 					if ( $button == '|' ) continue;
 					
@@ -793,125 +803,56 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					$button_options = $this->html_tag( array(
 						'tag' => 'div',
 						'class' => 'button_info',
-						'content' => $button_info . $button_separator,
+						'content' => $button_info . $button_separator_toggle,
 						'return' => true
 					) );
 					
 					$this->html_tag( array(
 						'tag' => 'div',
 						'id' => $button,
-						'class' => 'lineitem',
+						'class' => 'button_control',
 						'content' => $button_options . $this->buttons[$button]->nicename,
 					) );
+					
+					$button_used[] = $button;
 				
 				}
 			
 				$this->html_tag( array(
 					'tag' => 'div',
 					'tag_type' => 'close'
+				) );				
+				
+				$this->html_tag( array(
+					'tag' => 'div',
+					'tag_type' => 'close'
 				) );
-			
-				//$this->current_user['buttons'][$button_rows] = explode( ',', $this->current_user['editor_options']['theme_advanced_buttons' . $button_rows] );
+
 			}
-
-?>
-	
-	<div class="row_container disabled_buttons">
-		<h3>Disabled Buttons</h3>
-		<div id="tinymce_buttons" class="section">
-
-			<div id="removeformat" class="lineitem">
-				<div class="button_info">
-					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Remove HTML Formatting
-			</div>
-			<div id="cleanup" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Clean up HTML
-			</div>
-			<div id="charmap" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" />
-					<img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Special Characters
-			</div>
-
-		</div>
-	</div>
-
-	<div class="row_container">
-		<h3>Editor Button Row 1</h3>
-		<div id="row1" class="section">
-
-			<div id="removeformat" class="lineitem">
-				<div class="button_info">
-					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Remove HTML Formatting
-			</div>
-			<div id="cleanup" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Clean up HTML
-			</div>
-			<div id="charmap" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Special Characters
-			</div>
-
-		</div>
-	</div>
-
-	<div class="row_container">
-		<h3>Editor Button Row 2</h3>
-		<div id="row2" class="section">
-		
-			<div id="removeformat" class="lineitem">
-				<div class="button_info">
-					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Remove HTML Formatting
-			</div>
-			<div id="cleanup" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Clean up HTML
-			</div>
-			<div id="charmap" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Special Characters
-			</div>
 			
-		</div>
-	</div>
-	
-	<div class="row_container">
-		<h3>Editor Button Row 3</h3>
-		<div id="row3" class="section">
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
 
-			<div id="removeformat" class="lineitem">
-				<div class="button_info">
-					<img onclick="getButtonInfo('removeformat');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('removeformat');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Remove HTML Formatting
-			</div>
-			<div id="cleanup" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('cleanup');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('cleanup');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Clean up HTML
-			</div>
-			<div id="charmap" class="lineitem button_separator">
-				<div class="button_info">
-					<img onclick="getButtonInfo('charmap');" src="../images/info.png" width="14" height="16" alt="Button Info" title="Button Info" /><img onclick="toggleSeparator('charmap');" src="../images/separator.png" width="14" height="7" alt="Toggle Separator" title="Toggle Separator" />
-				</div>Special Characters
-			</div>
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'class' => 'row_container disabled_buttons'
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'h3',
+				'content' => "Disabled Buttons"
+			) );
+			
+			foreach ( $this->buttons as $button => $button_options ) {
 
-		</div>
-	</div>
-	
-	<br class="clearer" />
 
-<?php
+			
+			}
+							
+
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'close'
@@ -926,6 +867,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'tag_type' => 'close'
 			) );
+
+			print_r( $this->current_user );
+			print_r( $this->buttons );
 
 		}
  

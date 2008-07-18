@@ -85,13 +85,14 @@ div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 a {
 	border: none;
 }
 
-div.lineitem {
+div.button_control {
 	width: 120px;
 	float: left;
 	height: 2.4em;
 	margin: 0 4px 8px 0;
 	padding: 1px;
-	font-size: 0.9em;
+	font-size: 0.8em;
+	line-height: 1.1em;
 	background-color: #FFFFFF;
 	border: 1px dotted #333;
 	cursor: move;
@@ -118,6 +119,7 @@ div.button_info img {
 }	
 
 div.row_container {
+	clear: both;
 	width: 100%;
 	margin: 8px 4px 8px 4px;
 	border: 1px solid #ccc;
@@ -136,7 +138,8 @@ div.disabled_buttons {
 	background: #CFEBF7;
 }	
 
-div.section {
+div.row_section {
+	clear: both;
 	width: 100%;
 	padding: 8px;
 }

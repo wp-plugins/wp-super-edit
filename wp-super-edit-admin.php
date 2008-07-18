@@ -326,36 +326,45 @@ function wp_super_edit_admin_footer() {
 		function() {
 
 			// Controls Drag + Drop
-			wpsuperedit('#row1').sortable(
+			wpsuperedit('#row_section_1').sortable(
 				{
-					connectWith: ['#tinymce_buttons', '#row2', '#row3' ],
+					connectWith: ['#tinymce_buttons', '#row_section_2', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
 				}
 			);
 	
-			wpsuperedit('#row2').sortable(
+			wpsuperedit('#row_section_2').sortable(
 				{
-					connectWith: ['#tinymce_buttons', '#row1', '#row3' ],
+					connectWith: ['#tinymce_buttons', '#row_section_1', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
 				}
 			);		
 			
-			wpsuperedit('#row3').sortable(
+			wpsuperedit('#row_section_3').sortable(
 				{
-					connectWith: ['#tinymce_buttons', '#row1', '#row2' ],
+					connectWith: ['#tinymce_buttons', '#row_section_1', '#row_section_2', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
 				}
-			);		
+			);
+			
+			wpsuperedit('#row_section_4').sortable(
+				{
+					connectWith: ['#tinymce_buttons', '#row_section_1', '#row_section_2', '#row_section_3' ],
+					scroll: true,
+					placeholder: 'sort_placeholder',
+					opacity: 0.7
+				}
+			);
 			
 			wpsuperedit('#tinymce_buttons').sortable(
 				{
-					connectWith: ['#row1', '#row2', '#row3' ],
+					connectWith: ['#row_section_1', '#row_section_2', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
