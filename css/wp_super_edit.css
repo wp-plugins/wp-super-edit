@@ -170,7 +170,6 @@ div.row_section {
 	border: 2px dashed #14568A;
 }
 	
-	
 /* Greybox */
 
 
@@ -220,4 +219,26 @@ div.row_section {
   right: 5px;
   cursor: pointer;
   cursor: hand;
+}
+
+/* UI Dialog */
+
+/*
+.ui-dialog-container - whole container
+.ui-dialog-titlebar - title bar
+.ui-dialog-titlebar-close - close button
+.ui-dialog-titlebar-close-hover - close button hover
+.ui-dialog-content - additional content style
+.ui-dialog-buttonpane - for dialog buttons like yes, no, cancel
+*/
+
+.ui-dialog-container {
+  background: #fff;
+  border: 5px solid #C3DEF1;
+}
+
+.ui-dialog-titlebar {
+  font: 12px bold helvetica, verdana, sans-serif;
+  color: #fff;
+  background: #0D324F;
 }

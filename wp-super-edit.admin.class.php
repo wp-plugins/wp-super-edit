@@ -22,9 +22,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			if ( $this->ui == 'plugins' ) {
 				 $this->get_plugins();
+				 $this->get_active_plugins();
 			}
 			if ( $this->ui == 'buttons' ) {
 				 $this->get_buttons();
+				 $this->get_active_buttons();
 			}
 		}
 
@@ -40,7 +42,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function get_active_plugins() {
         	global $wpdb;
         	
-			$this->plugins = $wpdb->get_results("
+			$this->active_plugins = $wpdb->get_results("
 				SELECT name, nicename, description, provider, status 
 				FROM $this->db_plugins
 				WHERE status='yes'
@@ -70,7 +72,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			");
 			
 			foreach( $buttons as $button ) {
-				$this->buttons[$button->name] = $button;
+				$this->active_buttons[$button->name] = $button;
 			}
         }       
         
@@ -859,7 +861,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 						continue;
 					}
 										
-					$this->make_button_ui( $this->buttons[$button] );
+					if ( !is_object( $this->active_buttons[$button] ) ) continue;
+					
+					$this->make_button_ui( $this->active_buttons[$button] );
 					
 					$button_used[] = $button;
 				
@@ -901,12 +905,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'class' => 'row_section'
 			) );
 			
-			foreach ( $this->buttons as $button => $button_options ) {
+			foreach ( $this->active_buttons as $button => $button_options ) {
 				if ( in_array( $button, $button_used ) ) continue;
 				
-				$this->make_button_ui( $this->buttons[$button] );
+				$this->make_button_ui( $this->active_buttons[$button] );
 
-			
 			}
 
 			$this->html_tag( array(
@@ -933,6 +936,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'close'
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => 'wp_super_edit_dialog'
 			) );
 
 			print_r( $this->current_user );

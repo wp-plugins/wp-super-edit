@@ -109,10 +109,7 @@ function wp_super_edit_admin_setup() {
 	
 		if ( $wp_super_edit->ui == 'buttons' ) {
 
-			wp_enqueue_script( 'wp-super-edit-dimensions',  '/wp-content/plugins/wp-super-edit/js/jquery.dimensions.pack.js', array('jquery'), '2135' );
-			wp_enqueue_script( 'wp-super-edit-ui',  '/wp-content/plugins/wp-super-edit/js/jquery-ui-all-1.5rc1.packed.js', false, '2135' );
-			wp_enqueue_script( 'wp-super-edit-greybox',  '/wp-content/plugins/wp-super-edit/js/greybox.js', false, '2135' );
-			wp_enqueue_script( 'wp-super-edit-history',  '/wp-content/plugins/wp-super-edit/js/jquery.history_remote.pack.js', false, '2135' );
+			wp_enqueue_script( 'wp-super-edit-ui',  '/wp-content/plugins/wp-super-edit/js/jquery-ui-1.5.2.packed.js', false, '2135' );
 			
 			add_action('admin_footer', 'wp_super_edit_admin_footer');
 		}
@@ -301,21 +298,19 @@ function wp_super_edit_admin_footer() {
 	}
 
 	function getButtonInfo(button) {
-	
-		wpsuperedit.GB_show('about:blank', {
-				close_img: "<?php echo $wp_super_edit->core_uri ?>images/close.gif",
-				height: 280,
-				width: 300,
-				animation: true,
-				overlay_clickable: true,
-				caption: 'Editor Button Information'
+		
+		wpsuperedit( '#wp_super_edit_dialog' ).attr( 'title', tiny_mce_buttons[button].desc );
+		wpsuperedit( '#wp_super_edit_dialog' ).html( '<p>' + tiny_mce_buttons[button].notice + '</p>');
+		
+		wpsuperedit('#wp_super_edit_dialog').dialog({ 
+			resizable: false,
+			modal: true, 
+			overlay: { 
+				opacity: 0.5,
+				background: "black" 
+			} 
 		});
 		
-		// We don't want the iframe greybox gives us: 
-		wpsuperedit('#GB_frame').remove();
-		wpsuperedit("#GB_window").append("<div id='GB_frame'></div>");
-		wpsuperedit("#GB_frame").append("<h3>" + tiny_mce_buttons[button].desc + "</h3><p>" + tiny_mce_buttons[button].notice + "</p>");
-
 		return false;		
 	}	
 

@@ -472,7 +472,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Create named anchors.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'no', 
+		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 0, 
 		'position' => 0
@@ -484,7 +484,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Format text as Subscript.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'no', 
+		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 0, 
 		'position' => 0
@@ -496,7 +496,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Format text as Superscript.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'no', 
+		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 0, 
 		'position' => 0
@@ -508,7 +508,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set background color for selected tag or text. ', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'no', 
+		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 0, 
 		'position' => 0
@@ -520,7 +520,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'View and edit the HTML source code.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'no', 
+		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 0, 
 		'position' => 0
@@ -532,7 +532,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Insert Wordpress Next Page tag to divide page content into multiple views.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'no', 
+		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 0, 
 		'position' => 0
