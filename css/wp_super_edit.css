@@ -125,11 +125,10 @@ div.button_info img {
 	margin: 2px 0 0 0;
 }	
 
-div.row_container {
-	border-top: 4px solid #448ABD;
+div.row_section {
 	clear: both;
-	margin: 0;
-	padding: 0;
+	width: 100%;
+	padding: .4em 0;
 }
 
 h3.row_title {
@@ -138,6 +137,7 @@ h3.row_title {
 	background: #CFEBF7;
 	margin: 0;
 	padding: .2em;
+	border-bottom: 4px solid #448ABD;
 }
 
 div#disabled_buttons {
@@ -153,72 +153,19 @@ div#disabled_buttons div.button_control {
 	clear: both;
 }
 
-div.row_section {
-	clear: both;
-	width: 100%;
-	padding: .2em;
-}
-	
-
-.clearer {
-	clear: both;
-}
 
 .sort_placeholder {
 	width: 120px;
 	background: #83B4D8;
 	border: 2px dashed #14568A;
 }
-	
-/* Greybox */
 
-
-#GB_overlay {
-  position: absolute;
-  z-index:100;
-  top: 0px;
-  left: 0px;
-  background-color:#000;
-  filter:alpha(opacity=60);
-  -moz-opacity: 0.6;
-  opacity: 0.6;
+.clearer {
+	clear: both;
 }
 
-#GB_window {
-  top: 50%;
-  left: 50%;
-  position: fixed;
-  background: #fff;
-  border: 5px solid #C3DEF1;
-  overflow: auto;
-  width: 300px;
-  height: 300px;
-  z-index: 150;
-}
-
-#GB_frame {
-  padding: 6px;
-  border: 0;
-  overflow: auto;
-  width: 90%;
-  height: 260px;
-}
-
-#GB_caption {
-  font: 12px bold helvetica, verdana, sans-serif;
-  color: #fff;
-  background: #0D324F;
-  padding: 2px 0 2px 5px;
-  margin: 0;
-  text-align: left;
-}
-
-#GB_window img {
-  position: absolute;
-  top: 2px;
-  right: 5px;
-  cursor: pointer;
-  cursor: hand;
+.hidden {
+	display: hidden;
 }
 
 /* UI Dialog */

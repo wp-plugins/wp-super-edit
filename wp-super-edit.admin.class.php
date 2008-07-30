@@ -838,12 +838,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'name' => 'wp_super_edit_row_' . $button_row,
 					'value' => ''
 				) );
-				
-				$this->html_tag( array(
-					'tag' => 'div',
-					'tag_type' => 'open',
-					'class' => 'row_container'
-				) );
+
 				
 				$this->html_tag( array(
 					'tag' => 'div',
@@ -868,11 +863,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					$button_used[] = $button;
 				
 				}
-			
-				$this->html_tag( array(
-					'tag' => 'div',
-					'tag_type' => 'close'
-				) );				
+				
 				
 				$this->html_tag( array(
 					'tag' => 'div',
@@ -940,7 +931,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$this->html_tag( array(
 				'tag' => 'div',
-				'id' => 'wp_super_edit_dialog'
+				'id' => 'wp_super_edit_dialog',
+				'class' => 'hidden'
 			) );
 
 			print_r( $this->current_user );

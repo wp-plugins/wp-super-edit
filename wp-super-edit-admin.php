@@ -301,6 +301,7 @@ function wp_super_edit_admin_footer() {
 		
 		wpsuperedit( '#wp_super_edit_dialog' ).attr( 'title', tiny_mce_buttons[button].desc );
 		wpsuperedit( '#wp_super_edit_dialog' ).html( '<p>' + tiny_mce_buttons[button].notice + '</p>');
+		wpsuperedit( '#wp_super_edit_dialog' ).removeClass( 'hidden' );
 		
 		wpsuperedit('#wp_super_edit_dialog').dialog({ 
 			resizable: false,
@@ -308,7 +309,10 @@ function wp_super_edit_admin_footer() {
 			overlay: { 
 				opacity: 0.5,
 				background: "black" 
-			} 
+			},
+			close: function() {
+				wpsuperedit( '#wp_super_edit_dialog' ).addClass( 'hidden' );
+			}
 		});
 		
 		return false;		
