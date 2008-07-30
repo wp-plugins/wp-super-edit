@@ -150,28 +150,18 @@ function wp_super_edit_wordpress_button_defaults() {
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'outdent', 
-		'nicename' => 'Decrease Indentation', 
-		'description' => 'This will decrease the level of indentation based on content position. Wordpress default editor option for first row.', 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 6
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'indent', 
-		'nicename' => 'Increase Indentation', 
-		'description' => 'This will increase the level of indentation based on content position. Wordpress default editor option for first row.', 
+		'name' => 'blockquote', 
+		'nicename' => 'Block Quote', 
+		'description' => 'Blockquotes are used when quoting other content. Usually this content is displayed as indented.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'yes', 
 		'row' => 1, 
-		'position' => 7
+		'position' => 6
 	));
+	
+
 	
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'justifyleft', 
@@ -182,7 +172,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 1, 
-		'position' => 8
+		'position' => 7
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -194,7 +184,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 1, 
-		'position' => 9
+		'position' => 8
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -206,7 +196,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes', 
 		'separator' => 'yes', 
 		'row' => 1, 
-		'position' => 10
+		'position' => 9
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -218,7 +208,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 1, 
-		'position' => 11
+		'position' => 10
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -230,19 +220,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 1, 
-		'position' => 12
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'image', 
-		'nicename' => 'Image Link', 
-		'description' => 'Insert linked image. Wordpress default editor option for first row.', 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 13
+		'position' => 11
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -254,7 +232,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes', 
 		'separator' => 'yes', 
 		'row' => 1, 
-		'position' => 14
+		'position' => 12
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -266,43 +244,31 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes', 
 		'separator' => 'yes', 
 		'row' => 1, 
-		'position' => 15
+		'position' => 13
 	));
-	
+
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'wp_help', 
-		'nicename' => 'Wordpress Help', 
-		'description' => 'Built in Wordpress help documentation. Wordpress default editor option for first row.', 
+		'name' => 'fullscreen', 
+		'nicename' => 'Full Screen', 
+		'description' => 'Toggle Full Screen editor mode.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'yes', 
 		'row' => 1, 
-		'position' => 16
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'wp_adv_start', 
-		'nicename' => 'START - Advanced toolbar', 
-		'description' => '<strong>This is a place holder, not a true button.</strong> Used as the START point for FIRST ROW buttons that you want in the <strong>Advanced toolbar</strong>. Note these buttons may appear hidden see Advanced Toolbar Button.', 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 17
+		'position' => 14
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'wp_adv', 
 		'nicename' => 'Show/Hide Advanced toolbar', 
-		'description' => 'Built in Wordpress button <strong>normally hidden</strong>. When pressed it will show an extra row of buttons (or press Ctrl-Alt-V on FF, Alt-V on IE). Uses the <strong>START - Advanced toolbar</strong> and <strong>END - Advanced toolbar</strong> as markers for hidden buttons.', 
+		'description' => 'Built in Wordpress button <strong>normally hidden</strong>. When pressed it will show extra rows of buttons (or press Ctrl-Alt-V on FF, Alt-V on IE).', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'yes', 
 		'row' => 1, 
-		'position' => 18
+		'position' => 15
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -313,8 +279,8 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 19
+		'row' => 2, 
+		'position' => 1
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -325,8 +291,8 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 20
+		'row' => 2, 
+		'position' => 2
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -337,8 +303,8 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 21
+		'row' => 2, 
+		'position' => 3
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -349,8 +315,8 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 22
+		'row' => 2, 
+		'position' => 4
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -361,8 +327,8 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 23
+		'row' => 2, 
+		'position' => 5
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -373,8 +339,8 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 24
+		'row' => 2, 
+		'position' => 6
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -385,9 +351,96 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 25
+		'row' => 2, 
+		'position' => 7
 	));
+
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'media', 
+		'nicename' => 'Media', 
+		'description' => 'Add or edit embedded media like Flash, Quicktime, or Windows Media. Different from WordPress Media tools.', 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes', 
+		'separator' => 'yes', 
+		'row' => 2, 
+		'position' => 8
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'charmap', 
+		'nicename' => 'Special Characters', 
+		'description' => 'Insert special characters or entities using a visual interface. Built in Wordpress button.', 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes', 
+		'separator' => 'yes', 
+		'row' => 2, 
+		'position' => 9
+	));
+
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'outdent', 
+		'nicename' => 'Decrease Indentation', 
+		'description' => 'This will decrease the level of indentation based on content position. Wordpress default editor option for first row.', 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes', 
+		'separator' => 'no', 
+		'row' => 2, 
+		'position' => 10
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'indent', 
+		'nicename' => 'Increase Indentation', 
+		'description' => 'This will increase the level of indentation based on content position. Wordpress default editor option for first row.', 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes', 
+		'separator' => 'yes', 
+		'row' => 2, 
+		'position' => 11
+	));
+
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'undo', 
+		'nicename' => 'Undo option', 
+		'description' => 'Undo previous formatting changes. Not useful once you save. Built in Wordpress button.', 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes', 
+		'separator' => 'no', 
+		'row' => 2, 
+		'position' => 12
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'redo', 
+		'nicename' => 'Redo option', 
+		'description' => 'Redo previous formatting changes. Not useful once you save. Built in Wordpress button.', 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes', 
+		'separator' => 'no', 
+		'row' => 2, 
+		'position' => 13
+	));
+
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'wp_help', 
+		'nicename' => 'Wordpress Help', 
+		'description' => 'Built in Wordpress help documentation. Wordpress default editor option for first row.', 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes', 
+		'separator' => 'yes', 
+		'row' => 2, 
+		'position' => 14
+	));
+	
+
+	// End WordPress Defaults
 	
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'cleanup', 
@@ -402,54 +455,16 @@ function wp_super_edit_wordpress_button_defaults() {
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'charmap', 
-		'nicename' => 'Special Characters', 
-		'description' => 'Insert special characters or entities using a visual interface. Built in Wordpress button.', 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 27
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'undo', 
-		'nicename' => 'Undo option', 
-		'description' => 'Undo previous formatting changes. Not useful once you save. Built in Wordpress button.', 
+		'name' => 'image', 
+		'nicename' => 'Image Link', 
+		'description' => 'Insert linked image. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes', 
 		'separator' => 'no', 
 		'row' => 1, 
-		'position' => 28
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'redo', 
-		'nicename' => 'Redo option', 
-		'description' => 'Redo previous formatting changes. Not useful once you save. Built in Wordpress button.', 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 29
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'wp_adv_end', 
-		'nicename' => 'END - Advanced toolbar', 
-		'description' => '<strong>This is a place holder, not a true button.</strong> Used as the END point for FIRST ROW buttons that you want in the <strong>Advanced toolbar</strong>. Note these buttons may appear hidden see Advanced Toolbar Button.', 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 30
-	));
-	
-	// End WordPress Defaults
+		'position' => 13
+	));	
 	
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'anchor', 

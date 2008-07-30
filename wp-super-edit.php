@@ -5,9 +5,9 @@ Plugin URI: http://factory.funroe.net/projects/wp-super-edit/
 Description: Get some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
 Author: Jesse Planck
 Version: 2.0
-Author URI: http://www.funroe.net/
+Author URI: http://funroe.net
 
-Copyright (c) 2007 Jess Planck (http://www.funroe.net/)
+Copyright (c) 2007 Jess Planck (http://funroe.net)
 WP Super Edit is released under the GNU General Public
 License: http://www.gnu.org/licenses/gpl.txt
 
@@ -50,18 +50,16 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 require_once( ABSPATH .  PLUGINDIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 
 /**
-* wp_super_edit primary object instance
-*/
-$wp_super_edit = new wp_super_edit_core();
-
-/**
-* @internal: Conditional includes for WP Super Edit fuctions and classes in WordPress admin panels
+* Conditional includes for WP Super Edit fuctions and classes in WordPress admin panels
+* Set $wp_super_edit primary object instance
 */
 if ( is_admin() ) {
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
 	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-admin.php' );
 	$wp_super_edit = new wp_super_edit_admin();
-} 
+} else {
+	$wp_super_edit = new wp_super_edit_core();
+}
 
 /**
 * WP Super Edit Initialization
@@ -129,7 +127,6 @@ if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) !== false ) {
 */
 if ( is_admin() ) {
 	add_action('admin_init', 'wp_super_edit_admin_setup');
-	
 } 
     
 ?>

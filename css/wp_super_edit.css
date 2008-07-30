@@ -89,7 +89,7 @@ div#button_rows {
 	float: left;
 	margin: 0;
 	padding: 0;
-	width: 75%;
+	width: 80%;
 }
 
 div.button_control {
@@ -126,22 +126,26 @@ div.button_info img {
 }	
 
 div.row_container {
+	border-top: 4px solid #448ABD;
 	clear: both;
-	margin: 8px 4px 8px 4px;
+	margin: 0;
+	padding: 0;
 }
 
-div.row_container h3 {
-	font-size: 1em;
-	color: #14568A;
-	margin: 4px 8px 0 4px;
+h3.row_title {
+	clear: both;
+	font-size: 1.1em;
+	background: #CFEBF7;
+	margin: 0;
+	padding: .2em;
 }
 
 div#disabled_buttons {
-	width: 25%;
+	width: 19%;
 	margin: 0;
 	padding: 0;
 	float: right;
-	background: #CFEBF7;
+	border-left: 4px solid #448ABD;
 }
 
 div#disabled_buttons div.button_control {
@@ -152,8 +156,7 @@ div#disabled_buttons div.button_control {
 div.row_section {
 	clear: both;
 	width: 100%;
-	padding: 8px;
-	border: 1px solid #ccc;
+	padding: .2em;
 }
 	
 

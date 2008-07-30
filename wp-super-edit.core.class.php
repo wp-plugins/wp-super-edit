@@ -50,14 +50,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 
 			$plugins = $wpdb->get_results("
 				SELECT name, callbacks FROM $this->db_plugins
-				WHERE status = 'yes' and provider = 'wp_super_edit'
+				WHERE status = 'yes'
 			");
+			
+			if ( !is_array( $plugins ) || empty( $plugins ) ) return false;
 
 			foreach ( $plugins as $number => $plugin ) {
 				if ( empty( $plugin->callbacks ) ) unset( $plugins[$number] ) ;
 			}
-			
-			if ( !is_array( $plugins ) || empty( $plugins ) ) return false;
 						
 			return $plugins;
 						

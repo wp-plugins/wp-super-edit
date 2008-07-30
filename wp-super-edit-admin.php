@@ -227,28 +227,25 @@ function wp_super_edit_admin_page() {
 		$wp_super_edit->install_ui();
 		$wp_super_edit->ui_footer();
 		return;
-	}	
+	}
 	
-	// Plugin options form
-	?>
+	$wp_super_edit->admin_menu_ui();
 
-		<?php $wp_super_edit->admin_menu_ui(); ?>
-
-		<?php if ( !$wp_super_edit->ui || $wp_super_edit->ui == 'buttons' ) : ?>
-			<?php $wp_super_edit->buttons_ui(); ?>
-		<?php endif; ?>
-		
-		<?php if ( $wp_super_edit->ui == 'plugins' ) : ?>	
-			<?php $wp_super_edit->plugins_ui(); ?>
-		<?php endif; ?>
-		
-		<?php if ( $wp_super_edit->ui == 'options' ) : ?>	
-			<?php $wp_super_edit->options_ui(); ?>
-		<?php endif; ?>
-		
-		<?php $wp_super_edit->ui_footer(); ?>
-
-<?php 
+	switch ( $wp_super_edit->ui ) {
+		case 'buttons':
+			$wp_super_edit->buttons_ui();
+			break;
+		case 'plugins':
+			$wp_super_edit->plugins_ui();
+			break;
+		case 'options':
+			$wp_super_edit->options_ui();
+			break;
+		default:
+			$wp_super_edit->options_ui();
+	}
+	
+	$wp_super_edit->ui_footer();
 }
 
 

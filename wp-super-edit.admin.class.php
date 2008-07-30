@@ -8,6 +8,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		public $ui_url;
 		public $ui_form_url;
 		public $nonce;
+		public $plugins;
+		public $buttons;
+		public $active_plugins;
+		public $active_buttons;
 
 		function init_ui() {
 			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
@@ -28,21 +32,47 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         	global $wpdb;
         	
 			$this->plugins = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status FROM $this->db_plugins
+				SELECT name, nicename, description, provider, status 
+				FROM $this->db_plugins
 			");
         }
+        
+        function get_active_plugins() {
+        	global $wpdb;
+        	
+			$this->plugins = $wpdb->get_results("
+				SELECT name, nicename, description, provider, status 
+				FROM $this->db_plugins
+				WHERE status='yes'
+			");
+        }        
         
         function get_buttons() {
         	global $wpdb;
         	
 			$buttons = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status FROM $this->db_buttons
+				SELECT name, nicename, description, provider, status 
+				FROM $this->db_buttons
 			");
 			
 			foreach( $buttons as $button ) {
 				$this->buttons[$button->name] = $button;
 			}
         }
+        
+         function get_active_buttons() {
+        	global $wpdb;
+        	
+			$buttons = $wpdb->get_results("
+				SELECT name, nicename, description, provider, status 
+				FROM $this->db_buttons
+				WHERE status='yes'
+			");
+			
+			foreach( $buttons as $button ) {
+				$this->buttons[$button->name] = $button;
+			}
+        }       
         
 
 		/**
@@ -98,11 +128,21 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 						SET status='yes'
 						WHERE name='$plugin->name'
 						" );
+					$result = $wpdb->query( "
+						UPDATE $this->db_buttons
+						SET status='yes'
+						WHERE plugin='$plugin->name'
+						" );
 				} else {
 					$result = $wpdb->query( "
 						UPDATE $this->db_plugins
 						SET status='no'
 						WHERE name='$plugin->name'
+						" );
+					$result = $wpdb->query( "
+						UPDATE $this->db_buttons
+						SET status='no'
+						WHERE plugin='$plugin->name'
 						" );
 				}
 			}
@@ -712,15 +752,61 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				printf("\t\ttiny_mce_buttons['%s'] = new wp_super_edit_button( '%s', '%s' );\n", $button->name, $button->nicename, $button->description );
 			}
 		}
+
+		/**
+		* WP Super Edit Make Dragable Buttons
+		* 
+		*/
+		function make_button_ui( $button ) {
+		
+			$button_info = $this->html_tag( array(
+				'tag' => 'img',
+				'tag_type' => 'single',
+				'src' => $this->core_uri . 'images/info.png',
+				'width' => '14',
+				'height' => '16',
+				'alt' => 'Button info for ' . $button->nicename,
+				'title' => 'Button info for ' . $button->nicename,
+				'onClick' => "getButtonInfo('$button->name');",
+				'return' => true
+			) );
+			
+			$button_separator_toggle = $this->html_tag( array(
+				'tag' => 'img',
+				'tag_type' => 'single',
+				'src' => $this->core_uri . 'images/separator.png',
+				'width' => '14',
+				'height' => '7',
+				'alt' => 'Toggle separator for' . $button->nicename,
+				'title' => 'Toggle separator for ' . $button->nicename,
+				'onClick' => "toggleSeparator('$button->name');",
+				'return' => true
+			) );
+			
+			$button_options = $this->html_tag( array(
+				'tag' => 'div',
+				'class' => 'button_info',
+				'content' => $button_info . $button_separator_toggle,
+				'return' => true
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => $button->name,
+				'class' => 'button_control',
+				'content' => $button_options . $button->nicename,
+			) );
+		}
+
 		
 		/**
-		* WP Super Edit Options Interface
+		* WP Super Edit Buttons Interface
 		* 
 		*/
 		function buttons_ui() {
 		
 			$this->get_user_settings();
-			
+					
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
@@ -735,15 +821,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 
 			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
-
-				$this->html_tag( array(
-					'tag' => 'div',
-					'tag_type' => 'open',
-					'class' => 'row_container'
-				) );
 				
 				$this->html_tag( array(
 					'tag' => 'h3',
+					'class' => 'row_title',
 					'content' => "Editor Button Row $button_row"
 				) );
 			
@@ -759,53 +840,26 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				$this->html_tag( array(
 					'tag' => 'div',
 					'tag_type' => 'open',
+					'class' => 'row_container'
+				) );
+				
+				$this->html_tag( array(
+					'tag' => 'div',
+					'tag_type' => 'open',
 					'id' => 'row_section_' . $button_row,
 					'class' => 'row_section'
 				) );				
 				
 				foreach( $this->current_user['buttons'][$button_row] as $button ) {
-									
-					if ( !$this->check_registered( 'button', $button ) ) continue;
-					
+
 					if ( $button == '|' ) continue;
-					
-					$button_info = $this->html_tag( array(
-						'tag' => 'img',
-						'tag_type' => 'single',
-						'src' => $this->core_uri . 'images/info.png',
-						'width' => '14',
-						'height' => '16',
-						'alt' => 'Button info for ' . $this->buttons[$button]->nicename,
-						'title' => 'Button info for ' . $this->buttons[$button]->nicename,
-						'onClick' => "getButtonInfo('$button');",
-						'return' => true
-					) );
-					
-					$button_separator_toggle = $this->html_tag( array(
-						'tag' => 'img',
-						'tag_type' => 'single',
-						'src' => $this->core_uri . 'images/separator.png',
-						'width' => '14',
-						'height' => '7',
-						'alt' => 'Toggle separator for' . $this->buttons[$button]->nicename,
-						'title' => 'Toggle separator for ' . $this->buttons[$button]->nicename,
-						'onClick' => "toggleSeparator('$button');",
-						'return' => true
-					) );
-					
-					$button_options = $this->html_tag( array(
-						'tag' => 'div',
-						'class' => 'button_info',
-						'content' => $button_info . $button_separator_toggle,
-						'return' => true
-					) );
-					
-					$this->html_tag( array(
-						'tag' => 'div',
-						'id' => $button,
-						'class' => 'button_control',
-						'content' => $button_options . $this->buttons[$button]->nicename,
-					) );
+
+					if ( !$this->check_registered( 'button', $button ) ) {
+						$button_not_registered[] = $button;
+						continue;
+					}
+										
+					$this->make_button_ui( $this->buttons[$button] );
 					
 					$button_used[] = $button;
 				
@@ -836,6 +890,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$this->html_tag( array(
 				'tag' => 'h3',
+				'class' => 'row_title',
 				'content' => "Disabled Buttons"
 			) );
 		
@@ -847,7 +902,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 			
 			foreach ( $this->buttons as $button => $button_options ) {
-
+				if ( in_array( $button, $button_used ) ) continue;
+				
+				$this->make_button_ui( $this->buttons[$button] );
 
 			
 			}
@@ -880,6 +937,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			print_r( $this->current_user );
 			print_r( $this->buttons );
+			print_r( $button_not_registered );
+
 
 		}
  
