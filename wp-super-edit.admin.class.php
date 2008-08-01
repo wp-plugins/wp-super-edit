@@ -759,8 +759,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* WP Super Edit Make Dragable Buttons
 		* 
 		*/
-		function make_button_ui( $button ) {
+		function make_button_ui( $button, $separator = false ) {
 		
+			$button_class = 'button_control';
+			
+			if ( $separator ) $button_class .= ' button_separator';
+			
 			$button_info = $this->html_tag( array(
 				'tag' => 'img',
 				'tag_type' => 'single',
@@ -795,7 +799,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'id' => $button->name,
-				'class' => 'button_control',
+				'class' => $button_class,
 				'content' => $button_options . $button->nicename,
 			) );
 		}
@@ -815,6 +819,15 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_buttons'
 			) );
 				
+
+			$this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single',
+				'type' => 'hidden',
+				'id' => 'i_wp_super_edit_separators',
+				'name' => 'wp_super_edit_separators',
+				'value' => ''
+			) );
 			
 			$this->html_tag( array(
 				'tag' => 'div',
@@ -847,8 +860,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'class' => 'row_section'
 				) );				
 				
-				foreach( $this->current_user['buttons'][$button_row] as $button ) {
+				foreach( $this->current_user['buttons'][$button_row] as $button_num => $button ) {
 
+					$separator = false;
+					
+					if ( $this->current_user['buttons'][$button_row][$button_num +1] == '|' ) $separator = true;
+					
 					if ( $button == '|' ) continue;
 
 					if ( !$this->check_registered( 'button', $button ) ) {
@@ -858,7 +875,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 										
 					if ( !is_object( $this->active_buttons[$button] ) ) continue;
 					
-					$this->make_button_ui( $this->active_buttons[$button] );
+					$this->make_button_ui( $this->active_buttons[$button], $separator );
 					
 					$button_used[] = $button;
 				
@@ -934,11 +951,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_dialog',
 				'class' => 'hidden'
 			) );
-
-			print_r( $this->current_user );
-			print_r( $this->buttons );
-			print_r( $button_not_registered );
-
+			
+			
+			$this->html_tag( array(
+				'tag' => 'button',
+				'onClick' => "wpseDebug();",
+				'content' => 'Debug'
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => "wp_super_edit_debug",
+				'content' => 'Debug'
+			) );
 
 		}
  

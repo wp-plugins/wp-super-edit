@@ -278,23 +278,36 @@ function wp_super_edit_admin_footer() {
 	
 	
 	var data;
+	var button_separators = new Array();
 	var tiny_mce_buttons = new Object();
 	var buttons = new Array();
 	
 	<?php $wp_super_edit->buttons_js_objects(); ?>
-
 	
 	// Plugin and Button Control Functions
 	
+	
+	function wpseDebug() {
+
+		var debugStr;
+		
+		debugStr = 'Test: <br />';
+		
+		debugStr += 'Row 1: ' + wpsuperedit('#row_section_1').sortable('toArray').join(", ") + '<br />';
+		debugStr += 'Row 2: ' + wpsuperedit('#row_section_2').sortable('toArray').join(", ") + '<br />';
+		debugStr += 'Row 3: ' + wpsuperedit('#row_section_3').sortable('toArray').join(", ") + '<br />';
+		debugStr += 'Row 4: ' + wpsuperedit('#row_section_4').sortable('toArray').join(", ") + '<br />';
+
+		debugStr += 'Separators: ' +  wpsuperedit( '.button_separator' ).map(function() {
+            return wpsuperedit(this).attr('id');
+        }).get().join(", ")  + '<br />';
+        
+		wpsuperedit( '#wp_super_edit_debug' ).html( debugStr )
+	}
+
+	
 	function toggleSeparator(button) {
 		wpsuperedit( '#' + button ).toggleClass( 'button_separator' );
-		
-		if ( wpsuperedit('#sval_' + button ).attr('value') == 'Y' ) {
-			wpsuperedit( '#sval_' + button ).attr('value','N');
-		} else {
-			wpsuperedit( '#sval_' + button ).attr('value','Y');
-		}
-		
 	}
 
 	function getButtonInfo(button) {
@@ -372,29 +385,12 @@ function wp_super_edit_admin_footer() {
 				
 				function() {
 				
-					serial2 = wpsuperedit.SortSerialize();
-								
-					wpsuperedit.each( serial2.o.tinymce_buttons, function(i, n){
-					  wpsuperedit( '#bval_' + n ).attr('value','N');			  
-					});			
-		
-					wpsuperedit.each( serial2.o.row1, function(i, n){
-					  wpsuperedit('#bval_' + n ).attr('value','Y');
-					  wpsuperedit( '#o_row_1' ).attr('value', serial2.o.row1 );
-					  
-					});
+					wpsuperedit('#i_wp_super_edit_row_1').attr('value') = wpsuperedit('#row_section_1').sortable('toArray');
+					wpsuperedit('#i_wp_super_edit_row_2').attr('value') = wpsuperedit('#row_section_2').sortable('toArray');
+					wpsuperedit('#i_wp_super_edit_row_3').attr('value') = wpsuperedit('#row_section_3').sortable('toArray');
+					wpsuperedit('#i_wp_super_edit_row_4').attr('value') = wpsuperedit('#row_section_4').sortable('toArray');
 					
-					wpsuperedit.each( serial2.o.row2, function(i, n){
-					  wpsuperedit('#bval_' + n ).attr('value','Y');
-					  wpsuperedit( '#o_row_2' ).attr('value', serial2.o.row2 );
-		
-					});
-					
-					wpsuperedit.each( serial2.o.row3, function(i, n){
-					  wpsuperedit('#bval_' + n ).attr('value','Y');
-					  wpsuperedit( '#o_row_3' ).attr('value', serial2.o.row3 );
-		
-					});
+					wpsuperedit('#i_wp_super_edit_separators').attr('value') = separators.toString;
 						
 				}
 			);

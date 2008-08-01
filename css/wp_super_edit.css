@@ -189,3 +189,12 @@ div#disabled_buttons div.button_control {
   color: #fff;
   background: #0D324F;
 }
+
+/* Debug */
+
+#wp_super_edit_debug {
+	margin: .5em;
+	padding: .5em;
+	background: #FF9;
+	border: 2px solid #ccc;
+}
