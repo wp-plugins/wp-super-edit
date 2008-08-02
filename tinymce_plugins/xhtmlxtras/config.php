@@ -27,10 +27,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Indicate a citation using the HTML CITE tag.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'xhtmlextras', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -39,10 +36,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Indicate an abbreviation using the HTML ABBR tag.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'xhtmlextras', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -51,10 +45,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Indicate an acronym using the HTML ACRONYM tag.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'xhtmlextras', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -63,10 +54,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Use the HTML DEL tag to indicate recently deleted content.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'xhtmlextras', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -75,10 +63,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Use the HTML INS tag to indicate newly inserted content.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'xhtmlextras', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -87,10 +72,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Modify advanced attributes and javascript events.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'xhtmlextras', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 ?>

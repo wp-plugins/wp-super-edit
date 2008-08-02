@@ -52,9 +52,6 @@ function wp_super_edit_install_db_tables() {
 	 provider varchar(60) NOT NULL default '',
 	 plugin varchar(60) NOT NULL default '',
 	 status varchar(20) NOT NULL default 'no',
-	 button_separator varchar(10) NOT NULL default 'no',
-	 row tinyint UNSIGNED NOT NULL default '0',
-	 position tinyint UNSIGNED NOT NULL default '0',
 	 PRIMARY KEY (id,name),
 	 UNIQUE KEY id (id)
 	) $charset_collate;
@@ -95,10 +92,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Bold content with strong HTML tag. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 1
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -107,10 +101,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Italicize content with em HTML tag. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 2
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -119,10 +110,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Strike out content with strike HTML tag. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 3
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -131,10 +119,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'An unordered list. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 4
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -143,10 +128,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'An ordered list. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 5
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -155,12 +137,8 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Blockquotes are used when quoting other content. Usually this content is displayed as indented.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 6
+		'status' => 'yes'
 	));
-	
 
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -169,10 +147,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set the alignment to left justification. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 7
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -181,10 +156,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set the alignment to center justification. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 8
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -193,10 +165,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set the alignment to right justification. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 9
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -205,10 +174,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Create a link. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 10
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -217,10 +183,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Remove a link. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 11
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -229,10 +192,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Insert Wordpress MORE tag to divide content to multiple views. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 12
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -241,10 +201,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Wordpress spell check. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 13
+		'status' => 'yes'
 	));
 
 	$wp_super_edit->register_tinymce_button( array(
@@ -253,10 +210,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Toggle Full Screen editor mode.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 14
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -265,10 +219,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Built in Wordpress button <strong>normally hidden</strong>. When pressed it will show extra rows of buttons (or press Ctrl-Alt-V on FF, Alt-V on IE).', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 15
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -277,10 +228,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set Paragraph or Headings for content.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 1
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -289,10 +237,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Built in Wordpress button to underline selected text.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 2
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -301,10 +246,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set the alignment to full justification. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 3
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -313,10 +255,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set foreground or text color. May produce evil font tags. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 2, 
-		'position' => 4
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -325,10 +264,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Paste clipboard text and remove formatting. Useful for pasting text from applications that produce substandard HTML. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 5
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -337,10 +273,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Attempts to clean up HTML produced by Microsoft Word during cut and paste. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 2, 
-		'position' => 6
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -349,10 +282,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Removes HTML formatting from selected item. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 7
+		'status' => 'yes'
 	));
 
 	$wp_super_edit->register_tinymce_button( array(
@@ -361,10 +291,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Add or edit embedded media like Flash, Quicktime, or Windows Media. Different from WordPress Media tools.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 2, 
-		'position' => 8
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -373,10 +300,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Insert special characters or entities using a visual interface. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 2, 
-		'position' => 9
+		'status' => 'yes'
 	));
 
 	$wp_super_edit->register_tinymce_button( array(
@@ -385,10 +309,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'This will decrease the level of indentation based on content position. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 10
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -397,10 +318,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'This will increase the level of indentation based on content position. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 2, 
-		'position' => 11
+		'status' => 'yes'
 	));
 
 	$wp_super_edit->register_tinymce_button( array(
@@ -409,10 +327,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Undo previous formatting changes. Not useful once you save. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 12
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -421,10 +336,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Redo previous formatting changes. Not useful once you save. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 2, 
-		'position' => 13
+		'status' => 'yes'
 	));
 
 	$wp_super_edit->register_tinymce_button( array(
@@ -433,10 +345,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Built in Wordpress help documentation. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 2, 
-		'position' => 14
+		'status' => 'yes'
 	));
 	
 
@@ -448,10 +357,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Attempts to clean up bad HTML in the editor. Built in Wordpress button.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'yes', 
-		'row' => 1, 
-		'position' => 26
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -460,10 +366,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Insert linked image. Wordpress default editor option for first row.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 1, 
-		'position' => 13
+		'status' => 'yes'
 	));	
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -472,10 +375,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Create named anchors.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 0, 
-		'position' => 0
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -484,10 +384,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Format text as Subscript.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 0, 
-		'position' => 0
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -496,10 +393,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Format text as Superscript.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 0, 
-		'position' => 0
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -508,10 +402,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Set background color for selected tag or text. ', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 0, 
-		'position' => 0
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -520,10 +411,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'View and edit the HTML source code.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 0, 
-		'position' => 0
+		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
@@ -532,10 +420,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => 'Insert Wordpress Next Page tag to divide page content into multiple views.', 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
-		'status' => 'yes', 
-		'separator' => 'no', 
-		'row' => 0, 
-		'position' => 0
+		'status' => 'yes'
 	));
 
 }

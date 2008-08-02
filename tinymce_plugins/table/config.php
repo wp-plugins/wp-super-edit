@@ -27,10 +27,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Interface to create and change table, row, and cell properties.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'table', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -39,10 +36,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Interface to manipulate tables and access to cell and row properties.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'table', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 ?>

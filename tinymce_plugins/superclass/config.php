@@ -27,10 +27,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Shows a drop down list of CSS Classes that the editor has access to.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'superclass', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 

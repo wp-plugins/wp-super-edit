@@ -27,10 +27,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Insert a layer using the DIV HTML tag. Be careful layers are tricky to position.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'layer', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -39,10 +36,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Move selected layer forward in stacked view.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'layer', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -51,10 +45,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Move selected layer backward in stacked view.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'layer', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 $wp_super_edit->register_tinymce_button( array(
@@ -63,10 +54,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Toggle the layer positioning as absolute or relative. Be careful layers are tricky to position.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'layer', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 ?>

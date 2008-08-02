@@ -27,10 +27,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Interface for Customized Wordpress Emoticon / Icon images. Uses Wordpress icon set.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'emotions', 
-	'status' => 'no', 
-	'separator' => 'yes', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 

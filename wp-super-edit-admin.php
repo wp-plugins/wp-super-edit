@@ -266,13 +266,10 @@ function wp_super_edit_admin_footer() {
 
 	// Default Variables and Objects
 		
-	function wp_super_edit_button( desc, notice, status, row, position, separator, plugin ) {
+	function wp_super_edit_button( desc, notice, status, plugin ) {
 		this.desc = desc;
 		this.notice = notice;
 		this.status = status;
-		this.row = row;    		
-		this.position = position;
-		this.separator = separator;    
 		this.plugin = plugin;
 	  }
 	

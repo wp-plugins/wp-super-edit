@@ -27,10 +27,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'description' => 'Interface for properties that can be manipulated using the STYLE attribute.', 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'style', 
-	'status' => 'no', 
-	'separator' => 'no', 
-	'row' => 0, 
-	'position' => 0
+	'status' => 'no'
 ));
 
 

@@ -228,15 +228,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				$button['description'] . '", "' . 
 				$button['provider'] . '", "' . 
 				$button['plugin'] . '", "' . 
-				$button['status'] . '", "' . 
-				$button['separator'] . '", ' . 
-				$button['row'] . ', ' . 
-				$button['position']
+				$button['status'] . '"'
 			;
 			
 			$wpdb->query("
 				INSERT INTO $this->db_buttons 
-				(name, nicename, description, provider, plugin, status, button_separator, row, position) 
+				(name, nicename, description, provider, plugin, status) 
 				VALUES ($button_values)
 			");
 		}
@@ -797,7 +794,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 			
 			$this->html_tag( array(
-				'tag' => 'div',
+				'tag' => 'li',
 				'id' => $button->name,
 				'class' => $button_class,
 				'content' => $button_options . $button->nicename,
@@ -854,7 +851,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 				
 				$this->html_tag( array(
-					'tag' => 'div',
+					'tag' => 'ul',
 					'tag_type' => 'open',
 					'id' => 'row_section_' . $button_row,
 					'class' => 'row_section'
@@ -880,10 +877,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					$button_used[] = $button;
 				
 				}
-				
+
 				
 				$this->html_tag( array(
-					'tag' => 'div',
+					'tag' => 'ul',
 					'tag_type' => 'close'
 				) );
 
