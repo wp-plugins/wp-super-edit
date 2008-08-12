@@ -92,8 +92,7 @@ div#button_rows {
 	width: 80%;
 }
 
-li.button_control {
-	list-style: none;
+div.button_control {
 	width: 120px;
 	float: left;
 	height: 2.4em;
@@ -106,7 +105,7 @@ li.button_control {
 	cursor: move;
 }
 
-li.button_separator {
+div.button_separator {
 	border-right: 4px dotted #666;
 }	
 
@@ -126,8 +125,7 @@ div.button_info img {
 	margin: 2px 0 0 0;
 }	
 
-ul.row_section {
-	list-style: none;
+div.row_section {
 	clear: both;
 	width: 100%;
 	padding: .4em 0;

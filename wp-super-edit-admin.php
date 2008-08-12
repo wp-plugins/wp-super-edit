@@ -106,6 +106,11 @@ function wp_super_edit_admin_setup() {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
 			$wp_super_edit->do_plugins();
 		}
+		
+		if (  $_REQUEST['wp_super_edit_action'] == 'buttons' ) {
+			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			$wp_super_edit->do_buttons();
+		}		
 	
 		if ( $wp_super_edit->ui == 'buttons' ) {
 
@@ -326,7 +331,23 @@ function wp_super_edit_admin_footer() {
 		});
 		
 		return false;		
-	}	
+	}
+
+	
+	function submitButtonConfig() {
+	
+		wpsuperedit('#i_wp_super_edit_row_1').attr('value', wpsuperedit('#row_section_1').sortable('toArray').join(",") );
+		wpsuperedit('#i_wp_super_edit_row_2').attr('value', wpsuperedit('#row_section_2').sortable('toArray').join(",") );
+		wpsuperedit('#i_wp_super_edit_row_3').attr('value', wpsuperedit('#row_section_3').sortable('toArray').join(",") );
+		wpsuperedit('#i_wp_super_edit_row_4').attr('value', wpsuperedit('#row_section_4').sortable('toArray').join(",") );
+		
+		submit_separators = wpsuperedit( '.button_separator' ).map(function() {
+			return wpsuperedit(this).attr('id');
+		}).get().join(",");
+		
+		wpsuperedit('#i_wp_super_edit_separators').attr('value', submit_separators)
+			
+	}
 
 	wpsuperedit(document).ready(
 		function() {
@@ -340,7 +361,7 @@ function wp_super_edit_admin_footer() {
 					opacity: 0.7
 				}
 			);
-	
+				
 			wpsuperedit('#row_section_2').sortable(
 				{
 					connectWith: ['#row_section_disabled', '#row_section_1', '#row_section_3', '#row_section_4' ],
@@ -374,21 +395,6 @@ function wp_super_edit_admin_footer() {
 					scroll: true,
 					placeholder: 'sort_placeholder',
 					opacity: 0.7
-				}
-			);
-
-			// Set up values for form submission
-			wpsuperedit('#tinymce_controller').submit(
-				
-				function() {
-				
-					wpsuperedit('#i_wp_super_edit_row_1').attr('value') = wpsuperedit('#row_section_1').sortable('toArray');
-					wpsuperedit('#i_wp_super_edit_row_2').attr('value') = wpsuperedit('#row_section_2').sortable('toArray');
-					wpsuperedit('#i_wp_super_edit_row_3').attr('value') = wpsuperedit('#row_section_3').sortable('toArray');
-					wpsuperedit('#i_wp_super_edit_row_4').attr('value') = wpsuperedit('#row_section_4').sortable('toArray');
-					
-					wpsuperedit('#i_wp_super_edit_separators').attr('value') = separators.toString;
-						
 				}
 			);
 						

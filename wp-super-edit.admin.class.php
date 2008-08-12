@@ -151,6 +151,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 									
 			$this->get_plugins();
 		}
+		
+		/**
+		* Options 
+		*
+		* Function used to set options from form.
+		*
+		*/
+		function do_buttons() {
+			global $wpdb;
+			
+			
+			print_r($_REQUEST);
+		}
 
         function check_registered( $type, $name ) {
         	global $wpdb;
@@ -361,7 +374,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* Start WP Super Edit admin form
 		* @param string $text text to display
 		*/
-		function form( $action = '', $content = '', $return = false ) {
+		function form( $action = '', $content = '', $return = false, $onsubmit = '' ) {
 			global $wp_super_edit_nonce;
 			
 			$form_contents = $this->nonce_field('wp_super_edit_nonce-' . $this->nonce);
@@ -386,6 +399,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'content' => $form_contents,
 				'return' => $return
 			);
+			
+			if ( $onsubmit != '' ) $form_array['onSubmit'] = $onsubmit;
 			
 			if ( $return == true ) return $this->html_tag( $form_array );
 			
@@ -794,7 +809,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 			
 			$this->html_tag( array(
-				'tag' => 'li',
+				'tag' => 'div',
 				'id' => $button->name,
 				'class' => $button_class,
 				'content' => $button_options . $button->nicename,
@@ -817,13 +832,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 				
 
-			$this->html_tag( array(
+			$hidden_form_items = $this->html_tag( array(
 				'tag' => 'input',
 				'tag_type' => 'single',
 				'type' => 'hidden',
 				'id' => 'i_wp_super_edit_separators',
 				'name' => 'wp_super_edit_separators',
-				'value' => ''
+				'value' => '',
+				'return' => true
 			) );
 			
 			$this->html_tag( array(
@@ -840,18 +856,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'content' => "Editor Button Row $button_row"
 				) );
 			
-				$this->html_tag( array(
+				$hidden_form_items .= $this->html_tag( array(
 					'tag' => 'input',
 					'tag_type' => 'single',
 					'type' => 'hidden',
 					'id' => 'i_wp_super_edit_row_' . $button_row,
 					'name' => 'wp_super_edit_row_' . $button_row,
-					'value' => ''
+					'value' => '',
+					'return' => true
 				) );
 
 				
 				$this->html_tag( array(
-					'tag' => 'ul',
+					'tag' => 'div',
 					'tag_type' => 'open',
 					'id' => 'row_section_' . $button_row,
 					'class' => 'row_section'
@@ -880,7 +897,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 				
 				$this->html_tag( array(
-					'tag' => 'ul',
+					'tag' => 'div',
 					'tag_type' => 'close'
 				) );
 
@@ -932,11 +949,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$submit_button_group = $this->html_tag( array(
 				'tag' => 'p',
 				'class' => 'submit clearer',
-				'content' => $submit_button,
+				'content' => $hidden_form_items . $submit_button,
 				'return' => true
 			) );	
 			
-			$this->form( 'buttons', $submit_button_group );
+			$this->form( 'buttons', $submit_button_group, false, 'submitButtonConfig();' );
 
 			$this->html_tag( array(
 				'tag' => 'div',
