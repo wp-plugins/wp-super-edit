@@ -77,7 +77,7 @@ function wp_super_edit_admin_setup() {
 	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 
     if ( $wp_super_edit->management_mode == 'users' ) {
-		$wp_super_edit_user_page = add_submenu_page('profile.php', __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 0, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
+		$wp_super_edit_user_page = add_submenu_page('profile.php', __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 0, 'wp-super-edit-admin.php', 'wp_super_edit_user_page');
 	}
 	
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {
@@ -199,7 +199,28 @@ function superedit_update_message( $message = '' ) {
 <?php
 }
 
-
+/**
+* Display Advanced WP Super Edit interface
+*
+* Very advanced control interface for TinyMCE buttons and plugins using
+* drag and drop.
+*
+* @global array $superedit_ini 
+* @global array $superedit_options
+* @global array $superedit_buttons
+* @global array $superedit_plugins
+*/
+function wp_super_edit_user_page() {
+	global $wp_super_edit;
+		
+	$updated = false;
+	
+	$wp_super_edit->ui_header();
+	
+	$wp_super_edit->buttons_ui( 'user' );
+	
+	$wp_super_edit->ui_footer();
+}
 
 /**
 * Display Advanced WP Super Edit interface

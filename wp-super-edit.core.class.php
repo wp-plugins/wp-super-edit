@@ -115,6 +115,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				WHERE user_name = '$user_name'
 			");
 			
+			if ( empty( $user_settings ) ) {
+				$user_settings = $wpdb->get_results("
+					SELECT user_name, editor_options 
+					FROM $this->db_users
+					WHERE user_name = 'wp_super_edit_default'
+				");			
+			}
+						
 			$this->current_user['editor_options'] = maybe_unserialize( $user_settings[0]->editor_options );
 
 			for ( $button_rows = 1; $button_rows <= 4; $button_rows += 1) {

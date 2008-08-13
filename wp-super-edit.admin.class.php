@@ -461,7 +461,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* Form Select
 		* @param string $text text to display
 		*/
-		function form_select( $option_name = '', $options = array(), $return = false ) {
+		function form_select( $option_name = '', $options = array(), $selected = '', $return = false ) {
 			
 			foreach( $options as $option_value => $option_text ) {
 				$option_array = array(
@@ -471,7 +471,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'return' => true
 				);			
 				
-				if ( $option_value == $this->management_mode ) $option_array['selected'] = 'selected';
+				if ( $option_value == $selected ) $option_array['selected'] = 'selected';
 				
 				$option_content .= $this->html_tag( $option_array );
 			}
@@ -587,6 +587,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'content' => 'Management Mode: ' . $this->management_modes[ $this->management_mode ]
 			) );
 		}
+		
 		/**
 		* Create deactivation user interface
 		* 
@@ -680,7 +681,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'return' => true
 			) );
 			
-			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $this->management_modes, true );
+			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $this->management_modes, $this->management_mode, true );
 			
 			$table_row = $this->form_table_row( 'Manage editor buttons using:', $mode_select, true );
 			
@@ -699,7 +700,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 		
 		/**
-		* WP Super Edit Options Interface
+		* WP Super Edit Plugins Interface
 		* 
 		*/
 		function plugins_ui() {
@@ -767,6 +768,52 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			}
 		}
 
+
+		/**
+		* User management
+		* 
+		*/
+		function user_management_ui() {
+			global $wp_roles;
+        	
+        	switch ( $this->management_mode ) {
+				case 'single':
+					$user_management_text = 'This arrangement of visual editor buttons will apply to all users';
+					break;
+				case 'roles':
+					$user_management_text = 'The arrangement of visual editor buttons will apply to all users in the selected Role or Default user button setting.<br />';
+					
+					$roles = Array();
+
+					$roles['default'] = 'Default Button Settings';
+
+					foreach( $wp_roles->role_names as $role => $name ) {
+						$name = translate_with_context($name);
+						$roles[$role] = $name;
+					}					
+					
+					$role_select = $this->form_select( 'wp_super_edit_manage_role', $roles, '', true );
+					
+					$user_management_text .= $role_select;
+					break;
+				case 'users':
+					$user_management_text = 'Users can arrange buttons under the Users tab. Changes to this button arrangement will only affect the defult button settings.';        	
+					break;
+				default:
+					break;
+				
+        	}
+        	
+			$user_management_text = '<strong>' . $this->management_modes[ $this->management_mode ] . ':</strong> ' . $user_management_text;
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'id' => 'wp_super_edit_user_management',
+				'content' => $user_management_text
+			) );
+			
+		}
+		
 		/**
 		* WP Super Edit Make Dragable Buttons
 		* 
@@ -821,9 +868,33 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* WP Super Edit Buttons Interface
 		* 
 		*/
-		function buttons_ui() {
+		function buttons_ui( $page = '' ) {
 		
-			$this->get_user_settings();
+        	switch ( $this->management_mode ) {
+				case 'single':
+					$user = 'wp_super_edit_default';
+					break;
+				case 'roles':
+					if ( isset( $_REQUEST['wp_super_edit_role'] ) ) {
+						$user = $_REQUEST['wp_super_edit_role'];
+					} else {
+						$user = 'wp_super_edit_default';
+					}				
+					break;
+				case 'single':
+					if ( $page != '' ) {
+						$user = $current;
+					} else {
+						$user = 'wp_super_edit_default';
+					}
+					break;	
+				default:
+					break;
+			}
+
+			$this->get_user_settings( $user );
+
+			if ( $page == '' ) $this->user_management_ui();
 					
 			$this->html_tag( array(
 				'tag' => 'div',
@@ -831,8 +902,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_buttons'
 			) );
 				
-
 			$hidden_form_items = $this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single',
+				'type' => 'hidden',
+				'id' => 'i_wp_super_edit_user',
+				'name' => 'wp_super_edit_user',
+				'value' => '',
+				'return' => true
+			) );
+			
+			$hidden_form_items .= $this->html_tag( array(
 				'tag' => 'input',
 				'tag_type' => 'single',
 				'type' => 'hidden',
