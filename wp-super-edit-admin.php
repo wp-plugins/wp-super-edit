@@ -57,7 +57,7 @@ function wp_super_edit_set_user_default() {
 
 	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
 	
-	$wp_super_edit->register_user_settings( 'wp_super_edit_default', $tiny_mce_scan, 'single' );
+	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $tiny_mce_scan, 'single' );
 	$wp_super_edit->set_option( 'tinymce_scan', $tiny_mce_scan );
 	
 	delete_option( 'wp_super_edit_tinymce_scan' );
@@ -372,14 +372,16 @@ function wp_super_edit_admin_footer() {
 
 	wpsuperedit(document).ready(
 		function() {
-
+			
 			// Controls Drag + Drop
 			wpsuperedit('#row_section_1').sortable(
 				{
 					connectWith: ['#row_section_disabled', '#row_section_2', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
-					opacity: 0.7
+					opacity: 0.7,
+					items: '.button_control',
+					tolerance: 'pointer'
 				}
 			);
 				
@@ -388,7 +390,9 @@ function wp_super_edit_admin_footer() {
 					connectWith: ['#row_section_disabled', '#row_section_1', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
-					opacity: 0.7
+					opacity: 0.7,
+					items: '.button_control',
+					tolerance: 'pointer'
 				}
 			);		
 			
@@ -397,7 +401,9 @@ function wp_super_edit_admin_footer() {
 					connectWith: ['#row_section_disabled', '#row_section_1', '#row_section_2', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
-					opacity: 0.7
+					opacity: 0.7,
+					items: '.button_control',
+					tolerance: 'pointer'
 				}
 			);
 			
@@ -406,7 +412,9 @@ function wp_super_edit_admin_footer() {
 					connectWith: ['#row_section_disabled', '#row_section_1', '#row_section_2', '#row_section_3' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
-					opacity: 0.7
+					opacity: 0.7,
+					items: '.button_control',
+					tolerance: 'pointer'
 				}
 			);
 			
@@ -415,10 +423,12 @@ function wp_super_edit_admin_footer() {
 					connectWith: ['#row_section_1', '#row_section_2', '#row_section_3', '#row_section_4' ],
 					scroll: true,
 					placeholder: 'sort_placeholder',
-					opacity: 0.7
+					opacity: 0.7,
+					items: '.button_control',
+					tolerance: 'pointer'
 				}
 			);
-						
+									
 		}
 	);
 

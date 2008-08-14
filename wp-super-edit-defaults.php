@@ -59,6 +59,7 @@ function wp_super_edit_install_db_tables() {
 	 id bigint(20) NOT NULL auto_increment,
 	 user_id varchar(60) NOT NULL default '',
 	 user_name varchar(60) NOT NULL default '',
+	 user_nicename varchar(60) NOT NULL default '',
 	 user_type text NOT NULL default '',
 	 editor_options text NOT NULL,
 	 PRIMARY KEY (id,user_name),

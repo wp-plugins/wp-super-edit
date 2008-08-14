@@ -85,6 +85,18 @@ div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 a {
 	border: none;
 }
 
+div#wp_super_edit_button_save {
+	width: 19%;
+	margin: 0;
+	padding: 0;
+	float: right;
+	border-left: 4px solid #448ABD;
+}
+
+div#wp_super_edit_buttons {
+	clear: both;
+}
+
 div#button_rows {
 	float: left;
 	margin: 0;
@@ -92,7 +104,22 @@ div#button_rows {
 	width: 80%;
 }
 
-div.button_control {
+li.button_placeholder {
+	list-style: none;
+	width: 120px;
+	float: left;
+	height: 2.4em;
+	margin: 0 4px 8px 0;
+	padding: 1px;
+	font-size: 0.8em;
+	line-height: 1.1em;
+	background-color: #FFFFFF;
+	border: 1px dotted #333;
+	cursor: move;
+}
+
+li.button_control {
+	list-style: none;
 	width: 120px;
 	float: left;
 	height: 2.4em;
@@ -125,11 +152,13 @@ div.button_info img {
 	margin: 2px 0 0 0;
 }	
 
-div.row_section {
-	clear: both;
+ul.row_section {
+	position: relative;
+	float: none;
 	width: 100%;
+	height: 4em;
 	padding: .4em 0;
-	border: 1px solid red;
+	margin: 0;
 }
 
 h3.row_title {
@@ -149,7 +178,7 @@ div#disabled_buttons {
 	border-left: 4px solid #448ABD;
 }
 
-div#disabled_buttons div.button_control {
+#disabled_buttons li.button_control {
 	float: none;
 	clear: both;
 }
@@ -194,6 +223,7 @@ div#disabled_buttons div.button_control {
 /* Debug */
 
 #wp_super_edit_debug {
+	clear: both;
 	margin: .5em;
 	padding: .5em;
 	background: #FF9;

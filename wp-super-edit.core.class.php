@@ -110,18 +110,22 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	global $wpdb;
         	
 			$user_settings = $wpdb->get_results("
-				SELECT user_name, editor_options 
+				SELECT user_name, user_nicename, editor_options 
 				FROM $this->db_users
 				WHERE user_name = '$user_name'
 			");
 			
 			if ( empty( $user_settings ) ) {
 				$user_settings = $wpdb->get_results("
-					SELECT user_name, editor_options 
+					SELECT user_name, user_nicename, editor_options 
 					FROM $this->db_users
 					WHERE user_name = 'wp_super_edit_default'
 				");			
 			}
+			
+			$this->current_user['user_name'] = $user_name;
+			$this->current_user['user_nicename'] = $user_settings[0]->user_nicename;
+
 						
 			$this->current_user['editor_options'] = maybe_unserialize( $user_settings[0]->editor_options );
 

@@ -251,7 +251,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			");
 		}
 
-        function register_user_settings( $user_name = 'wp_super_edit_default', $user_settings, $type = 'single',  $user_id = 'wp_super_edit' ) {
+        function register_user_settings( $user_name = 'wp_super_edit_default', $user_nicename = 'Default Editor Settings', $user_settings, $type = 'single',  $user_id = 'wp_super_edit' ) {
         	global $wpdb;
 			
 			$settings = maybe_serialize( $user_settings );
@@ -260,13 +260,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$user_values = '"' .
 				$user_id . '", "' . 
 				$user_name . '", "' . 
+				$user_nicename . '", "' . 
 				$type . '", "' . 
 				$settings . '"'
 			;
 			
 			$wpdb->query("
 				INSERT INTO $this->db_users 
-				(user_id, user_name, user_type, editor_options) 
+				(user_id, user_name, user_nicename, user_type, editor_options) 
 				VALUES ($user_values)
 			");
 					
@@ -793,8 +794,16 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					}					
 					
 					$role_select = $this->form_select( 'wp_super_edit_manage_role', $roles, '', true );
+										
+					$submit_button = $this->submit_button( 'Load Button Settings', '', true );
+					$submit_button_group = $this->html_tag( array(
+						'tag' => 'p',
+						'content' => 'Select User Role to Edit: ' . $role_select . $submit_button,
+						'return' => true
+					) );						
 					
-					$user_management_text .= $role_select;
+					$user_management_text .= $this->form( 'role_select', $submit_button_group, true, 'submitButtonConfig();' );		
+
 					break;
 				case 'users':
 					$user_management_text = 'Users can arrange buttons under the Users tab. Changes to this button arrangement will only affect the defult button settings.';        	
@@ -856,7 +865,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 			
 			$this->html_tag( array(
-				'tag' => 'div',
+				'tag' => 'li',
 				'id' => $button->name,
 				'class' => $button_class,
 				'content' => $button_options . $button->nicename,
@@ -895,11 +904,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->get_user_settings( $user );
 
 			if ( $page == '' ) $this->user_management_ui();
-					
+
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
-				'id' => 'wp_super_edit_buttons'
+				'id' => 'wp_super_edit_button_save'
 			) );
 				
 			$hidden_form_items = $this->html_tag( array(
@@ -922,6 +931,40 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'return' => true
 			) );
 			
+			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
+			
+				$hidden_form_items .= $this->html_tag( array(
+					'tag' => 'input',
+					'tag_type' => 'single',
+					'type' => 'hidden',
+					'id' => 'i_wp_super_edit_row_' . $button_row,
+					'name' => 'wp_super_edit_row_' . $button_row,
+					'value' => '',
+					'return' => true
+				) );
+				
+			}
+			
+			$submit_button = $this->submit_button( 'Update Button Settings', $this->current_user['user_nicename'], true );
+			$submit_button_group = $this->html_tag( array(
+				'tag' => 'p',
+				'content' => $hidden_form_items . $submit_button,
+				'return' => true
+			) );	
+			
+			$this->form( 'buttons', $submit_button_group, false, 'submitButtonConfig();' );		
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_buttons'
+			) );	
+			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
@@ -935,20 +978,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'class' => 'row_title',
 					'content' => "Editor Button Row $button_row"
 				) );
-			
-				$hidden_form_items .= $this->html_tag( array(
-					'tag' => 'input',
-					'tag_type' => 'single',
-					'type' => 'hidden',
-					'id' => 'i_wp_super_edit_row_' . $button_row,
-					'name' => 'wp_super_edit_row_' . $button_row,
-					'value' => '',
-					'return' => true
-				) );
 
 				
 				$this->html_tag( array(
-					'tag' => 'div',
+					'tag' => 'ul',
 					'tag_type' => 'open',
 					'id' => 'row_section_' . $button_row,
 					'class' => 'row_section'
@@ -974,10 +1007,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					$button_used[] = $button;
 				
 				}
-
 				
 				$this->html_tag( array(
-					'tag' => 'div',
+					'tag' => 'ul',
 					'tag_type' => 'close'
 				) );
 
@@ -1023,17 +1055,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'tag_type' => 'close'
 			) );
-
-
-			$submit_button = $this->submit_button( 'Update Options', '', true );
-			$submit_button_group = $this->html_tag( array(
-				'tag' => 'p',
-				'class' => 'submit clearer',
-				'content' => $hidden_form_items . $submit_button,
-				'return' => true
-			) );	
-			
-			$this->form( 'buttons', $submit_button_group, false, 'submitButtonConfig();' );
 
 			$this->html_tag( array(
 				'tag' => 'div',
