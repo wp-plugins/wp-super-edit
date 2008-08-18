@@ -72,6 +72,22 @@ function wp_super_edit_install_db_tables() {
 		
 }
 
+/**
+* WP Super Edit Default User
+*
+* Sets default user settings from most recent tinymce scan
+*
+*/
+function wp_super_edit_set_user_default() {
+	global $wp_super_edit;
+
+	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
+	
+	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $tiny_mce_scan, 'single' );
+	$wp_super_edit->set_option( 'tinymce_scan', $tiny_mce_scan );
+	
+	delete_option( 'wp_super_edit_tinymce_scan' );
+}
 
 
 /**

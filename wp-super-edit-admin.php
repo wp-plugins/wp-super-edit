@@ -47,23 +47,6 @@ function wp_super_edit_plugin_folder_scan() {
 }
 
 /**
-* WP Super Edit Default User
-*
-* Sets default user settings from most recent tinymce scan
-*
-*/
-function wp_super_edit_set_user_default() {
-	global $wp_super_edit;
-
-	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
-	
-	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $tiny_mce_scan, 'single' );
-	$wp_super_edit->set_option( 'tinymce_scan', $tiny_mce_scan );
-	
-	delete_option( 'wp_super_edit_tinymce_scan' );
-}
-
-/**
 * Set up administration interface
 *
 * Function used by Wordpress to initialize the adminsitrative interface.
@@ -129,7 +112,7 @@ function wp_super_edit_admin_setup() {
 *
 * Some complex CSS and javascript functions to operate the WP Super Edit advanced interface.
 *
-* @global array $superedit_ini 
+* @global object $wp_super_edit 
 */
 function wp_super_edit_admin_head() {
 	global $wp_super_edit;

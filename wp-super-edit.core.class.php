@@ -11,9 +11,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		
 		public $core_path;
 		public $core_uri;
-		
-		public $current_user;
- 
+		 
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
 
@@ -63,6 +61,36 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 						
         }
 
+        function check_registered( $type, $name ) {
+        	global $wpdb;
+ 
+			$name_col = 'name';
+	
+			switch ( $type ) {
+				case 'plugin':
+					$db_table = $this->db_plugins;
+					break;
+				case 'button':
+					if ( $this->buttons[$name]->name == $name ) return true;
+					$db_table = $this->db_buttons;
+					break;
+				case 'user':
+					$db_table = $this->db_users;
+					$name_col = 'user_name';
+					break;
+			}
+			echo "Check";			
+			$register_check = $wpdb->get_row("
+				SELECT $name_col FROM $db_table
+				WHERE $name_col='$name'
+			");
+			
+			if ( is_object( $register_check) ) return true;
+			
+			return false;
+			
+		}
+		
         function get_option( $option_name ) {
         	global $wpdb;
         		
@@ -106,38 +134,16 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			return false;
         }
         
-        function get_user_settings( $user_name = 'wp_super_edit_default' ) {
+        function get_user_settings( $user_name ) {
         	global $wpdb;
-        	
+        				
 			$user_settings = $wpdb->get_results("
 				SELECT user_name, user_nicename, editor_options 
 				FROM $this->db_users
 				WHERE user_name = '$user_name'
 			");
 			
-			if ( empty( $user_settings ) ) {
-				$user_settings = $wpdb->get_results("
-					SELECT user_name, user_nicename, editor_options 
-					FROM $this->db_users
-					WHERE user_name = 'wp_super_edit_default'
-				");			
-			}
-			
-			$this->current_user['user_name'] = $user_name;
-			$this->current_user['user_nicename'] = $user_settings[0]->user_nicename;
-
-						
-			$this->current_user['editor_options'] = maybe_unserialize( $user_settings[0]->editor_options );
-
-			for ( $button_rows = 1; $button_rows <= 4; $button_rows += 1) {
-				
-				if ( $this->current_user['editor_options']['theme_advanced_buttons' . $button_rows] == '' ) {
-					$this->current_user['buttons'][$button_rows] = array();
-					continue;
-				}
-				
-				$this->current_user['buttons'][$button_rows] = explode( ',', $this->current_user['editor_options']['theme_advanced_buttons' . $button_rows] );
-			}
+			return $user_settings[0];
 
         }
 
