@@ -153,36 +153,6 @@ function wp_super_edit_admin_head() {
 
 
 /**
-* Display messages on options update.
-*
-* Uses array_walk to build table, rows, and cells for either buttons or plugins.
-* Includes javascript functions for drag drop button interface
-*
-* @param $message Optional notification message.
-* @global $wp_version
-*/
-function superedit_update_message( $message = '' ) {
-	global $wp_version;
-?>
-	<div class="fade updated" id="message">
-		<?php $writepost = ($wp_version >= 2.1 ) ? '/wp-admin/post-new.php' : '/wp-admin/post.php'; ?> 
-		<p>
-			<?php printf(__('WP Super Edit Settings Updated. Remember... Reload your editor or empty your cache and <a href="%s">Go Write Something!!</a> &raquo;'), get_bloginfo('wpurl') . $writepost . '?up='. rand(101, 199) ); ?>
-		</p>
-		<p style="color:red;">
-			In most cases you will need to RELOAD the editor page, in some extreme cases you may need to EMPTY YOUR BROWSER CACHE before your new options will be available.
-		</p>
-		<?php if ( $message != '' ) : ?>
-		<p>
-			<?php echo $message ?>
-		</p>		
-		<?php endif; ?>
-		
-	</div>       
-<?php
-}
-
-/**
 * Display Advanced WP Super Edit interface
 *
 * Very advanced control interface for TinyMCE buttons and plugins using
@@ -200,7 +170,7 @@ function wp_super_edit_user_page() {
 	
 	$wp_super_edit->ui_header();
 	
-	$wp_super_edit->buttons_ui( 'user' );
+	$wp_super_edit->buttons_ui();
 	
 	$wp_super_edit->ui_footer();
 }

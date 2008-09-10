@@ -57,7 +57,6 @@ function wp_super_edit_install_db_tables() {
 	) $charset_collate;
 	CREATE TABLE $wp_super_edit->db_users (
 	 id bigint(20) NOT NULL auto_increment,
-	 user_id varchar(60) NOT NULL default '',
 	 user_name varchar(60) NOT NULL default '',
 	 user_nicename varchar(60) NOT NULL default '',
 	 user_type text NOT NULL default '',
@@ -85,6 +84,8 @@ function wp_super_edit_set_user_default() {
 	
 	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $tiny_mce_scan, 'single' );
 	$wp_super_edit->set_option( 'tinymce_scan', $tiny_mce_scan );
+	
+	$wp_super_edit->set_option( 'management_mode', 'single' );
 	
 	delete_option( 'wp_super_edit_tinymce_scan' );
 }

@@ -4,13 +4,13 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 
     class wp_super_edit_core { 
  
-		public $db_options;
-		public $db_plugins;
-		public $db_buttons;
-		public $db_users;
+		var $db_options;
+		var $db_plugins;
+		var $db_buttons;
+		var $db_users;
 		
-		public $core_path;
-		public $core_uri;
+		var $core_path;
+		var $core_uri;
 		 
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
@@ -65,9 +65,11 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	global $wpdb;
  
 			$name_col = 'name';
+			$role = '';
 	
 			switch ( $type ) {
 				case 'plugin':
+					if ( $this->plugins[$name]->name == $name ) return true;
 					$db_table = $this->db_plugins;
 					break;
 				case 'button':
@@ -77,15 +79,28 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				case 'user':
 					$db_table = $this->db_users;
 					$name_col = 'user_name';
+					switch ( $this->management_mode ) {
+						case 'single':
+							$role = " AND user_type='single'";
+							break;
+						case 'roles':
+							$role = " AND user_type='roles'";
+							break;
+						case 'users':
+							$role = " AND user_type='users'";
+							break;
+					}
 					break;
+				case 'option':
+					$db_table = $this->db_options;
 			}
-			echo "Check";			
-			$register_check = $wpdb->get_row("
+
+			$register_check = $wpdb->get_var("
 				SELECT $name_col FROM $db_table
-				WHERE $name_col='$name'
+				WHERE $name_col='$name'$role
 			");
 			
-			if ( is_object( $register_check) ) return true;
+			if ( $register_check == $name) return true;
 			
 			return false;
 			
@@ -136,14 +151,28 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         
         function get_user_settings( $user_name ) {
         	global $wpdb;
-        				
-			$user_settings = $wpdb->get_results("
+ 
+			switch ( $this->management_mode ) {
+				case 'single':
+					$role = " AND user_type='single'";
+					break;
+				case 'roles':
+					$role = " AND user_type='roles'";
+					break;
+				case 'users':
+					$role = " AND user_type='users'";
+					break;
+			}
+			
+			if ( $user_name == 'wp_super_edit_default' ) $role = " AND user_type='single'";
+			
+			$user_settings = $wpdb->get_row("
 				SELECT user_name, user_nicename, editor_options 
 				FROM $this->db_users
-				WHERE user_name = '$user_name'
+				WHERE user_name = '$user_name'$role
 			");
-			
-			return $user_settings[0];
+						
+			return $user_settings;
 
         }
 

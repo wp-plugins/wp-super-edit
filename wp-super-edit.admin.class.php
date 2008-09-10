@@ -4,20 +4,26 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
     
     class wp_super_edit_admin extends wp_super_edit_core {
 
-		public $ui;
-		public $ui_url;
-		public $ui_form_url;
-		public $nonce;
-		public $plugins;
-		public $buttons;
-		public $active_plugins;
-		public $active_buttons;
+		var $ui;
+		var $ui_url;
+		var $ui_form_url;
+		var $nonce;
+		var $plugins;
+		var $buttons;
+		var $active_plugins;
+		var $active_buttons;
+		
+		var $user_profile;
 
 		function init_ui() {
 			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
 			if ( !$this->is_installed ) $this->ui = 'options';
-			if ( IS_PROFILE_PAGE ) $this->ui = 'buttons';
-
+			
+			if ( strstr( $_SERVER['PHP_SELF'], 'users.php' ) != false ) {
+				$this->user_profile = true;
+				$this->ui = 'buttons';
+			}
+			
 			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
 			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
 			$this->nonce = 'wp-super-edit-update-key';
@@ -82,17 +88,16 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function get_user_settings_ui( $user_name ) {
         	global $wpdb, $userdata;
         	
-			if ( !$this->check_registered( $user_name, 'user' ) ) $user_name = 'wp_super_edit_default';
+			if ( !$this->check_registered( 'user', $user_name ) ) $user_name = 'wp_super_edit_default';
 			
 			$user_settings = $this->get_user_settings( $user_name );
 			
 			$current_user['user_name'] = $user_name;
+			$current_user['user_nicename'] = $user_settings->user_nicename;
 			
-			if ( $this->management_mode == 'users' ) {
+			if ( $this->management_mode == 'users' && $this->user_profile == true ) {
 				$current_user['user_nicename'] = $userdata->display_name;
-			} else {
-				$current_user['user_nicename'] = $user_settings->user_nicename;
-			}
+			} 
 						
 			$current_user['editor_options'] = maybe_unserialize( $user_settings->editor_options );
 
@@ -157,28 +162,23 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			foreach ( $this->plugins as $plugin ) {
 				if ( $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
-					$result = $wpdb->query( "
-						UPDATE $this->db_plugins
-						SET status='yes'
-						WHERE name='$plugin->name'
-						" );
-					$result = $wpdb->query( "
-						UPDATE $this->db_buttons
-						SET status='yes'
-						WHERE plugin='$plugin->name'
-						" );
+					$status = 'yes';
 				} else {
-					$result = $wpdb->query( "
-						UPDATE $this->db_plugins
-						SET status='no'
-						WHERE name='$plugin->name'
-						" );
-					$result = $wpdb->query( "
-						UPDATE $this->db_buttons
-						SET status='no'
-						WHERE plugin='$plugin->name'
-						" );
+					$status = 'no';
 				}
+				
+				$plugin_result = $wpdb->query( $wpdb->prepare( "
+					UPDATE $this->db_plugins
+					SET status=%s
+					WHERE name=%s ",
+					$status, $plugin->name 
+				) );
+				$button_result = $wpdb->query( $wpdb->prepare( "
+					UPDATE $this->db_buttons
+					SET status=%s
+					WHERE plugin=%s ",
+					$status, $plugin->name 
+				) );				
 			}
 									
 			$this->get_plugins();
@@ -192,9 +192,46 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
 		function do_buttons() {
 			global $wpdb;
+						
+			$current_settings = $this->get_user_settings_ui( $_REQUEST['wp_super_edit_user'] );
+			$current_user_settings = $current_settings['editor_options'];
+			unset( $current_settings );
+			
+			$separators = explode( ',', $_REQUEST['wp_super_edit_separators'] );
+			
+			$wp_super_edit_rows[1] = explode( ',', $_REQUEST['wp_super_edit_row_1'] );
+			$wp_super_edit_rows[2] = explode( ',', $_REQUEST['wp_super_edit_row_2'] );
+			$wp_super_edit_rows[3] = explode( ',', $_REQUEST['wp_super_edit_row_3'] );
+			$wp_super_edit_rows[4] = explode( ',', $_REQUEST['wp_super_edit_row_4'] );
+
+			foreach( $wp_super_edit_rows as $wp_super_edit_row_number => $wp_super_edit_row ) {
+				if ( empty( $wp_super_edit_row ) ) continue;
+					
+				$button_row_setting = array();
+				$button_row = '';
+				
+				foreach( $wp_super_edit_row as $wp_super_edit_button ) {
+				
+					if ( empty( $wp_super_edit_button ) ) continue;
+					
+					$button_row_setting[] = $wp_super_edit_button;
+					
+					if ( in_array( $wp_super_edit_button, $separators ) ) {
+						$button_row_setting[] = '|';
+					}
+				
+				}
+								
+				$button_row = implode( ',', $button_row_setting );
+				$button_array_key = 'theme_advanced_buttons' . $wp_super_edit_row_number;
+				
+				$current_user_settings[$button_array_key] = $button_row;
+				
+			}
 			
 			
-			print_r($_REQUEST);
+			$this->update_user_settings( $_REQUEST['wp_super_edit_user'], $current_user_settings );
+
 		}
 
 
@@ -215,20 +252,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			if ( $this->check_registered( 'plugin', $plugin['name'] ) ) return true;
 			
-			$plugin_values = '"' .
-				$plugin['name'] . '", "' . 
-				$plugin['nicename'] . '", "' . 
-				$plugin['description'] . '", "' . 
-				$plugin['provider'] . '", "' . 
-				$plugin['status'] . '", "' . 
-				$plugin['callbacks'] . '"'
-			;
-	
-			$wpdb->query("
-				INSERT INTO $this->db_plugins 
-				(name, nicename, description, provider, status, callbacks) 
-				VALUES ($plugin_values)
-			");
+			$wpdb->query( $wpdb->prepare( "
+				INSERT INTO $this->db_plugins
+				( name, nicename, description, provider, status, callbacks ) 
+				VALUES ( %s, %s, %s, %s, %s, %s )", 
+				$plugin['name'], $plugin['nicename'], $plugin['description'], $plugin['provider'], $plugin['status'], $plugin['callbacks']
+			) );
         	
         }
 
@@ -236,45 +265,46 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         	global $wpdb;
 			
 			if ( $this->check_registered( 'button', $button['name'] ) ) return true;
-			
-			$button_values = '"' .
-				$button['name'] . '", "' . 
-				$button['nicename'] . '", "' . 
-				$button['description'] . '", "' . 
-				$button['provider'] . '", "' . 
-				$button['plugin'] . '", "' . 
-				$button['status'] . '"'
-			;
-			
-			$wpdb->query("
+
+			$wpdb->query( $wpdb->prepare( "
 				INSERT INTO $this->db_buttons 
-				(name, nicename, description, provider, plugin, status) 
-				VALUES ($button_values)
-			");
+				( name, nicename, description, provider, plugin, status )  
+				VALUES ( %s, %s, %s, %s, %s, %s )", 
+				$button['name'], $button['nicename'], $button['description'], $button['provider'], $button['plugin'], $button['status'] 
+			) );
+
 		}
 
-        function register_user_settings( $user_name = 'wp_super_edit_default', $user_nicename = 'Default Editor Settings', $user_settings, $type = 'single',  $user_id = 'wp_super_edit' ) {
+        function register_user_settings( $user_name = 'wp_super_edit_default', $user_nicename = 'Default Editor Settings', $user_settings, $type = 'single' ) {
         	global $wpdb;
 			
 			$settings = maybe_serialize( $user_settings );
-			$settings = $wpdb->escape( $settings );
-			
-			$user_values = '"' .
-				$user_id . '", "' . 
-				$user_name . '", "' . 
-				$user_nicename . '", "' . 
-				$type . '", "' . 
-				$settings . '"'
-			;
-			
-			$wpdb->query("
-				INSERT INTO $this->db_users 
-				(user_id, user_name, user_nicename, user_type, editor_options) 
-				VALUES ($user_values)
-			");
+
+			$wpdb->query( $wpdb->prepare( "
+				INSERT INTO $this->db_users
+				( user_name, user_nicename, user_type, editor_options ) 
+				VALUES ( %s, %s, %s, %s )", 
+				$user_name, $user_nicename, $type, $settings 
+			) );
 					
 		}
-		
+
+        function update_user_settings(  $user_name = 'wp_super_edit_default', $user_settings ) {
+        	global $wpdb;
+			
+			$settings = maybe_serialize( $user_settings );
+			
+			$management_mode = ( $user_name == 'wp_super_edit_default' ? 'single' : $this->management_mode );
+
+			$wpdb->query( $wpdb->prepare( "
+				UPDATE $this->db_users
+				SET editor_options = %s 
+				WHERE user_name = %s AND user_type = %s", 
+				$settings, $user_name, $management_mode 
+			) );
+					
+		}
+
 		function register_new_user( $user_name ) {
         	global $wpdb, $wp_roles, $userdata;
 
@@ -282,12 +312,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				case 'single':
 					return;
 				case 'roles':
-					print_r ( $wp_roles->role_names	);			
+					if ( isset( $wp_roles->role_names[$user_name] ) ) {
+						$nice_name = translate_with_context( $wp_roles->role_names[$user_name] );
+						$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
+						$editor_options = maybe_unserialize( $user_settings->editor_options );
+						$this->register_user_settings( $user_name, $nice_name, $editor_options, $this->management_mode );
+					}
 					break;
 				case 'users':
 					$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
 					$editor_options = maybe_unserialize( $user_settings->editor_options );
-					$this->register_user_settings( $userdata->user_login, 'user', $editor_options, 'user', $userdata->user_login );
+					$this->register_user_settings( $userdata->user_login, 'user', $editor_options, $this->management_mode );
 					break;	
 				default:
 					break;
@@ -808,14 +843,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					
 					$roles = Array();
 
-					$roles['default'] = 'Default Button Settings';
+					$roles['wp_super_edit_default'] = 'Default Button Settings';
 
 					foreach( $wp_roles->role_names as $role => $name ) {
 						$name = translate_with_context($name);
 						$roles[$role] = $name;
+						if ( $_REQUEST['wp_super_edit_manage_role'] == $role || $_REQUEST['wp_super_edit_user'] == $role ) {
+							$selected = $role;
+						}
 					}					
 					
-					$role_select = $this->form_select( 'wp_super_edit_manage_role', $roles, '', true );
+					$role_select = $this->form_select( 'wp_super_edit_manage_role', $roles, $selected, true );
 										
 					$submit_button = $this->submit_button( 'Load Button Settings', '', true );
 					$submit_button_group = $this->html_tag( array(
@@ -899,27 +937,29 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* WP Super Edit Buttons Interface
 		* 
 		*/
-		function buttons_ui( $page = '' ) {
+		function buttons_ui() {
         	global $userdata;
+        	
+        	$user = 'wp_super_edit_default';
         	
         	switch ( $this->management_mode ) {
 				case 'single':
 					$user = 'wp_super_edit_default';
 					break;
 				case 'roles':
-					if ( isset( $_REQUEST['wp_super_edit_role'] ) ) {
-						$user = $_REQUEST['wp_super_edit_role'];
-					} 				
+					if ( isset( $_REQUEST['wp_super_edit_manage_role'] ) )
+						$user = $_REQUEST['wp_super_edit_manage_role'];
+ 
+					if ( isset( $_REQUEST['wp_super_edit_user'] ) ) 
+						$user = $_REQUEST['wp_super_edit_user'];
+					
 					break;
 				case 'users':
-					if ( $page == 'user' ) {
-						$user = $userdata->user_login;
-					} 
+					if ( $this->user_profile == true ) $user = $userdata->user_login; 
 					break;	
 				default:
 					break;
 			}
-
 			
 			if ( !$this->check_registered( 'user', $user ) ) {			
 				$this->register_new_user( $user );
@@ -927,13 +967,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$current_user = $this->get_user_settings_ui( $user );
 			
-			if ( $page == '' ) $this->user_management_ui();
-
-			$this->html_tag( array(
-				'tag' => 'div',
-				'tag_type' => 'open',
-				'id' => 'wp_super_edit_button_save'
-			) );
+			if ( !$this->user_profile ) $this->user_management_ui();
 				
 			$hidden_form_items = $this->html_tag( array(
 				'tag' => 'input',
@@ -941,7 +975,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'type' => 'hidden',
 				'id' => 'i_wp_super_edit_user',
 				'name' => 'wp_super_edit_user',
-				'value' => '',
+				'value' => $user,
 				'return' => true
 			) );
 			
@@ -968,16 +1002,24 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				) );
 				
 			}
-			
-			$submit_button = $this->submit_button( 'Update Button Settings', $current_user['user_nicename'], true );
-			$submit_button_group = $this->html_tag( array(
-				'tag' => 'p',
-				'content' => $hidden_form_items . $submit_button,
-				'return' => true
-			) );	
-			
-			$this->form( 'buttons', $submit_button_group, false, 'submitButtonConfig();' );		
+						
+			$submit_button = $this->submit_button( 'Update Button Settings For: ' . $current_user['user_nicename'], $hidden_form_items , true );
 
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_buttons'
+			) );	
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_button_save'
+			) );
+
+			$this->form( 'buttons', $submit_button, false, 'submitButtonConfig();' );
+			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'close'
@@ -986,15 +1028,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
-				'id' => 'wp_super_edit_buttons'
-			) );	
-			
-			$this->html_tag( array(
-				'tag' => 'div',
-				'tag_type' => 'open',
 				'id' => 'button_rows'
 			) );
+			
 
+			
 			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
 				
 				$this->html_tag( array(
@@ -1057,7 +1095,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 		
 			$this->html_tag( array(
-				'tag' => 'div',
+				'tag' => 'ul',
 				'tag_type' => 'open',
 				'id' => 'row_section_disabled',
 				'class' => 'row_section'
@@ -1071,7 +1109,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			}
 
 			$this->html_tag( array(
-				'tag' => 'div',
+				'tag' => 'ul',
 				'tag_type' => 'close'
 			) );							
 

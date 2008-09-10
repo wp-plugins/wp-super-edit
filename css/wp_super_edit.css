@@ -86,11 +86,10 @@ div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 a {
 }
 
 div#wp_super_edit_button_save {
-	width: 19%;
-	margin: 0;
-	padding: 0;
-	float: right;
-	border-left: 4px solid #448ABD;
+	margin: .4em 0;
+	padding: .2em;
+	background: #FFFF33;
+	border: 1px solid #ccc;
 }
 
 div#wp_super_edit_buttons {
@@ -132,7 +131,7 @@ li.button_control {
 	cursor: move;
 }
 
-div.button_separator {
+li.button_separator {
 	border-right: 4px dotted #666;
 }	
 
@@ -175,7 +174,13 @@ div#disabled_buttons {
 	margin: 0;
 	padding: 0;
 	float: right;
-	border-left: 4px solid #448ABD;
+	border: 2px solid #448ABD;
+}
+
+#disabled_buttons ul {
+	height: auto;
+	margin: .4em;
+	clear: both;
 }
 
 #disabled_buttons li.button_control {
