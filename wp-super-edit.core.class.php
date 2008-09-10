@@ -11,6 +11,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		
 		var $core_path;
 		var $core_uri;
+
+		var $tinymce_plugins_path;
+		var $tinymce_plugins_uri;
+		
+		var $management_modes;
+		var $management_mode;
+
+		var $active_plugins;
 		 
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
@@ -34,6 +42,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	if ( !$this->is_installed ) return;
         	
         	$this->management_mode = $this->get_option( 'management_mode' );
+			$this->get_active_plugins();
         	
         }
 
@@ -149,6 +158,16 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			return false;
         }
         
+        function get_active_plugins() {
+        	global $wpdb;
+        	
+			$this->active_plugins = $wpdb->get_results("
+				SELECT name, nicename, description, provider, status 
+				FROM $this->db_plugins
+				WHERE status='yes'
+			");
+        }         
+        
         function get_user_settings( $user_name ) {
         	global $wpdb;
  
@@ -175,6 +194,36 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			return $user_settings;
 
         }
+ 
+         function tinymce_settings( $initArray ) {
+        	global $wpdb, $current_user;
+						
+			switch ( $this->management_mode ) {
+				case 'single':
+					$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
+					break;
+				case 'roles':
+					$user_roles = array_keys( $current_user->caps );
+					$user_settings = $this->get_user_settings( $user_roles[0] );
+					break;
+				case 'users':
+					$user_settings = $this->get_user_settings( $current_user->user_login );
+					break;
+			}
+			
+			$tinymce_user_settings = maybe_unserialize( $user_settings->editor_options );
+			
+			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
+			
+				$row_name = 'theme_advanced_buttons' . $button_row;
+				$initArray[$row_name] = $tinymce_user_settings[$row_name];
+			
+			}
+
+			return $initArray;
+
+        }
+        
 
     }
 

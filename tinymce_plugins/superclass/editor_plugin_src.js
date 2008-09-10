@@ -19,7 +19,7 @@ var TinyMCE_SuperClassPlugin = {
 		return {
 			longname : 'Wordpress CSS Classes',
 			author : 'Jess Planck',
-			authorurl : 'http://www.funroe.net/',
+			authorurl : 'http://funroe.net/',
 			infourl : 'http://factory.funroe.net/projects/wp-super-edit/',
 			version : "1.0"
 		};

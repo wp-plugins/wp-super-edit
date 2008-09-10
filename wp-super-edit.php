@@ -103,9 +103,33 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 
 		unset( $initArray['disk_cache'] );
 		unset( $initArray['compress'] );
+		return $initArray;
+
 	}
 	
+	$initArray = $wp_super_edit->tinymce_settings( $initArray );
+	
 	return $initArray;
+}
+
+/*
+The following filter takes an associative array of external plugins for TinyMCE in the form 'plugin_name' => 'url'.
+It adds the plugin's name to TinyMCE's plugins init and the call to PluginManager to load the plugin.
+The url should be absolute and should include the js file name to be loaded. Example:
+array( 'myplugin' => 'http://my-site.com/wp-content/plugins/myfolder/mce_plugin.js' )
+If the plugin uses a button, it should be added with one of the "$mce_buttons" filters.
+
+$mce_external_plugins = apply_filters('mce_external_plugins', array());
+*/
+
+function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
+	global $wp_super_edit;
+	
+	foreach( $wp_super_edit->active_plugins as $plugin ) {
+		$tinymce_plugins[$plugin->name] = $wp_super_edit->tinymce_plugins_uri . $plugin->name . '/editor_plugin.js';
+	}
+	
+	return $tinymce_plugins;
 }
 
 /**
@@ -117,8 +141,8 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 add_action('init', 'wp_super_edit_init', 5);
 
 if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) !== false ) {
-	add_action('mce_options', 'wp_super_edit_mce_options', 5);
 	add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
+	add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
 }
 
 

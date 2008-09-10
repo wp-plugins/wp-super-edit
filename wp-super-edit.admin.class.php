@@ -10,7 +10,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		var $nonce;
 		var $plugins;
 		var $buttons;
-		var $active_plugins;
 		var $active_buttons;
 		
 		var $user_profile;
@@ -30,8 +29,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			if ( $this->ui == 'plugins' ) {
 				 $this->get_plugins();
-				 $this->get_active_plugins();
 			}
+			
 			if ( $this->ui == 'buttons' ) {
 				 $this->get_buttons();
 				 $this->get_active_buttons();
@@ -45,17 +44,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				SELECT name, nicename, description, provider, status 
 				FROM $this->db_plugins
 			");
-        }
-        
-        function get_active_plugins() {
-        	global $wpdb;
-        	
-			$this->active_plugins = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status 
-				FROM $this->db_plugins
-				WHERE status='yes'
-			");
-        }        
+        }       
         
         function get_buttons() {
         	global $wpdb;
@@ -1127,19 +1116,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'id' => 'wp_super_edit_dialog',
 				'class' => 'hidden'
-			) );
-			
-			
-			$this->html_tag( array(
-				'tag' => 'button',
-				'onClick' => "wpseDebug();",
-				'content' => 'Debug'
-			) );
-			
-			$this->html_tag( array(
-				'tag' => 'div',
-				'id' => "wp_super_edit_debug",
-				'content' => 'Debug'
 			) );
 
 		}

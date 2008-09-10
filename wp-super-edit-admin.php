@@ -262,26 +262,6 @@ function wp_super_edit_admin_footer() {
 	
 	// Plugin and Button Control Functions
 	
-	
-	function wpseDebug() {
-
-		var debugStr;
-		
-		debugStr = 'Test: <br />';
-		
-		debugStr += 'Row 1: ' + wpsuperedit('#row_section_1').sortable('toArray').join(", ") + '<br />';
-		debugStr += 'Row 2: ' + wpsuperedit('#row_section_2').sortable('toArray').join(", ") + '<br />';
-		debugStr += 'Row 3: ' + wpsuperedit('#row_section_3').sortable('toArray').join(", ") + '<br />';
-		debugStr += 'Row 4: ' + wpsuperedit('#row_section_4').sortable('toArray').join(", ") + '<br />';
-
-		debugStr += 'Separators: ' +  wpsuperedit( '.button_separator' ).map(function() {
-            return wpsuperedit(this).attr('id');
-        }).get().join(", ")  + '<br />';
-        
-		wpsuperedit( '#wp_super_edit_debug' ).html( debugStr )
-	}
-
-	
 	function toggleSeparator(button) {
 		wpsuperedit( '#' + button ).toggleClass( 'button_separator' );
 	}
