@@ -22,7 +22,7 @@ $wp_super_edit->register_tinymce_plugin( array(
 // Tiny MCE Buttons provided by this plugin
 
 $wp_super_edit->register_tinymce_button( array(
-	'name' => 'superstyleprops', 
+	'name' => 'styleprops', 
 	'nicename' => 'Style Properties', 
 	'description' => 'Interface for properties that can be manipulated using the STYLE attribute.', 
 	'provider' => 'wp_super_edit', 

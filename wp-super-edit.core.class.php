@@ -162,7 +162,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	global $wpdb;
         	
 			$this->active_plugins = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status 
+				SELECT name, url, nicename, description, provider, status 
 				FROM $this->db_plugins
 				WHERE status='yes'
 			");

@@ -16,7 +16,7 @@ $wp_super_edit->register_tinymce_plugin( array(
 	'description' => 'Insert layers using DIV HTML tag. This plugin will change the editor to allow all DIV tags. Provides the Insert Layer, Move Layer Forward, Move Layer Backward, and Toggle Layer Positioning Buttons.', 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
-	'callbacks' => 'superedit_allow_div'
+	'callbacks' => ''
 ));
 
 // Tiny MCE Buttons provided by this plugin

@@ -11,7 +11,7 @@
 // WP Super Edit options for this plugin
 
 $wp_super_edit->register_tinymce_plugin( array(
-	'name' => 'xhtmlextras', 
+	'name' => 'xhtmlxtras', 
 	'nicename' => 'XHTML Extras Plugin', 
 	'description' => 'Allows access to interfaces for some XHTML tags like CITE, ABBR, ACRONYM, DEL and INS. Also can give access to advanced XHTML properties such as javascript events. Provides the Citation, Abbreviation, Acronym, Deletion, Insertion, and XHTML Attributes Buttons.', 
 	'provider' => 'wp_super_edit', 
@@ -26,7 +26,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'nicename' => 'Citation', 
 	'description' => 'Indicate a citation using the HTML CITE tag.', 
 	'provider' => 'wp_super_edit', 
-	'plugin' => 'xhtmlextras', 
+	'plugin' => 'xhtmlxtras', 
 	'status' => 'no'
 ));
 
@@ -35,7 +35,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'nicename' => 'Abbreviation', 
 	'description' => 'Indicate an abbreviation using the HTML ABBR tag.', 
 	'provider' => 'wp_super_edit', 
-	'plugin' => 'xhtmlextras', 
+	'plugin' => 'xhtmlxtras', 
 	'status' => 'no'
 ));
 
@@ -44,7 +44,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'nicename' => 'Acronym', 
 	'description' => 'Indicate an acronym using the HTML ACRONYM tag.', 
 	'provider' => 'wp_super_edit', 
-	'plugin' => 'xhtmlextras', 
+	'plugin' => 'xhtmlxtras', 
 	'status' => 'no'
 ));
 
@@ -53,7 +53,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'nicename' => 'Deletion', 
 	'description' => 'Use the HTML DEL tag to indicate recently deleted content.', 
 	'provider' => 'wp_super_edit', 
-	'plugin' => 'xhtmlextras', 
+	'plugin' => 'xhtmlxtras', 
 	'status' => 'no'
 ));
 
@@ -62,7 +62,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'nicename' => 'Insertion', 
 	'description' => 'Use the HTML INS tag to indicate newly inserted content.', 
 	'provider' => 'wp_super_edit', 
-	'plugin' => 'xhtmlextras', 
+	'plugin' => 'xhtmlxtras', 
 	'status' => 'no'
 ));
 
@@ -71,7 +71,7 @@ $wp_super_edit->register_tinymce_button( array(
 	'nicename' => 'XHTML Attributes', 
 	'description' => 'Modify advanced attributes and javascript events.', 
 	'provider' => 'wp_super_edit', 
-	'plugin' => 'xhtmlextras', 
+	'plugin' => 'xhtmlxtras', 
 	'status' => 'no'
 ));
 

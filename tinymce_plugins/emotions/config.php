@@ -22,7 +22,7 @@ $wp_super_edit->register_tinymce_plugin( array(
 // Tiny MCE Buttons provided by this plugin
 
 $wp_super_edit->register_tinymce_button( array(
-	'name' => 'superemotions', 
+	'name' => 'emotions', 
 	'nicename' => 'Emoticon / Icons', 
 	'description' => 'Interface for Customized Wordpress Emoticon / Icon images. Uses Wordpress icon set.', 
 	'provider' => 'wp_super_edit', 

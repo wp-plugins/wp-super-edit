@@ -56,3 +56,20 @@ function myplugin_menu() {
    add_action( "admin_print_scripts-$page", 'myplugin_admin_head' );
  }
 }
+
+## Notes for Converting or adjusting TinyMCE plugins ##
+
+Convert js includes to load from WordPress tinymce install
+
+../../tiny_mce_popup.js
+../../../../../wp-includes/js/tinymce/tiny_mce_popup.js
+
+
+../../utils/mctabs.js
+../../../../../wp-includes/js/tinymce/utils/mctabs.js
+
+../../utils/editable_selects.js
+../../../../../wp-includes/js/tinymce/utils/editable_selects.js
+
+../../utils/validate.js
+../../../../../wp-includes/js/tinymce/utils/validate.js
