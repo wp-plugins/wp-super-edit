@@ -18,7 +18,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
 			if ( !$this->is_installed ) $this->ui = 'options';
 			
-			if ( strstr( $_SERVER['PHP_SELF'], 'users.php' ) != false ) {
+			if ( strstr( $_SERVER['PHP_SELF'], 'users.php' ) != false || strstr( $_SERVER['PHP_SELF'], 'profile.php' ) != false ) {
 				$this->user_profile = true;
 				$this->ui = 'buttons';
 			}
@@ -562,13 +562,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* Create administration menu
 		* 
 		*/
-		function admin_menu_ui() {
-			$this->html_tag( array(
-				'tag' => 'div',
-				'tag_type' => 'open',
-				'id' => 'wp_super_edit_ui_menu'
-			) );		
-		
+		function admin_menu_ui() {		
 		
 			$ui_tabs['buttons'] = $this->html_tag( array(
 				'tag' => 'a',
@@ -613,12 +607,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$this->html_tag( array(
 				'tag' => 'ul',
-				'content' => $ui_tab_list
-			) );
-
-			$this->html_tag( array(
-				'tag' => 'div',
-				'tag_type' => 'close'
+				'content' => $ui_tab_list,
+				'id' => 'wp_super_edit_ui_menu'
 			) );
 			
 		}
@@ -715,7 +705,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
-				'id' => 'wp_super_edit_options'
+				'id' => 'wp_super_edit_settings'
 			) );
 
 			$this->display_management_mode();
@@ -755,7 +745,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
-				'id' => 'wp_super_edit_plugins'
+				'id' => 'wp_super_edit_settings'
 			) );
 			
 			$submit_button = $this->submit_button( 'Update Options', '', true );
@@ -955,6 +945,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			}
 			
 			$current_user = $this->get_user_settings_ui( $user );
+						
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'wp_super_edit_settings'
+			) );			
 			
 			if ( !$this->user_profile ) $this->user_management_ui();
 				
@@ -993,13 +989,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			}
 						
 			$submit_button = $this->submit_button( 'Update Button Settings For: ' . $current_user['user_nicename'], $hidden_form_items , true );
-
-			
-			$this->html_tag( array(
-				'tag' => 'div',
-				'tag_type' => 'open',
-				'id' => 'wp_super_edit_buttons'
-			) );	
+	
 
 			$this->html_tag( array(
 				'tag' => 'div',

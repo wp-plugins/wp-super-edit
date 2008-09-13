@@ -49,7 +49,7 @@ function wp_super_edit_plugin_folder_scan() {
 /**
 * Set up administration interface
 *
-* Function used by Wordpress to initialize the adminsitrative interface.
+* Function used by Wordpress to initialize the adminsitrative interface. This function also handles option changes based on user interface.
 *
 */
 function wp_super_edit_admin_setup() {
@@ -67,6 +67,7 @@ function wp_super_edit_admin_setup() {
 
 		if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			if ( !current_user_can('manage_options') ) return;
 			include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
 			wp_super_edit_install_db_tables();
 			wp_super_edit_wordpress_button_defaults();
@@ -76,22 +77,26 @@ function wp_super_edit_admin_setup() {
 		
 		if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			if ( !current_user_can('manage_options') ) return;
 			$wp_super_edit->uninstall();
 			$wp_super_edit->is_installed = false;
 		}
 		
 		if (  $_REQUEST['wp_super_edit_action'] == 'options' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			if ( !current_user_can('manage_options') ) return;
 			$wp_super_edit->do_options();
 		}
 		
 		if (  $_REQUEST['wp_super_edit_action'] == 'plugins' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			if ( !current_user_can('manage_options') ) return;
 			$wp_super_edit->do_plugins();
 		}
 		
 		if (  $_REQUEST['wp_super_edit_action'] == 'buttons' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
+			if ( !current_user_can('edit_posts') ) return;
 			$wp_super_edit->do_buttons();
 		}		
 	

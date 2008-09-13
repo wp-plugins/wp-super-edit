@@ -1,13 +1,14 @@
 div#wp_super_edit_installer {
 	position: relative;
-	width: 100%;
+	width: 90%;
+	margin: 2em auto;
 }
 
 div.wp_super_edit_install {
 	width: 100%;	
 	position: absolute;
 	top: 0;
-	margin: 2em;
+	margin: 2em 0;
 	padding: 1em;
 	text-align: center;
 }
@@ -35,34 +36,25 @@ div#wp_super_edit_null {
 	display: none;
 }
 
-div#wp_super_edit_ui_menu {
+ul#wp_super_edit_ui_menu {
 	margin: .5em;
 	padding: .5em;
 	border-bottom: 1px solid #ccc;
-} 
-
-div#wp_super_edit_ui_menu ul {
-	margin: 0;
-	padding: 0;
 	clear: both;
 } 
 
-div#wp_super_edit_ui_menu ul li {
+ul#wp_super_edit_ui_menu li {
 	display: inline;
 	list-style-type: none;
 }
 
-div#wp_super_edit_ui_menu ul li a {
+ul#wp_super_edit_ui_menu li a {
 	margin: 1em 2em;
 	padding: .3em;
 	text-decoration: none;
 }
 
-div#wp_super_edit_ui_menu ul li a:hover {
-	background: #c1c1c1;
-}
-
-div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 {
+ul#wp_super_edit_ui_menu li.wp_super_edit_ui_current h3 {
 	display: inline;
 	margin: .5em 1em 0 1em;
 	padding: .5em;
@@ -72,17 +64,17 @@ div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 {
 	background: #fff;
 }
 
+ul#wp_super_edit_ui_menu li.wp_super_edit_ui_current h3 a {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
 div#wp_super_edit_deactivate {
 	margin: .5em;
 	padding: .5em;
 	background: #FF3;
 	border: 1px solid #ccc;
-}
-
-div#wp_super_edit_ui_menu ul li.wp_super_edit_ui_current h3 a {
-	margin: 0;
-	padding: 0;
-	border: none;
 }
 
 div#wp_super_edit_button_save {
@@ -92,9 +84,15 @@ div#wp_super_edit_button_save {
 	border: 1px solid #ccc;
 }
 
-div#wp_super_edit_buttons {
+/* WP Super Edit settings area */
+
+div#wp_super_edit_settings {
 	clear: both;
+	margin: .5em 0;
+	padding: .4em;
 }
+
+/* WP Super Edit button settings */
 
 div#button_rows {
 	float: left;
