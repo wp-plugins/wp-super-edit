@@ -94,6 +94,18 @@ div#wp_super_edit_settings {
 
 /* WP Super Edit button settings */
 
+div#wp_super_edit_user_management {
+	margin: .4em;
+	padding: .4em;
+	border: 1px solid #ccc;
+}
+
+div#button_controls {
+	margin: .4em 0;
+	padding: .4em;
+	border: 1px solid #ccc;
+}
+
 div#button_rows {
 	float: left;
 	margin: 0;
@@ -219,10 +231,28 @@ div#disabled_buttons {
 }
 
 .ui-dialog-titlebar {
-  font: 12px bold helvetica, verdana, sans-serif;
+  margin: 0;
+  padding: .2em;
+  font-size: 105%;
+  font-weight: bold;
   color: #fff;
   background: #0D324F;
 }
+
+.ui-dialog-titlebar-close {
+	width: 16px;
+	height: 16px;
+	background: url('../images/close.png') no-repeat;
+	position:absolute;
+	top: 2px;
+	right: 11px;
+	cursor: default;
+	border: none;
+}
+	
+.ui-dialog-titlebar-close span {
+	display: none;
+} 
 
 /* Debug */
 

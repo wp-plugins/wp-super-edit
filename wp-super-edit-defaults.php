@@ -10,7 +10,7 @@
 function wp_super_edit_install_db_tables() {
 	global $wpdb, $wp_super_edit;
 
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 	if ( !is_object( $wp_super_edit ) ) {
 		$wp_super_edit = new wp_super_edit_admin();

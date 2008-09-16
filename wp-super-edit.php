@@ -47,15 +47,15 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 /**
 * @internal: WP Super Edit core class always needed
 */
-require_once( ABSPATH .  PLUGINDIR . '/wp-super-edit/wp-super-edit.core.class.php' );
+require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 
 /**
 * Conditional includes for WP Super Edit fuctions and classes in WordPress admin panels
 * Set $wp_super_edit primary object instance
 */
 if ( is_admin() ) {
-	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
-	require_once( ABSPATH . PLUGINDIR . '/wp-super-edit/wp-super-edit-admin.php' );
+	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
+	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit-admin.php' );
 	$wp_super_edit = new wp_super_edit_admin();
 } else {
 	$wp_super_edit = new wp_super_edit_core();

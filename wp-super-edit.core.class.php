@@ -39,14 +39,15 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->db_buttons =  $wpdb->prefix . 'wp_super_edit_buttons';
         	$this->db_users =  $wpdb->prefix . 'wp_super_edit_users';
         	
-			$this->core_path = ABSPATH . 'wp-content/plugins/wp-super-edit/';
-        	$this->core_uri = get_bloginfo('wpurl') . '/wp-content/plugins/wp-super-edit/';
+			$this->core_path = WP_PLUGIN_DIR . '/wp-super-edit/';
+        	$this->core_uri = WP_PLUGIN_URL . '/wp-super-edit/';
         	$this->tinymce_plugins_path = $this->core_path . 'tinymce_plugins/';
         	$this->tinymce_plugins_uri = $this->core_uri . 'tinymce_plugins/';
         	
         	$this->is_installed = $this->is_db_installed();
         	
         	$this->ui = false;
+        	$this->user_profile = false;
         	
         	$this->management_modes = array(
 				'single' => 'One editor setting for all users',

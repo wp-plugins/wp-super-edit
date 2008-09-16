@@ -62,14 +62,14 @@ function myplugin_menu() {
 Convert js includes to load from WordPress tinymce install
 
 ../../tiny_mce_popup.js
-../../../../../wp-includes/js/tinymce/tiny_mce_popup.js
+../../tinymce_utils/tiny_mce_popup.js
 
 
 ../../utils/mctabs.js
-../../../../../wp-includes/js/tinymce/utils/mctabs.js
+../../tinymce_utils/mctabs.js
 
 ../../utils/editable_selects.js
-../../../../../wp-includes/js/tinymce/utils/editable_selects.js
+../../tinymce_utils/editable_selects.js
 
 ../../utils/validate.js
-../../../../../wp-includes/js/tinymce/utils/validate.js
+../../tinymce_utils/validate.js

@@ -115,46 +115,58 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
 		function do_buttons() {
 			global $wpdb;
-						
-			$current_settings = $this->get_user_settings_ui( $_REQUEST['wp_super_edit_user'] );
+									
+			if ( $_REQUEST['wp_super_edit_action_control'] == 'reset_default' ) {
+				$user = 'wp_super_edit_default';
+			} else {
+				$user = $_REQUEST['wp_super_edit_user'];
+			}
+
+			$current_settings = $this->get_user_settings_ui( $user );
 			$current_user_settings = $current_settings['editor_options'];
 			unset( $current_settings );
 			
-			$separators = explode( ',', $_REQUEST['wp_super_edit_separators'] );
-			
-			$wp_super_edit_rows[1] = explode( ',', $_REQUEST['wp_super_edit_row_1'] );
-			$wp_super_edit_rows[2] = explode( ',', $_REQUEST['wp_super_edit_row_2'] );
-			$wp_super_edit_rows[3] = explode( ',', $_REQUEST['wp_super_edit_row_3'] );
-			$wp_super_edit_rows[4] = explode( ',', $_REQUEST['wp_super_edit_row_4'] );
-
-			foreach( $wp_super_edit_rows as $wp_super_edit_row_number => $wp_super_edit_row ) {
-				if ( empty( $wp_super_edit_row ) ) continue;
-					
-				$button_row_setting = array();
-				$button_row = '';
+			if ( $_REQUEST['wp_super_edit_action_control'] == 'update' || $_REQUEST['wp_super_edit_action_control'] == 'set_default' ) {
 				
-				foreach( $wp_super_edit_row as $wp_super_edit_button ) {
+				$separators = explode( ',', $_REQUEST['wp_super_edit_separators'] );
 				
-					if ( empty( $wp_super_edit_button ) ) continue;
+				$wp_super_edit_rows[1] = explode( ',', $_REQUEST['wp_super_edit_row_1'] );
+				$wp_super_edit_rows[2] = explode( ',', $_REQUEST['wp_super_edit_row_2'] );
+				$wp_super_edit_rows[3] = explode( ',', $_REQUEST['wp_super_edit_row_3'] );
+				$wp_super_edit_rows[4] = explode( ',', $_REQUEST['wp_super_edit_row_4'] );
+	
+				foreach( $wp_super_edit_rows as $wp_super_edit_row_number => $wp_super_edit_row ) {
+					if ( empty( $wp_super_edit_row ) ) continue;
+						
+					$button_row_setting = array();
+					$button_row = '';
 					
-					$button_row_setting[] = $wp_super_edit_button;
+					foreach( $wp_super_edit_row as $wp_super_edit_button ) {
 					
-					if ( in_array( $wp_super_edit_button, $separators ) ) {
-						$button_row_setting[] = '|';
+						if ( empty( $wp_super_edit_button ) ) continue;
+						
+						$button_row_setting[] = $wp_super_edit_button;
+						
+						if ( in_array( $wp_super_edit_button, $separators ) ) {
+							$button_row_setting[] = '|';
+						}
+					
 					}
-				
+									
+					$button_row = implode( ',', $button_row_setting );
+					$button_array_key = 'theme_advanced_buttons' . $wp_super_edit_row_number;
+					
+					$current_user_settings[$button_array_key] = $button_row;
+					
 				}
-								
-				$button_row = implode( ',', $button_row_setting );
-				$button_array_key = 'theme_advanced_buttons' . $wp_super_edit_row_number;
-				
-				$current_user_settings[$button_array_key] = $button_row;
-				
-			}
-			
+			} 
 			
 			$this->update_user_settings( $_REQUEST['wp_super_edit_user'], $current_user_settings );
 
+			if ( $_REQUEST['wp_super_edit_action_control'] == 'set_default' && !$this->user_profile ) {
+				$this->update_user_settings( 'wp_super_edit_default', $current_user_settings );
+			}
+			
 		}
 
         function register_tinymce_plugin( $plugin = array() ) {
@@ -368,7 +380,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'return' => $return
 			);
 			
-			if ( $onsubmit != '' ) $form_array['onSubmit'] = $onsubmit;
+			if ( $onsubmit != '' ) $form_array['onsubmit'] = $onsubmit;
 			
 			if ( $return == true ) return $this->html_tag( $form_array );
 			
@@ -801,7 +813,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'height' => '16',
 				'alt' => 'Button info for ' . $button->nicename,
 				'title' => 'Button info for ' . $button->nicename,
-				'onClick' => "getButtonInfo('$button->name');",
+				'onclick' => "getButtonInfo('$button->name');",
 				'return' => true
 			) );
 			
@@ -813,7 +825,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'height' => '7',
 				'alt' => 'Toggle separator for' . $button->nicename,
 				'title' => 'Toggle separator for ' . $button->nicename,
-				'onClick' => "toggleSeparator('$button->name');",
+				'onclick' => "toggleSeparator('$button->name');",
 				'return' => true
 			) );
 			
@@ -875,7 +887,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			if ( !$this->user_profile ) $this->user_management_ui();
 				
-			$hidden_form_items = $this->html_tag( array(
+			$hidden_form_user = $this->html_tag( array(
 				'tag' => 'input',
 				'tag_type' => 'single',
 				'type' => 'hidden',
@@ -908,9 +920,23 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				) );
 				
 			}
-						
-			$submit_button = $this->submit_button( 'Update Button Settings For: ' . $current_user['user_nicename'], $hidden_form_items , true );
-	
+			
+			$action_options = array(
+				'update' => 'Update Buttons',
+				'reset_default' => 'Reset to Defaults',
+				'set_default' => 'Set as Default'
+			);
+
+			if ( $user == 'wp_super_edit_default' ) {
+				unset( $action_options['set_default'] );
+				unset( $action_options['reset_default'] );
+			}
+			if ( $this->user_profile ) unset( $action_options['set_default'] );
+
+			
+			$set_default_controls = $this->form_select( 'wp_super_edit_action_control', $action_options, 'update', true );			
+
+			$submit_button = $this->submit_button( 'Update Button Settings For: ' . $current_user['user_nicename'], $hidden_form_user . $hidden_form_items , true );								
 
 			$this->html_tag( array(
 				'tag' => 'div',
@@ -918,11 +944,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_button_save'
 			) );
 
-			$this->form( 'buttons', $submit_button, false, 'submitButtonConfig();' );
+			$this->form( 'buttons', $submit_button . $set_default_controls, false, 'submitButtonConfig();' );
 			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'close'
+			) );
+
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'open',
+				'id' => 'button_controls'
 			) );
 			
 			$this->html_tag( array(
@@ -930,7 +962,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag_type' => 'open',
 				'id' => 'button_rows'
 			) );
-			
 
 			
 			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
@@ -1017,6 +1048,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'tag_type' => 'close'
 			) );
+			
+			$this->html_tag( array(
+				'tag' => 'br',
+				'class' => 'clear',
+				'tag_type' => 'single'
+			) );			
+			
+			$this->html_tag( array(
+				'tag' => 'div',
+				'tag_type' => 'close'
+			) );			
 
 			$this->html_tag( array(
 				'tag' => 'div',
