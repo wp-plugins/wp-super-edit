@@ -162,10 +162,9 @@ ul.row_section {
 h3.row_title {
 	clear: both;
 	font-size: 1.1em;
-	background: #CFEBF7;
 	margin: 0;
 	padding: .2em;
-	border-bottom: 4px solid #448ABD;
+	border-bottom: 4px solid #ccc;
 }
 
 div#disabled_buttons {
@@ -173,13 +172,14 @@ div#disabled_buttons {
 	margin: 0;
 	padding: 0;
 	float: right;
-	border: 2px solid #448ABD;
 }
 
 #disabled_buttons ul {
 	height: auto;
-	margin: .4em;
+	padding: .4em;
+	margin: 0;
 	clear: both;
+	float: none;
 }
 
 #disabled_buttons li.button_control {

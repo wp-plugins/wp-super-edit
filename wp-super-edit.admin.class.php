@@ -3,76 +3,7 @@
 if ( class_exists( 'wp_super_edit_core' ) ) {
     
     class wp_super_edit_admin extends wp_super_edit_core {
-
-		var $ui;
-		var $ui_url;
-		var $ui_form_url;
-		var $nonce;
-		var $plugins;
-		var $buttons;
-		var $active_buttons;
 		
-		var $user_profile;
-
-		function init_ui() {
-			$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
-			if ( !$this->is_installed ) $this->ui = 'options';
-			
-			if ( strstr( $_SERVER['PHP_SELF'], 'users.php' ) != false || strstr( $_SERVER['PHP_SELF'], 'profile.php' ) != false ) {
-				$this->user_profile = true;
-				$this->ui = 'buttons';
-			}
-			
-			$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
-			$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
-			$this->nonce = 'wp-super-edit-update-key';
-			
-			if ( $this->ui == 'plugins' ) {
-				 $this->get_plugins();
-			}
-			
-			if ( $this->ui == 'buttons' ) {
-				 $this->get_buttons();
-				 $this->get_active_buttons();
-			}
-		}
-
-        function get_plugins() {
-        	global $wpdb;
-        	
-			$this->plugins = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status 
-				FROM $this->db_plugins
-			");
-        }       
-        
-        function get_buttons() {
-        	global $wpdb;
-        	
-			$buttons = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status 
-				FROM $this->db_buttons
-			");
-			
-			foreach( $buttons as $button ) {
-				$this->buttons[$button->name] = $button;
-			}
-        }
-        
-         function get_active_buttons() {
-        	global $wpdb;
-        	
-			$buttons = $wpdb->get_results("
-				SELECT name, nicename, description, provider, status 
-				FROM $this->db_buttons
-				WHERE status='yes'
-			");
-			
-			foreach( $buttons as $button ) {
-				$this->active_buttons[$button->name] = $button;
-			}
-        }       
-        
 
         function get_user_settings_ui( $user_name ) {
         	global $wpdb, $userdata;
@@ -156,6 +87,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					$status = 'no';
 				}
 				
+				$plugin->status = $status;
+				
+				$this->plugins[$plugin->name] = $plugin;
+				
 				$plugin_result = $wpdb->query( $wpdb->prepare( "
 					UPDATE $this->db_plugins
 					SET status=%s
@@ -167,10 +102,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					SET status=%s
 					WHERE plugin=%s ",
 					$status, $plugin->name 
-				) );				
+				) );
 			}
 									
-			$this->get_plugins();
 		}
 		
 		/**
@@ -222,19 +156,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->update_user_settings( $_REQUEST['wp_super_edit_user'], $current_user_settings );
 
 		}
-
-
-        
-        function get_registered() {
-        	global $wpdb;
-        	
-			$this->registered_buttons = $wpdb->get_results("
-				SELECT name FROM $this->db_buttons
-			");
-			$this->registered_plugins = $wpdb->get_results("
-				SELECT name FROM $this->db_plugins
-			");
-        }
 
         function register_tinymce_plugin( $plugin = array() ) {
         	global $wpdb;

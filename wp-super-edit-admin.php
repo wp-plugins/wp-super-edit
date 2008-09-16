@@ -19,8 +19,6 @@
 */
 function wp_super_edit_plugin_folder_scan() {
 	global $wp_super_edit;
-
-	$wp_super_edit->get_registered();
 	
 	$tinymce_plugins = @ dir( $wp_super_edit->tinymce_plugins_path );
 	
@@ -54,9 +52,7 @@ function wp_super_edit_plugin_folder_scan() {
 */
 function wp_super_edit_admin_setup() {
 	global $wp_super_edit;
-		
-	$wp_super_edit->init_ui();
-		
+				
 	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 
     if ( $wp_super_edit->management_mode == 'users' ) {

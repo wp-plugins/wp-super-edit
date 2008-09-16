@@ -72,12 +72,13 @@ function wp_super_edit_init() {
 	global $wp_super_edit;
 	
 	if ( !$wp_super_edit->is_installed ) return;
-	
-	$plugin_callbacks = $wp_super_edit->plugin_init();
-			
-	if ( !$plugin_callbacks ) return;
+						
+	foreach ( $wp_super_edit->plugins as $plugin_name => $plugin ) {
 		
-	foreach ( $plugin_callbacks as $number => $plugin ) {
+		if ( $plugin->status == 'no' ) continue;
+		
+		if ( empty( $plugin->callbacks ) || count( $plugin->callbacks ) < 2 ) continue;
+				
 		$callbacks = explode( ',', $plugin->callbacks );
 		
 		require_once( $wp_super_edit->tinymce_plugins_path . $plugin->name . '/functions.php' );
@@ -90,6 +91,14 @@ function wp_super_edit_init() {
 
 }
 
+/**
+* WP Super Edit TinyMCE filter
+*
+* This function is a WordPress filter designed to use the array built by tinymce_config.php. This
+* filter is used to create a scan of default tinymce settings, and to create the tinymce 
+* configuration created by WP Super Edit.
+*
+*/
 function wp_super_edit_tinymce_filter( $initArray ) {
 	global $wp_super_edit;
 
@@ -104,7 +113,6 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 		unset( $initArray['disk_cache'] );
 		unset( $initArray['compress'] );
 		return $initArray;
-
 	}
 	
 	$initArray = $wp_super_edit->tinymce_settings( $initArray );
@@ -112,20 +120,17 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 	return $initArray;
 }
 
-/*
-The following filter takes an associative array of external plugins for TinyMCE in the form 'plugin_name' => 'url'.
-It adds the plugin's name to TinyMCE's plugins init and the call to PluginManager to load the plugin.
-The url should be absolute and should include the js file name to be loaded. Example:
-array( 'myplugin' => 'http://my-site.com/wp-content/plugins/myfolder/mce_plugin.js' )
-If the plugin uses a button, it should be added with one of the "$mce_buttons" filters.
-
-$mce_external_plugins = apply_filters('mce_external_plugins', array());
+/**
+* WP Super Edit TinyMCE Plugin filter
+*
+* This WordPress filter passes plugins activated by WP Super Edit and passes them during init of 
+* TinyMCE.
+*
 */
-
 function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	global $wp_super_edit;
-	
-	foreach( $wp_super_edit->active_plugins as $plugin ) {
+		
+	foreach( $wp_super_edit->plugins as $plugin ) {
 		if ( $plugin->url != '' ) {
 			if ( preg_match("/^(http:|https:)/i", $plugin->url ) ) {
 				$tinymce_plugins[$plugin->name] = $plugin->url;
@@ -160,5 +165,5 @@ if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) !== false ) {
 if ( is_admin() ) {
 	add_action('admin_init', 'wp_super_edit_admin_setup');
 } 
-    
+
 ?>

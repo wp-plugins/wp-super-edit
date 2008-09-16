@@ -83,6 +83,7 @@ function wp_super_edit_set_user_default() {
 	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
 	
 	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $tiny_mce_scan, 'single' );
+
 	$wp_super_edit->set_option( 'tinymce_scan', $tiny_mce_scan );
 	
 	$wp_super_edit->set_option( 'management_mode', 'single' );
@@ -101,8 +102,6 @@ function wp_super_edit_wordpress_button_defaults() {
 	global $wp_super_edit;
 
 	if ( !$wp_super_edit->is_db_installed ) return;
-
-	$wp_super_edit->get_registered();
 		
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'bold', 

@@ -17,8 +17,19 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		
 		var $management_modes;
 		var $management_mode;
-
-		var $active_plugins;
+		
+		var $plugins;
+		var $buttons;
+		var $active_buttons;
+		
+		var $ui;
+		var $ui_url;
+		var $ui_form_url;
+		
+		var $nonce;		
+		
+		var $user_profile;
+		var $is_tinymce;
 		 
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
@@ -27,47 +38,89 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->db_plugins =  $wpdb->prefix . 'wp_super_edit_plugins';
         	$this->db_buttons =  $wpdb->prefix . 'wp_super_edit_buttons';
         	$this->db_users =  $wpdb->prefix . 'wp_super_edit_users';
+        	
 			$this->core_path = ABSPATH . 'wp-content/plugins/wp-super-edit/';
         	$this->core_uri = get_bloginfo('wpurl') . '/wp-content/plugins/wp-super-edit/';
         	$this->tinymce_plugins_path = $this->core_path . 'tinymce_plugins/';
         	$this->tinymce_plugins_uri = $this->core_uri . 'tinymce_plugins/';
+        	
         	$this->is_installed = $this->is_db_installed();
+        	
+        	$this->ui = false;
         	
         	$this->management_modes = array(
 				'single' => 'One editor setting for all users',
 				'roles' => 'Role based editor settings',
 				'users' => 'Individual user editor settings'
-			);
+			);		
+
+        	if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) == false ) {
+        		$this->is_tinymce = false;
+        	} else {
+        		$this->is_tinymce = true;
+        	}        	
+        	
+        	if ( is_admin() ) {
+				$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
+				if ( !$this->is_installed ) $this->ui = 'options';
+				
+				if ( strstr( $_SERVER['PHP_SELF'], 'users.php' ) != false || strstr( $_SERVER['PHP_SELF'], 'profile.php' ) != false ) {
+					$this->user_profile = true;
+					$this->ui = 'buttons';
+				}
+				
+				$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
+				$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
+				$this->nonce = 'wp-super-edit-update-key';
+			}
 			
         	if ( !$this->is_installed ) return;
         	
-        	$this->management_mode = $this->get_option( 'management_mode' );
-			$this->get_active_plugins();
+        	$this->management_mode = $this->get_option( 'management_mode' );	
+			
+			$button_query = "
+				SELECT name, provider, plugin, status FROM $this->db_buttons
+			";
+			
+			$plugin_query = "
+				SELECT name, url, status, callbacks FROM $this->db_plugins
+			";
+			
+			if ( $this->ui == 'plugins' ) {
+				$plugin_query = "
+					SELECT name, nicename, description, provider, status 
+					FROM $this->db_plugins
+				";
+			}
+			
+			if ( $this->ui == 'buttons' ) {
+				$button_query = "
+					SELECT name, nicename, description, provider, status 
+					FROM $this->db_buttons
+				";
+			}
         	
+			$buttons = $wpdb->get_results( $button_query );
+			
+			foreach( $buttons as $button ) {
+				$this->buttons[$button->name] = $button;
+				if ( $button->status == 'yes' ) {
+					$this->active_buttons[$button->name] = $button;
+				}
+			}
+			
+			$plugin_result = $wpdb->get_results( $plugin_query );
+						
+			foreach ( $plugin_result as $plugin ) {
+				$this->plugins[$plugin->name] = $plugin;
+			}
+				
         }
 
         function is_db_installed() {
         	global $wpdb;
         	if( $wpdb->get_var( "SHOW TABLES LIKE '$this->db_options'") == $this->db_options ) return true;
 			return false;
-        }
-
-        function plugin_init() {
-        	global $wpdb;
-
-			$plugins = $wpdb->get_results("
-				SELECT name, callbacks FROM $this->db_plugins
-				WHERE status = 'yes'
-			");
-			
-			if ( !is_array( $plugins ) || empty( $plugins ) ) return false;
-
-			foreach ( $plugins as $number => $plugin ) {
-				if ( empty( $plugin->callbacks ) ) unset( $plugins[$number] ) ;
-			}
-						
-			return $plugins;
-						
         }
 
         function check_registered( $type, $name ) {
@@ -156,17 +209,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			}
 					
 			return false;
-        }
-        
-        function get_active_plugins() {
-        	global $wpdb;
-        	
-			$this->active_plugins = $wpdb->get_results("
-				SELECT name, url, nicename, description, provider, status 
-				FROM $this->db_plugins
-				WHERE status='yes'
-			");
-        }         
+        }   
         
         function get_user_settings( $user_name ) {
         	global $wpdb;
@@ -196,7 +239,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         }
  
          function tinymce_settings( $initArray ) {
-        	global $wpdb, $current_user;
+        	global $current_user;
 						
 			switch ( $this->management_mode ) {
 				case 'single':
