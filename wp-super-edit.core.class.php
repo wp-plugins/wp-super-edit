@@ -257,12 +257,26 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
 			$tinymce_user_settings = maybe_unserialize( $user_settings->editor_options );
 			
+			$button_check = array_keys( $this->buttons );
+						
 			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
-			
+				
 				$row_name = 'theme_advanced_buttons' . $button_row;
-				$initArray[$row_name] = $tinymce_user_settings[$row_name];
+
+				$row_check = explode( ',', $initArray[$row_name] );
+				
+				$unregistered_buttons = array();
+				
+				foreach( $row_check as $button_name ) {
+					if ( $button_name == '|' ||  $button_name == '') continue;
+					if ( !in_array( $button_name, $button_check ) ) $unregistered_buttons[] = $button_name;
+				}
+				
+				if ( !empty( $unregistered_buttons ) ) $unregistered = ',' . implode( ',', $unregistered_buttons );
+								
+				$initArray[$row_name] = $tinymce_user_settings[$row_name] . $unregistered;
 			
-			}
+			}			
 
 			return $initArray;
 
