@@ -266,6 +266,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				$row_check = explode( ',', $initArray[$row_name] );
 				
 				$unregistered_buttons = array();
+				$unregistered = '';
 				
 				foreach( $row_check as $button_name ) {
 					if ( $button_name == '|' ||  $button_name == '') continue;
