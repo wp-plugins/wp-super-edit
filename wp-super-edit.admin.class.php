@@ -69,6 +69,24 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->set_option( 'management_mode', $wpdb->escape( $_REQUEST['wp_super_edit_management_mode'] ) );
 			$this->management_mode = $this->get_option( 'management_mode' );
 
+			if ( $_REQUEST['wp_super_edit_reset_default_user'] == 'reset_default_user' ) {
+				$tiny_mce_scan = $this->get_option( 'tinymce_scan' );
+				$this->update_user_settings( 'wp_super_edit_default', $tiny_mce_scan );
+			}
+			
+			if ( $_REQUEST['wp_super_edit_reset_users'] == 'reset_users' ) {
+
+				$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
+						
+				$wpdb->query( $wpdb->prepare( "
+					UPDATE $this->db_users
+					SET editor_options = %s
+					WHERE user_name != 'wp_super_edit_default'", 
+					$user_settings->editor_options
+				) );
+
+			}
+			
 		}
 		
 		/**
@@ -200,6 +218,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function register_user_settings( $user_name = 'wp_super_edit_default', $user_nicename = 'Default Editor Settings', $user_settings, $type = 'single' ) {
         	global $wpdb;
 			
+			if ( $this->check_registered( 'user', $user_name ) ) return;
+			
 			$settings = maybe_serialize( $user_settings );
 
 			$wpdb->query( $wpdb->prepare( "
@@ -217,11 +237,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$settings = maybe_serialize( $user_settings );
 			
 			$management_mode = ( $user_name == 'wp_super_edit_default' ? 'single' : $this->management_mode );
-
+						
 			$wpdb->query( $wpdb->prepare( "
 				UPDATE $this->db_users
 				SET editor_options = %s 
-				WHERE user_name = %s AND user_type = %s", 
+				WHERE user_name = %s AND user_type = %s LIMIT 1", 
 				$settings, $user_name, $management_mode 
 			) );
 					
@@ -235,6 +255,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					return;
 				case 'roles':
 					if ( isset( $wp_roles->role_names[$user_name] ) ) {
+						if ( $this->check_registered( 'user', $user_name ) ) return;
 						$nice_name = translate_with_context( $wp_roles->role_names[$user_name] );
 						$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
 						$editor_options = maybe_unserialize( $user_settings->editor_options );
@@ -242,6 +263,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					}
 					break;
 				case 'users':
+					if ( $this->check_registered( 'user', $user_name ) ) return;
 					$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
 					$editor_options = maybe_unserialize( $user_settings->editor_options );
 					$this->register_user_settings( $userdata->user_login, 'user', $editor_options, $this->management_mode );
@@ -512,7 +534,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$ui_tabs['options'] = $this->html_tag( array(
 				'tag' => 'a',
 				'href' => htmlentities( $this->ui_url . '&wp_super_edit_ui=options' ),
-				'content' => 'Super Edit Options',
+				'content' => 'WP Super Edit Options',
 				'return' => true
 			) );
 			
@@ -654,6 +676,32 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $this->management_modes, $this->management_mode, true );
 			
 			$table_row = $this->form_table_row( 'Manage editor buttons using:', $mode_select, true );
+
+			$reset_default_user_box = $this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single-after',
+				'type' => 'checkbox',
+				'name' => "wp_super_edit_reset_default_user",
+				'id' => "wp_super_edit_reset_default_user_i",
+				'value' => 'reset_default_user',
+				'content' => "<br /> Reset Default User Setting to original scanned TinyMCE editor settings",
+				'return' => true
+			) );
+
+			$table_row .= $this->form_table_row( 'Reset Default User Settings:', $reset_default_user_box, true );
+			
+			$reset_users_box = $this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single-after',
+				'type' => 'checkbox',
+				'name' => "wp_super_edit_reset_users",
+				'id' => "wp_super_edit_reset_users_i",
+				'value' => 'reset_users',
+				'content' => "<br /> Reset all users and roles using Default Editor Settings",
+				'return' => true
+			) );
+			
+			$table_row .= $this->form_table_row( 'Reset All User and Role Settings:', $reset_users_box, true );
 			
 			$form_content .= $this->form_table( $table_row, true );
 			$form_content .= $submit_button_group;
