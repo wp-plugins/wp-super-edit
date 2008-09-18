@@ -51,12 +51,13 @@ function wp_super_edit_plugin_folder_scan() {
 *
 */
 function wp_super_edit_admin_setup() {
-	global $wp_super_edit;
+	global $wp_super_edit, $top_submenu;
 				
 	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, 'wp-super-edit-admin.php', 'wp_super_edit_admin_page');
 
     if ( $wp_super_edit->management_mode == 'users' ) {
 		$wp_super_edit_user_page = add_submenu_page('profile.php', __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 0, 'wp-super-edit-admin.php', 'wp_super_edit_user_page');
+		$top_submenu['profile.php'][]  = array( __('WP Super Edit'), 'edit_posts', 'profile.php?page=wp-super-edit-admin.php' );
 	}
 	
 	if ( strstr( $_GET['page'], 'wp-super-edit-admin' ) != false ) {

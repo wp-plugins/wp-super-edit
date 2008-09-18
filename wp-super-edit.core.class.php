@@ -29,7 +29,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		var $nonce;		
 		
 		var $user_profile;
+		
 		var $is_tinymce;
+		var $js_cache_count;
 		 
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
@@ -115,6 +117,11 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			foreach ( $plugin_result as $plugin ) {
 				$this->plugins[$plugin->name] = $plugin;
 			}
+			
+			$this->js_cache_count = 1 + $wpdb->get_var( $wpdb->prepare ( "
+				SELECT COUNT(*) FROM $this->db_users WHERE user_type = %s", 
+				$this->management_mode
+			) );
 				
         }
 
@@ -241,19 +248,22 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
  
          function tinymce_settings( $initArray ) {
         	global $current_user;
-						
+									
 			switch ( $this->management_mode ) {
 				case 'single':
-					$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
+					$user = 'wp_super_edit_default';
 					break;
 				case 'roles':
 					$user_roles = array_keys( $current_user->caps );
-					$user_settings = $this->get_user_settings( $user_roles[0] );
+					$user = $user_roles[0];
 					break;
 				case 'users':
-					$user_settings = $this->get_user_settings( $current_user->user_login );
+					$user = $current_user->user_login;
 					break;
 			}
+			
+			if ( !$this->check_registered( 'users', $user ) ) $user = 'wp_super_edit_default';
+			$user_settings = $this->get_user_settings( $user );
 			
 			$tinymce_user_settings = maybe_unserialize( $user_settings->editor_options );
 			
@@ -277,7 +287,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 								
 				$initArray[$row_name] = $tinymce_user_settings[$row_name] . $unregistered;
 			
-			}			
+			}
+			
+			if ( $this->management_mode != 'single' ) $initArray['old_cache_max'] = $this->js_cache_count;
 
 			return $initArray;
 

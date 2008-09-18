@@ -87,6 +87,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			}
 			
+			
+			if ( $_REQUEST['wp_super_edit_rescan_plugins'] == 'rescan_plugins' ) {
+				wp_super_edit_plugin_folder_scan();
+			}			
 		}
 		
 		/**
@@ -702,6 +706,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 			
 			$table_row .= $this->form_table_row( 'Reset All User and Role Settings:', $reset_users_box, true );
+			
+			$rescan_plugins_box = $this->html_tag( array(
+				'tag' => 'input',
+				'tag_type' => 'single-after',
+				'type' => 'checkbox',
+				'name' => "wp_super_edit_rescan_plugins",
+				'id' => "wp_super_edit_rescan_plugins_i",
+				'value' => 'rescan_plugins',
+				'content' => "<br /> Rescan plugins added to the WP Super Edit tinymce_plugins folder to add unregistered plugins and buttons.",
+				'return' => true
+			) );
+			
+			$table_row .= $this->form_table_row( 'Rescan tinymce_plugins Folder:', $rescan_plugins_box, true );			
 			
 			$form_content .= $this->form_table( $table_row, true );
 			$form_content .= $submit_button_group;
