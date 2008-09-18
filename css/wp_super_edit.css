@@ -1,3 +1,10 @@
+p#wp_super_edit_info {
+	margin: .4em;
+	padding: .4em;
+	font-size: 95%;
+	background: #EFEFEF;
+}
+
 div#wp_super_edit_installer {
 	position: relative;
 	width: 90%;

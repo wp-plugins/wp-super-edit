@@ -1,10 +1,23 @@
 <?php
 
 if ( class_exists( 'wp_super_edit_core' ) ) {
-    
+
+/**
+* WP Super Edit Admin Class
+*
+* This class uses WP Super Edit core class and variables and extends by creating user interfaces
+* and administrative functions for WP Super Edit. 
+* @package wp-super-edit
+* @subpackage wp-super-edit-admin-class
+*/    
     class wp_super_edit_admin extends wp_super_edit_core {
 		
-
+		/**
+		* Gets user configuration data from user database tables and returns a complex settings 
+		* array. User checked for management mode changes.
+		* @param string $user_name
+		* @return array
+		*/
         function get_user_settings_ui( $user_name ) {
         	global $wpdb, $userdata;
         	
@@ -34,11 +47,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			return $current_user;
 
         }
+
 		/**
-		* Uninstall plugin
-		*
-		* Function used when to clear settings.
-		*
+		* Removes database tables for uninstallation. 
 		*/
 		function uninstall() {
 			global $wpdb;
@@ -58,10 +69,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Options 
-		*
-		* Function used to set options from form.
-		*
+		* Set WP Super Edit options from Options administrative interface.
 		*/
 		function do_options() {
 			global $wpdb;
@@ -87,17 +95,13 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			}
 			
-			
 			if ( $_REQUEST['wp_super_edit_rescan_plugins'] == 'rescan_plugins' ) {
 				wp_super_edit_plugin_folder_scan();
 			}			
 		}
 		
 		/**
-		* Options 
-		*
-		* Function used to set options from form.
-		*
+		* Activate and deactivate WP Super Edit TinyMCE plugins from Plugins administrative interface.
 		*/
 		function do_plugins() {
 			global $wpdb;
@@ -130,13 +134,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 		
 		/**
-		* Options 
-		*
-		* Function used to set options from form.
-		*
+		* Set button settings from Editor Buttons administrative interface.
 		*/
 		function do_buttons() {
-			global $wpdb;
 									
 			if ( $_REQUEST['wp_super_edit_action_control'] == 'reset_default' ) {
 				$user = 'wp_super_edit_default';
@@ -191,6 +191,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 		}
 
+		/**
+		* Register WP Super Edit TinyMCE plugin in plugin database table. 
+		* @param array $plugin 
+		*/
         function register_tinymce_plugin( $plugin = array() ) {
         	global $wpdb;
 			
@@ -204,7 +208,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
         	
         }
-
+        
+		/**
+		* Register WP Super Edit TinyMCE button in button database table. 
+		* @param array $button 
+		*/
         function register_tinymce_button( $button = array() ) {
         	global $wpdb;
 			
@@ -219,6 +227,13 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 		}
 
+		/**
+		* Register WP Super Edit user settings in users database table. 
+		* @param string $user_name 
+		* @param string $user_nicename 
+		* @param array $user_settings 
+		* @param string $type 
+		*/
         function register_user_settings( $user_name = 'wp_super_edit_default', $user_nicename = 'Default Editor Settings', $user_settings, $type = 'single' ) {
         	global $wpdb;
 			
@@ -235,6 +250,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					
 		}
 
+		/**
+		* Update WP Super Edit user settings in users database table. 
+		* @param string $user_name 
+		* @param array $user_settings 
+		*/
         function update_user_settings(  $user_name = 'wp_super_edit_default', $user_settings ) {
         	global $wpdb;
 			
@@ -251,6 +271,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					
 		}
 
+		/**
+		* Register new user settings in users database table based on management mode.
+		* @param string $user_name 
+		*/
 		function register_new_user( $user_name ) {
         	global $wpdb, $wp_roles, $userdata;
 
@@ -280,16 +304,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 
 		/**
-		* Display html tag with attributes
+		* Display or return html tag with attributes.
 		* @param array $html_options options and content to display
-		*/
-		
-		/*
-			$format = 'The %2$s contains %1$d monkeys.
-					   That\'s a nice %2$s full of %1$d monkeys.';
-			printf($format, $num, $location);
-			
-			echo "var is ".($var < 0 ? "negative" : "positive"); 
+		* @return mixed
 		*/
 		function html_tag( $html_options = array() ) {
 
@@ -332,13 +349,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		/**
 		* WP Super Edit admin nonce field generator for form security
 		* @param string $action nonce action to make keys
+		* @return string
 		*/		
 		function nonce_field($action = -1) { 
 			return wp_nonce_field( $action, "_wpnonce", true , false );
 		}
 		
 		/**
-		* WP Super Edit admin display header and information
+		* Administration interface display header and information
 		* @param string $text text to display
 		*/
 		function ui_header() {
@@ -351,19 +369,19 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$this->html_tag( array(
 				'tag' => 'h2',
-				'content' => 'WP Super Edit',
+				'content' => __('WP Super Edit'),
 			) );
 
 			$this->html_tag( array(
 				'tag' => 'p',
-				'content' => 'To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information please vist the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a>',
+				'id' => 'wp_super_edit_info',
+				'content' => __('To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://factory.funroe.net/contribute/">donation or other contribution</a>.'),
 			) );
 						
 		}
 
 		/**
-		* WP Super Edit admin display footer
-		* @param string $text text to display
+		* WP Super Edit administration interface footer
 		*/
 		function ui_footer() {
 			$this->html_tag( array(
@@ -377,11 +395,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 		
 		/**
-		* Start WP Super Edit admin form
-		* @param string $text text to display
+		* Start WP Super Edit administration form
+		* @param string $action
+		* @param string $content
+		* @param boolean $return
+		* @param string $onsubmit
+		* @return mixed
 		*/
 		function form( $action = '', $content = '', $return = false, $onsubmit = '' ) {
-			global $wp_super_edit_nonce;
 			
 			$form_contents = $this->nonce_field('wp_super_edit_nonce-' . $this->nonce);
 			
@@ -415,8 +436,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Form Table
-		* @param string $text text to display
+		* Form table shell with WordPress admin classes
+		* @param string $content
+		* @param boolean $return
+		* @return mixed
 		*/
 		function form_table( $content = '', $return = false ) {
 			
@@ -433,7 +456,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Form Table Row
+		* Form table row
 		* @param string $text text to display
 		*/
 		function form_table_row( $header = '', $content = '', $return = false ) {

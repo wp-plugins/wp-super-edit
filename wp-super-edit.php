@@ -39,11 +39,9 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 * These functions control the core functionality for this Wordpress Plugin. This
 * plugin is designed to extend and control the Wordpress visual WYSIWYG editor. The editor
 * is a javascript application known as TinyMCE provided by Moxicode AB. 
-*
 * @package wp-super-edit
 * @author Jess Planck
 * @version 2.0
-*
 */
 
 /**
@@ -54,7 +52,6 @@ require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 /**
 * Conditional includes for WP Super Edit fuctions and classes in WordPress admin panels
 * Set $wp_super_edit primary object instance
-*
 * @global object $wp_super_edit 
 */
 if ( is_admin() ) {
@@ -70,7 +67,6 @@ if ( is_admin() ) {
 *
 * This function used by Wordpress to initialize this application. Some TinyMCE
 * plugins used in WP Super Edit may have callback functions that need to run
-*
 * @global object $wp_super_edit 
 */
 function wp_super_edit_init() {
@@ -102,7 +98,6 @@ function wp_super_edit_init() {
 * This function is a WordPress filter designed to use the array built by tinymce_config.php. This
 * filter is used to create a scan of default tinymce settings, and to create the tinymce 
 * configuration created by WP Super Edit.
-*
 * @global object $wp_super_edit 
 */
 function wp_super_edit_tinymce_filter( $initArray ) {
@@ -131,7 +126,6 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 *
 * This WordPress filter passes plugins activated by WP Super Edit and passes them during init of 
 * TinyMCE.
-*
 * @global object $wp_super_edit 
 */
 function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {

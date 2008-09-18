@@ -6,16 +6,13 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 * WP Super Edit Core Class
 *
 * This class sets up core functions and variables for WP Super Edit. 
-*
 * @package wp-super-edit
-* @subpackage wp-super-edit-classes
+* @subpackage wp-super-edit-core-class
 */
     class wp_super_edit_core { 
  
 		/**
-		*
 		* Initialize private variables. Set for php4 compatiblity. 
-		*
 		*/		
 		var $db_options;
 		var $db_plugins;
@@ -47,9 +44,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		var $js_cache_count;
 		
 		/**
-		*
 		* Constructor initializes private variables. Set for php4 compatiblity. 
-		*
 		*/	
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
@@ -70,9 +65,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->user_profile = false;
         	
         	$this->management_modes = array(
-				'single' => 'One editor setting for all users',
-				'roles' => 'Role based editor settings',
-				'users' => 'Individual user editor settings'
+				'single' => __('One editor setting for all users'),
+				'roles' => __('Role based editor settings'),
+				'users' => __('Individual user editor settings')
 			);		
 
         	if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) == false ) {
@@ -144,9 +139,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         }
         
 		/**
-		*
 		* Check if database tables are installed. 
-		*
 		* @return boolean
 		*/	
         function is_db_installed() {
@@ -156,9 +149,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         }
 
 		/**
-		*
 		* Check if user, plugin, or button is registered in database based on type. 
-		*
 		* @param string	$type 
 		* @param string $name
 		* @return boolean
@@ -209,9 +200,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		}
 		
 		/**
-		*
 		* Get WP Super Edit option from options database table. 
-		*
 		* @param string $name
 		* @return mixed
 		*/
@@ -229,9 +218,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         }
 
 		/**
-		*
 		* Set WP Super Edit option in options database table. 
-		*
 		* @param string $option_name
 		* @param mixed $option_value
 		* @return boolean
@@ -267,9 +254,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         }   
 
 		/**
-		*
 		* Get user settings from users database table. 
-		*
 		* @param string $user_name
 		* @return object
 		*/        
@@ -301,10 +286,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         }
  
  		/**
-		*
 		* Filter to set up WordPress TinyMCE settings from stored settings based on mode. Check for unregistered
 		* buttons and deactivated plugins.
-		*
 		* @param array $initArray
 		* @return array
 		*/ 
