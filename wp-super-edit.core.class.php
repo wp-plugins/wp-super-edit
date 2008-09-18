@@ -2,8 +2,21 @@
 
 if ( !class_exists( 'wp_super_edit_core' ) ) {
 
+/**
+* WP Super Edit Core Class
+*
+* This class sets up core functions and variables for WP Super Edit. 
+*
+* @package wp-super-edit
+* @subpackage wp-super-edit-classes
+*/
     class wp_super_edit_core { 
  
+		/**
+		*
+		* Initialize private variables. Set for php4 compatiblity. 
+		*
+		*/		
 		var $db_options;
 		var $db_plugins;
 		var $db_buttons;
@@ -32,7 +45,12 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		
 		var $is_tinymce;
 		var $js_cache_count;
-		 
+		
+		/**
+		*
+		* Constructor initializes private variables. Set for php4 compatiblity. 
+		*
+		*/	
         function wp_super_edit_core() { // Maintain php4 compatiblity  
         	global $wpdb;
 
@@ -124,13 +142,27 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			) );
 				
         }
-
+        
+		/**
+		*
+		* Check if database tables are installed. 
+		*
+		* @return boolean
+		*/	
         function is_db_installed() {
         	global $wpdb;
         	if( $wpdb->get_var( "SHOW TABLES LIKE '$this->db_options'") == $this->db_options ) return true;
 			return false;
         }
 
+		/**
+		*
+		* Check if user, plugin, or button is registered in database based on type. 
+		*
+		* @param string	$type 
+		* @param string $name
+		* @return boolean
+		*/
         function check_registered( $type, $name ) {
         	global $wpdb;
  
@@ -176,6 +208,13 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
 		}
 		
+		/**
+		*
+		* Get WP Super Edit option from options database table. 
+		*
+		* @param string $name
+		* @return mixed
+		*/
         function get_option( $option_name ) {
         	global $wpdb;
         		
@@ -189,6 +228,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			return $option_value;
         }
 
+		/**
+		*
+		* Set WP Super Edit option in options database table. 
+		*
+		* @param string $option_name
+		* @param mixed $option_value
+		* @return boolean
+		*/
         function set_option( $option_name, $option_value ) {
         	global $wpdb;
 
@@ -218,7 +265,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					
 			return false;
         }   
-        
+
+		/**
+		*
+		* Get user settings from users database table. 
+		*
+		* @param string $user_name
+		* @return object
+		*/        
         function get_user_settings( $user_name ) {
         	global $wpdb;
  
@@ -246,8 +300,16 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 
         }
  
-         function tinymce_settings( $initArray ) {
-        	global $current_user;
+ 		/**
+		*
+		* Filter to set up WordPress TinyMCE settings from stored settings based on mode. Check for unregistered
+		* buttons and deactivated plugins.
+		*
+		* @param array $initArray
+		* @return array
+		*/ 
+		function tinymce_settings( $initArray ) {
+			global $current_user;
 									
 			switch ( $this->management_mode ) {
 				case 'single':
@@ -272,7 +334,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
 				
 				$row_name = 'theme_advanced_buttons' . $button_row;
-
+			
 				$wp_super_edit_check = explode( ',', $tinymce_user_settings[$row_name] );
 				$row_check = explode( ',', $initArray[$row_name] );
 				
@@ -281,7 +343,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				$comma_insert = '';
 				$unregistered_buttons = array();
 				$unregistered = '';
-
+			
 				foreach( $wp_super_edit_check as $button_name ) {
 					if ( $button_name == '|' ) {
 						$wp_super_edit_row_buttons[] = '|';
@@ -303,18 +365,17 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					$comma_insert = ',';
 				}
 				if ( !empty( $unregistered_buttons ) ) $unregistered = $comma_insert . implode( ',', $unregistered_buttons );
- 
+			
 								
 				$initArray[$row_name] = $wp_super_edit_row . $unregistered;
 			
 			}
 			
 			if ( $this->management_mode != 'single' ) $initArray['old_cache_max'] = $this->js_cache_count;
-
+			
 			return $initArray;
-
-        }
-        
+		
+		}
 
     }
 
