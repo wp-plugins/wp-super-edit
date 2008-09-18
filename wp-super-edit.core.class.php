@@ -273,19 +273,39 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				
 				$row_name = 'theme_advanced_buttons' . $button_row;
 
+				$wp_super_edit_check = explode( ',', $tinymce_user_settings[$row_name] );
 				$row_check = explode( ',', $initArray[$row_name] );
 				
+				$wp_super_edit_row_buttons = array();
+				$wp_super_edit_row = '';
+				$comma_insert = '';
 				$unregistered_buttons = array();
 				$unregistered = '';
+
+				foreach( $wp_super_edit_check as $button_name ) {
+					if ( $button_name == '|' ) {
+						$wp_super_edit_row_buttons[] = '|';
+						continue;
+					}
+					$plugin = $this->buttons[$button_name]->plugin;
+					if ( !empty( $plugin ) ) {
+						if ( $this->plugins[$plugin]->status != 'yes' ) continue;
+					}
+					$wp_super_edit_row_buttons[] = $button_name;
+				}
 				
 				foreach( $row_check as $button_name ) {
 					if ( $button_name == '|' ||  $button_name == '') continue;
 					if ( !in_array( $button_name, $button_check ) ) $unregistered_buttons[] = $button_name;
 				}
-				
-				if ( !empty( $unregistered_buttons ) ) $unregistered = ',' . implode( ',', $unregistered_buttons );
+				if ( !empty( $wp_super_edit_row_buttons ) ) {
+					$wp_super_edit_row = implode( ',', $wp_super_edit_row_buttons );
+					$comma_insert = ',';
+				}
+				if ( !empty( $unregistered_buttons ) ) $unregistered = $comma_insert . implode( ',', $unregistered_buttons );
+ 
 								
-				$initArray[$row_name] = $tinymce_user_settings[$row_name] . $unregistered;
+				$initArray[$row_name] = $wp_super_edit_row . $unregistered;
 			
 			}
 			

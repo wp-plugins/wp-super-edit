@@ -131,6 +131,7 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	global $wp_super_edit;
 		
 	foreach( $wp_super_edit->plugins as $plugin ) {
+		if ( $plugin->status != 'yes' ) continue;
 		if ( $plugin->url != '' ) {
 			if ( preg_match("/^(http:|https:)/i", $plugin->url ) ) {
 				$tinymce_plugins[$plugin->name] = $plugin->url;
