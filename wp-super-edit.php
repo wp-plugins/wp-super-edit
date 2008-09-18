@@ -3,7 +3,7 @@
 Plugin Name: WP Super Edit
 Plugin URI: http://factory.funroe.net/projects/wp-super-edit/
 Description: Get some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
-Author: Jesse Planck
+Author: Jess Planck
 Version: 2.0
 Author URI: http://funroe.net
 
@@ -150,7 +150,6 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 * @internal: Define core Wordpress actions and filters
 */
 
-//load_plugin_textdomain('wp-super-edit', 'wp-content/plugins/wp-super-edit');
 
 add_action('init', 'wp_super_edit_init', 5);
 
@@ -164,6 +163,7 @@ if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) !== false ) {
 * @internal: Conditional activation for WP Super Edit interfaces in WordPress admin panels
 */
 if ( is_admin() ) {
+	load_plugin_textdomain( 'wp-super-edit', WP_PLUGIN_DIR . '/' .dirname(plugin_basename(__FILE__)) . '/languages', dirname(plugin_basename(__FILE__)) . '/languages' );
 	add_action('admin_init', 'wp_super_edit_admin_setup');
 } 
 
