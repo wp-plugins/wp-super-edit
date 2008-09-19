@@ -115,7 +115,9 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 		unset( $initArray['compress'] );
 		return $initArray;
 	}
-	
+
+	if ( !$wp_super_edit->is_installed ) return $initArray;
+
 	$initArray = $wp_super_edit->tinymce_settings( $initArray );
 	
 	return $initArray;
@@ -131,6 +133,8 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	global $wp_super_edit;
 		
+	if ( !$wp_super_edit->is_installed ) return $tinymce_plugins;
+
 	foreach( $wp_super_edit->plugins as $plugin ) {
 		if ( $plugin->status != 'yes' ) continue;
 		if ( $plugin->url != '' ) {

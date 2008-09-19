@@ -94,10 +94,6 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	
         	$this->management_mode = $this->get_option( 'management_mode' );	
 			
-			$button_query = "
-				SELECT name, provider, plugin, status FROM $this->db_buttons
-			";
-			
 			$plugin_query = "
 				SELECT name, url, status, callbacks FROM $this->db_plugins
 			";
@@ -108,14 +104,26 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					FROM $this->db_plugins
 				";
 			}
+
+			$plugin_result = $wpdb->get_results( $plugin_query );
+						
+			foreach ( $plugin_result as $plugin ) {
+				$this->plugins[$plugin->name] = $plugin;
+			}
 			
+			if ( !$this->is_tinymce ) return;
+
 			if ( $this->ui == 'buttons' ) {
 				$button_query = "
 					SELECT name, nicename, description, provider, status 
 					FROM $this->db_buttons
 				";
 			}
-        	
+
+			$button_query = "
+				SELECT name, provider, plugin, status FROM $this->db_buttons
+			";
+			
 			$buttons = $wpdb->get_results( $button_query );
 			
 			foreach( $buttons as $button ) {
@@ -123,12 +131,6 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				if ( $button->status == 'yes' ) {
 					$this->active_buttons[$button->name] = $button;
 				}
-			}
-			
-			$plugin_result = $wpdb->get_results( $plugin_query );
-						
-			foreach ( $plugin_result as $plugin ) {
-				$this->plugins[$plugin->name] = $plugin;
 			}
 			
 			$this->js_cache_count = 1 + $wpdb->get_var( $wpdb->prepare ( "
