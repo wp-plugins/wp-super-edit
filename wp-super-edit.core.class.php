@@ -110,19 +110,17 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			foreach ( $plugin_result as $plugin ) {
 				$this->plugins[$plugin->name] = $plugin;
 			}
-			
-			if ( !$this->is_tinymce ) return;
 
+			$button_query = "
+				SELECT name, provider, plugin, status FROM $this->db_buttons
+			";
+			
 			if ( $this->ui == 'buttons' ) {
 				$button_query = "
 					SELECT name, nicename, description, provider, status 
 					FROM $this->db_buttons
 				";
 			}
-
-			$button_query = "
-				SELECT name, provider, plugin, status FROM $this->db_buttons
-			";
 			
 			$buttons = $wpdb->get_results( $button_query );
 			

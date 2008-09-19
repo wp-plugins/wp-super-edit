@@ -73,12 +73,12 @@ function wp_super_edit_init() {
 	global $wp_super_edit;
 	
 	if ( !$wp_super_edit->is_installed ) return;
-						
+							
 	foreach ( $wp_super_edit->plugins as $plugin_name => $plugin ) {
-		
+			
 		if ( $plugin->status == 'no' ) continue;
 		
-		if ( empty( $plugin->callbacks ) || count( $plugin->callbacks ) < 2 ) continue;
+		if ( strlen( $plugin->callbacks ) < 2 ) continue;
 				
 		$callbacks = explode( ',', $plugin->callbacks );
 		
