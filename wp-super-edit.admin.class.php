@@ -782,8 +782,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'tag' => 'input',
 					'tag_type' => 'single-after',
 					'type' => 'checkbox',
-					'name' => 'wp_super_edit_plugins[$plugin->name]',
-					'id' => 'wp_super_edit_plugins-$plugin->name',
+					'name' => "wp_super_edit_plugins[$plugin->name]",
+					'id' => "wp_super_edit_plugins-$plugin->name",
 					'value' => 'yes',
 					'content' => '<br />' . $plugin->description,
 					'return' => true
