@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-super-edit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-19 19:40-0600\n"
+"POT-Creation-Date: 2008-09-19 21:21-0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jess Planck <jess@funroe.net>\n"
 "Language-Team: Jess Planck <jess@funroe.net>\n"
@@ -16,11 +16,307 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: wp-super-edit-admin.php:56
+#: wp-super-edit-admin.php:55
+#: wp-super-edit-admin.php:58
 #: wp-super-edit-admin.php:59
-#: wp-super-edit-admin.php:60
 #: wp-super-edit.admin.class.php:370
 msgid "WP Super Edit"
+msgstr ""
+
+#: wp-super-edit-defaults.php:110
+msgid "Bold"
+msgstr ""
+
+#: wp-super-edit-defaults.php:111
+msgid "Bold content with strong HTML tag. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:119
+msgid "Italic"
+msgstr ""
+
+#: wp-super-edit-defaults.php:120
+msgid "Italicize content with em HTML tag. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:128
+msgid "Strikethrough"
+msgstr ""
+
+#: wp-super-edit-defaults.php:129
+msgid "Strike out content with strike HTML tag. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:137
+msgid "Bulleted List"
+msgstr ""
+
+#: wp-super-edit-defaults.php:138
+msgid "An unordered list. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:146
+msgid "Numbered List"
+msgstr ""
+
+#: wp-super-edit-defaults.php:147
+msgid "An ordered list. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:155
+msgid "Block Quote"
+msgstr ""
+
+#: wp-super-edit-defaults.php:156
+msgid "Blockquotes are used when quoting other content. Usually this content is displayed as indented."
+msgstr ""
+
+#: wp-super-edit-defaults.php:165
+msgid "Left Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:166
+msgid "Set the alignment to left justification. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:174
+msgid "Center Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:175
+msgid "Set the alignment to center justification. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:183
+msgid "Right Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:184
+msgid "Set the alignment to right justification. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:192
+msgid "Create Link"
+msgstr ""
+
+#: wp-super-edit-defaults.php:193
+msgid "Create a link. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:201
+msgid "Remove Link"
+msgstr ""
+
+#: wp-super-edit-defaults.php:202
+msgid "Remove a link. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:210
+msgid "Wordpress More Tag"
+msgstr ""
+
+#: wp-super-edit-defaults.php:211
+msgid "Insert Wordpress MORE tag to divide content to multiple views. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:219
+msgid "Spell Check"
+msgstr ""
+
+#: wp-super-edit-defaults.php:220
+msgid "Wordpress spell check. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:228
+msgid "Full Screen"
+msgstr ""
+
+#: wp-super-edit-defaults.php:229
+msgid "Toggle Full Screen editor mode."
+msgstr ""
+
+#: wp-super-edit-defaults.php:237
+msgid "Show/Hide Advanced toolbar"
+msgstr ""
+
+#: wp-super-edit-defaults.php:238
+msgid "Built in Wordpress button <strong>normally hidden</strong>. When pressed it will show extra rows of buttons (or press Ctrl-Alt-V on FF, Alt-V on IE)."
+msgstr ""
+
+#: wp-super-edit-defaults.php:246
+msgid "Paragraphs and Headings"
+msgstr ""
+
+#: wp-super-edit-defaults.php:247
+msgid "Set Paragraph or Headings for content."
+msgstr ""
+
+#: wp-super-edit-defaults.php:255
+msgid "Underline Text"
+msgstr ""
+
+#: wp-super-edit-defaults.php:256
+msgid "Built in Wordpress button to underline selected text."
+msgstr ""
+
+#: wp-super-edit-defaults.php:264
+msgid "Full Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:265
+msgid "Set the alignment to full justification. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:273
+msgid "Foreground color"
+msgstr ""
+
+#: wp-super-edit-defaults.php:274
+msgid "Set foreground or text color. May produce evil font tags. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:282
+msgid "Paste as Text"
+msgstr ""
+
+#: wp-super-edit-defaults.php:283
+msgid "Paste clipboard text and remove formatting. Useful for pasting text from applications that produce substandard HTML. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:291
+msgid "Paste from Microsoft Word"
+msgstr ""
+
+#: wp-super-edit-defaults.php:292
+msgid "Attempts to clean up HTML produced by Microsoft Word during cut and paste. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:300
+msgid "Remove HTML Formatting"
+msgstr ""
+
+#: wp-super-edit-defaults.php:301
+msgid "Removes HTML formatting from selected item. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:309
+msgid "Media"
+msgstr ""
+
+#: wp-super-edit-defaults.php:310
+msgid "Add or edit embedded media like Flash, Quicktime, or Windows Media. Different from WordPress Media tools."
+msgstr ""
+
+#: wp-super-edit-defaults.php:318
+msgid "Special Characters"
+msgstr ""
+
+#: wp-super-edit-defaults.php:319
+msgid "Insert special characters or entities using a visual interface. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:327
+msgid "Decrease Indentation"
+msgstr ""
+
+#: wp-super-edit-defaults.php:328
+msgid "This will decrease the level of indentation based on content position. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:336
+msgid "Increase Indentation"
+msgstr ""
+
+#: wp-super-edit-defaults.php:337
+msgid "This will increase the level of indentation based on content position. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:345
+msgid "Undo option"
+msgstr ""
+
+#: wp-super-edit-defaults.php:346
+msgid "Undo previous formatting changes. Not useful once you save. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:354
+msgid "Redo option"
+msgstr ""
+
+#: wp-super-edit-defaults.php:355
+msgid "Redo previous formatting changes. Not useful once you save. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:363
+msgid "Wordpress Help"
+msgstr ""
+
+#: wp-super-edit-defaults.php:364
+msgid "Built in Wordpress help documentation. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:375
+msgid "Clean up HTML"
+msgstr ""
+
+#: wp-super-edit-defaults.php:376
+msgid "Attempts to clean up bad HTML in the editor. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:384
+msgid "Image Link"
+msgstr ""
+
+#: wp-super-edit-defaults.php:385
+msgid "Insert linked image. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:393
+msgid "Anchors"
+msgstr ""
+
+#: wp-super-edit-defaults.php:394
+msgid "Create named anchors."
+msgstr ""
+
+#: wp-super-edit-defaults.php:402
+msgid "Subscript"
+msgstr ""
+
+#: wp-super-edit-defaults.php:403
+msgid "Format text as Subscript."
+msgstr ""
+
+#: wp-super-edit-defaults.php:411
+msgid "Superscript"
+msgstr ""
+
+#: wp-super-edit-defaults.php:412
+msgid "Format text as Superscript."
+msgstr ""
+
+#: wp-super-edit-defaults.php:420
+msgid "Background color"
+msgstr ""
+
+#: wp-super-edit-defaults.php:421
+msgid "Set background color for selected tag or text. "
+msgstr ""
+
+#: wp-super-edit-defaults.php:429
+msgid "HTML Source"
+msgstr ""
+
+#: wp-super-edit-defaults.php:430
+msgid "View and edit the HTML source code."
+msgstr ""
+
+#: wp-super-edit-defaults.php:438
+msgid "Wordpress Next Page Tag"
+msgstr ""
+
+#: wp-super-edit-defaults.php:439
+msgid "Insert Wordpress Next Page tag to divide page content into multiple views."
 msgstr ""
 
 #: wp-super-edit.admin.class.php:376

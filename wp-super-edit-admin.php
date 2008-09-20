@@ -6,16 +6,15 @@
 * interface allows drag and drop control for buttons and interactive control for
 * activating TinyMCE plugins. This interface requires a modern browser and 
 * javascript.
-*
-* @package superedit_admin
-*
+* @package wp-super-edit
+* @subpackage wp-super-edit-admin
 */
 
 /**
 * WP Super Edit Plugin Folder Scan
 *
 * Scans tinymce_plugin folder for config files with registration commands.
-*
+* @global object $wp_super_edit 
 */
 function wp_super_edit_plugin_folder_scan() {
 	global $wp_super_edit;
@@ -48,7 +47,7 @@ function wp_super_edit_plugin_folder_scan() {
 * Set up administration interface
 *
 * Function used by Wordpress to initialize the adminsitrative interface. This function also handles option changes based on user interface.
-*
+* @global object $wp_super_edit 
 */
 function wp_super_edit_admin_setup() {
 	global $wp_super_edit, $top_submenu;
@@ -113,7 +112,6 @@ function wp_super_edit_admin_setup() {
 * Add javascript and css to the HEAD area
 *
 * Some complex CSS and javascript functions to operate the WP Super Edit advanced interface.
-*
 * @global object $wp_super_edit 
 */
 function wp_super_edit_admin_head() {
@@ -155,15 +153,11 @@ function wp_super_edit_admin_head() {
 
 
 /**
-* Display Advanced WP Super Edit interface
+* Display user profile WP Super Edit interface
 *
 * Very advanced control interface for TinyMCE buttons and plugins using
 * drag and drop.
-*
-* @global array $superedit_ini 
-* @global array $superedit_options
-* @global array $superedit_buttons
-* @global array $superedit_plugins
+* @global object $wp_super_edit 
 */
 function wp_super_edit_user_page() {
 	global $wp_super_edit;
@@ -178,15 +172,11 @@ function wp_super_edit_user_page() {
 }
 
 /**
-* Display Advanced WP Super Edit interface
+* Display administrative WP Super Edit interface
 *
 * Very advanced control interface for TinyMCE buttons and plugins using
 * drag and drop.
-*
-* @global array $superedit_ini 
-* @global array $superedit_options
-* @global array $superedit_buttons
-* @global array $superedit_plugins
+* @global object $wp_super_edit 
 */
 function wp_super_edit_admin_page() {
 	global $wp_super_edit;
@@ -226,17 +216,14 @@ function wp_super_edit_admin_page() {
 	$wp_super_edit->ui_footer();
 }
 
-
 /**
-* Add javascript to the FOOTER area
+* Add javascript to the admin footer area
 *
 * Some complex CSS and javascript functions to operate the WP Super Edit advanced interface.
-*
-* @global array $superedit_ini 
+* @global object $wp_super_edit 
 */
 function wp_super_edit_admin_footer() {
 	global $wp_super_edit;
-
 ?>
 
 <script type="text/javascript">
@@ -253,7 +240,6 @@ function wp_super_edit_admin_footer() {
 		this.status = status;
 		this.plugin = plugin;
 	  }
-	
 	
 	var data;
 	var button_separators = new Array();
@@ -288,7 +274,6 @@ function wp_super_edit_admin_footer() {
 		
 		return false;		
 	}
-
 	
 	function submitButtonConfig() {
 	
@@ -301,14 +286,13 @@ function wp_super_edit_admin_footer() {
 			return wpsuperedit(this).attr('id');
 		}).get().join(",");
 		
-		wpsuperedit('#i_wp_super_edit_separators').attr('value', submit_separators)
-			
+		wpsuperedit('#i_wp_super_edit_separators').attr('value', submit_separators)	
 	}
 
 	wpsuperedit(document).ready(
 		function() {
 			
-			// Controls Drag + Drop
+			// Drag and Drop Controls
 			wpsuperedit('#row_section_1').sortable(
 				{
 					connectWith: ['#row_section_disabled', '#row_section_2', '#row_section_3', '#row_section_4' ],
@@ -363,7 +347,6 @@ function wp_super_edit_admin_footer() {
 					tolerance: 'pointer'
 				}
 			);
-									
 		}
 	);
 
@@ -371,6 +354,5 @@ function wp_super_edit_admin_footer() {
 </script> 
 <?php
 }
-
 // End - Superedit Admin Panel //
 ?>
