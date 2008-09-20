@@ -76,6 +76,7 @@ function wp_super_edit_init() {
 							
 	foreach ( $wp_super_edit->plugins as $plugin_name => $plugin ) {
 			
+		if ( $plugin->provider != 'wp_super_edit' ) continue;
 		if ( $plugin->status == 'no' ) continue;
 		
 		if ( strlen( $plugin->callbacks ) < 2 ) continue;

@@ -74,7 +74,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function do_options() {
 			global $wpdb;
 			
-			$this->set_option( 'management_mode', $wpdb->escape( $_REQUEST['wp_super_edit_management_mode'] ) );
+			$this->set_option( 'management_mode', $_REQUEST['wp_super_edit_management_mode'] );
 			$this->management_mode = $this->get_option( 'management_mode' );
 
 			if ( $_REQUEST['wp_super_edit_reset_default_user'] == 'reset_default_user' ) {

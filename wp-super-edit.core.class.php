@@ -95,7 +95,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->management_mode = $this->get_option( 'management_mode' );	
 			
 			$plugin_query = "
-				SELECT name, url, status, callbacks FROM $this->db_plugins
+				SELECT name, url, status, provider, callbacks FROM $this->db_plugins
 			";
 			
 			if ( $this->ui == 'plugins' ) {
@@ -105,7 +105,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				";
 			}
 
-			$plugin_result = $wpdb->get_results( $plugin_query );
+			$plugin_result = $wpdb->get_results( $wpdb->prepare( $plugin_query ) );
 						
 			foreach ( $plugin_result as $plugin ) {
 				$this->plugins[$plugin->name] = $plugin;
@@ -129,7 +129,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				";
 			}
 			
-			$buttons = $wpdb->get_results( $button_query );
+			$buttons = $wpdb->get_results( $wpdb->prepare( $button_query ) );
 			
 			foreach( $buttons as $button ) {
 				$this->buttons[$button->name] = $button;
@@ -151,7 +151,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		*/	
         function is_db_installed() {
         	global $wpdb;
-        	if( $wpdb->get_var( "SHOW TABLES LIKE '$this->db_options'") == $this->db_options ) return true;
+        	if( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $this->db_options ) ) == $this->db_options ) return true;
 			return false;
         }
 
@@ -195,10 +195,10 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					$db_table = $this->db_options;
 			}
 
-			$register_check = $wpdb->get_var("
+			$register_check = $wpdb->get_var( $wpdb->prepare( "
 				SELECT $name_col FROM $db_table
-				WHERE $name_col='$name'$role
-			");
+				WHERE $name_col=&s $role
+			", $name ) );
 			
 			if ( $register_check == $name) return true;
 			
@@ -214,10 +214,10 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         function get_option( $option_name ) {
         	global $wpdb;
         		
-			$option = $wpdb->get_row("
+			$option = $wpdb->get_row( $wpdb->prepare( "
 				SELECT value FROM $this->db_options
-				WHERE name='$option_name'
-			");
+				WHERE name=%s
+			", $option_name ) );
 		
 			$option_value = maybe_unserialize( $option->value );
 			
@@ -233,27 +233,26 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         function set_option( $option_name, $option_value ) {
         	global $wpdb;
 
-			$result = $wpdb->get_row("
+			$result = $wpdb->get_row( $wpdb->prepare( "
 				SELECT * FROM $this->db_options
-				WHERE name='$option_name'
-			",ARRAY_N);
+				WHERE name=%s
+			", $option_name ),ARRAY_N);
 			
 			$option_value = maybe_serialize( $option_value );
-			$option_value = $wpdb->escape( $option_value );
 			
 			if( count( $result ) == 0 ) {
-				$result = $wpdb->query("
+				$result = $wpdb->query( $wpdb->prepare( "
 					INSERT INTO $this->db_options
 					(name, value) 
-					VALUES ('$option_name', '$option_value')
-				");
+					VALUES (%s, %s)
+				", $option_name, $option_value ) );
 				return true;
 			} elseif( count( $result ) > 0 ) {
-				$result = $wpdb->query("
+				$result = $wpdb->query( $wpdb->prepare( "
 					UPDATE $this->db_options
-					SET value='$option_value'
-					WHERE name='$option_name'
-					");
+					SET value=%s
+					WHERE name=%s
+					", $option_value, $option_name ) );
 				return true;
 			}
 					
@@ -282,11 +281,11 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
 			if ( $user_name == 'wp_super_edit_default' ) $role = " AND user_type='single'";
 			
-			$user_settings = $wpdb->get_row("
+			$user_settings = $wpdb->get_row( $wpdb->prepare( "
 				SELECT user_name, user_nicename, editor_options 
 				FROM $this->db_users
-				WHERE user_name = '$user_name'$role
-			");
+				WHERE user_name=%s $role
+			", $user_name ) );
 						
 			return $user_settings;
 
