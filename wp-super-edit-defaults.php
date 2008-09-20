@@ -88,7 +88,16 @@ function wp_super_edit_set_user_default() {
 	
 	$wp_super_edit->set_option( 'management_mode', 'single' );
 	
+	
+	
 	delete_option( 'wp_super_edit_tinymce_scan' );
+	
+	/**
+	* Remove old options for versions 1.5 
+	*/	
+	delete_option( 'superedit_options' );
+	delete_option( 'superedit_buttons' );
+	delete_option( 'superedit_plugins' );
 }
 
 
