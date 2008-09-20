@@ -12,7 +12,7 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'advhr', 
-	'nicename' => __('Advanced Rule Lines'), 
+	'nicename' => __('Advanced Horizontal Rule Lines'), 
 	'description' => __('Advanced rule lines with options for &lt;hr&gt; HTML tag.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
@@ -23,7 +23,7 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'advhr', 
-	'nicename' => __('Advanced Rule Lines'), 
+	'nicename' => __('Horizontal Rule Lines'), 
 	'description' => __('Options for using the &lt;hr&gt; HTML tag'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'advhr', 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-super-edit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-19 21:21-0600\n"
+"POT-Creation-Date: 2008-09-20 12:36-0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jess Planck <jess@funroe.net>\n"
 "Language-Team: Jess Planck <jess@funroe.net>\n"
@@ -464,12 +464,15 @@ msgid "Individual user editor settings"
 msgstr ""
 
 #: tinymce_plugins/advhr/config.php:15
-#: tinymce_plugins/advhr/config.php:26
-msgid "Advanced Rule Lines"
+msgid "Advanced Horizontal Rule Lines"
 msgstr ""
 
 #: tinymce_plugins/advhr/config.php:16
 msgid "Advanced rule lines with options for &lt;hr&gt; HTML tag."
+msgstr ""
+
+#: tinymce_plugins/advhr/config.php:26
+msgid "Horizontal Rule Lines"
 msgstr ""
 
 #: tinymce_plugins/advhr/config.php:27
