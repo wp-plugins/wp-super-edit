@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'nonbreaking', 
-	'nicename' => 'Nonbreaking Spaces', 
-	'description' => 'Adds button to insert nonbreaking space entity.', 
+	'nicename' => __('Nonbreaking Spaces'), 
+	'description' => __('Adds button to insert nonbreaking space entity.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'nonbreaking', 
-	'nicename' => 'Nonbreaking Space', 
-	'description' => 'Inserts nonbreaking space entities.', 
+	'nicename' => __('Nonbreaking Space'), 
+	'description' => __('Inserts nonbreaking space entities.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'nonbreaking', 
 	'status' => 'no'

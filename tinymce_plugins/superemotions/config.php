@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'superemotions', 
-	'nicename' => 'Super Emoticon / Icon Plugin', 
-	'description' => 'Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API.', 
+	'nicename' => __('Super Emoticon / Icon Plugin'), 
+	'description' => __('Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => 'superemotions_add_shortcode'
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'superemotions', 
-	'nicename' => 'Super Emoticon / Icons', 
-	'description' => 'Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API.', 
+	'nicename' => __('Super Emoticon / Icons'), 
+	'description' => __('Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'superemotions', 
 	'status' => 'no'

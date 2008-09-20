@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'print', 
-	'nicename' => 'Print Button Plugin', 
-	'description' => 'Adds print button to editor that should print only the edit area contents.', 
+	'nicename' => __('Print Button Plugin'), 
+	'description' => __('Adds print button to editor that should print only the edit area contents.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'print', 
-	'nicename' => 'Print', 
-	'description' => 'Print editor area contents.', 
+	'nicename' => __('Print'), 
+	'description' => __('Print editor area contents.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'print', 
 	'status' => 'no'

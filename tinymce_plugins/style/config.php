@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'style', 
-	'nicename' => 'Advanced CSS / styles Plugin', 
-	'description' => 'Allows access to properties that can be used in a STYLE attribute. Provides the Style Properties Button.', 
+	'nicename' => __('Advanced CSS / styles Plugin'), 
+	'description' => __('Allows access to properties that can be used in a STYLE attribute. Provides the Style Properties Button.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'styleprops', 
-	'nicename' => 'Style Properties', 
-	'description' => 'Interface for properties that can be manipulated using the STYLE attribute.', 
+	'nicename' => __('Style Properties'), 
+	'description' => __('Interface for properties that can be manipulated using the STYLE attribute.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'style', 
 	'status' => 'no'

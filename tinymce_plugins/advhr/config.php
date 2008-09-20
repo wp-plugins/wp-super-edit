@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'advhr', 
-	'nicename' => 'Advanced Rule Lines', 
-	'description' => 'Advanced rule lines with options for &lt;hr&gt; HTML tag.', 
+	'nicename' => __('Advanced Rule Lines'), 
+	'description' => __('Advanced rule lines with options for &lt;hr&gt; HTML tag.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'advhr', 
-	'nicename' => 'Advanced Rule Lines', 
-	'description' => 'Options for using the &lt;hr&gt; HTML tag', 
+	'nicename' => __('Advanced Rule Lines'), 
+	'description' => __('Options for using the &lt;hr&gt; HTML tag'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'advhr', 
 	'status' => 'no'

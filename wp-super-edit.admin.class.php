@@ -54,10 +54,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function uninstall() {
 			global $wpdb;
 			
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_options );
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_plugins );
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_buttons );
-			$wpdb->query('DROP TABLE IF EXISTS ' . $this->db_users );
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_options ));
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_plugins ));
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_buttons ));
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_users ));
 			
 			delete_option( 'wp_super_edit_tinymce_scan' );
 			
@@ -351,16 +351,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* @param string $action nonce action to make keys
 		* @return string
 		*/		
-		function nonce_field($action = -1) { 
+		function nonce_field( $action = -1 ) { 
 			return wp_nonce_field( $action, "_wpnonce", true , false );
 		}
 		
 		/**
 		* Administration interface display header and information
-		* @param string $text text to display
 		*/
 		function ui_header() {
-		
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
@@ -377,7 +375,6 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_info',
 				'content' => __('To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://factory.funroe.net/contribute/">donation or other contribution</a>.'),
 			) );
-						
 		}
 
 		/**
@@ -456,8 +453,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Form table row
-		* @param string $text text to display
+		* Form table row for WordPress admin
+		* @param string $header
+		* @param string $content
+		* @param boolean $return
+		* @return mixed
 		*/
 		function form_table_row( $header = '', $content = '', $return = false ) {
 			
@@ -487,8 +487,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Form Select
-		* @param string $text text to display
+		* Form select produces select and options form element
+		* @param string $option_name
+		* @param array $options
+		* @param string $selected
+		* @param boolean $return
+		* @return mixed
 		*/
 		function form_select( $option_name = '', $options = array(), $selected = '', $return = false ) {
 			
@@ -517,10 +521,13 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$this->html_tag( $content_array );
 		}
+		
 		/**
 		* Display submit button
 		* @param string $button_text button value
 		* @param string $message description text
+		* @param boolean $return
+		* @return mixed
 		*/
 		function submit_button( $button_text = 'Update Options &raquo;', $message = '', $return = false ) {
 			$content_array = array(
@@ -541,27 +548,26 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Create administration menu
-		* 
+		* Display WP Super Edit administration menu
 		*/
 		function admin_menu_ui() {		
 		
 			$ui_tabs['buttons'] = $this->html_tag( array(
 				'tag' => 'a',
 				'href' => htmlentities( $this->ui_url . '&wp_super_edit_ui=buttons' ),
-				'content' => 'Arrange Editor Buttons',
+				'content' => __('Arrange Editor Buttons'),
 				'return' => true
 			) );
 			$ui_tabs['plugins'] = $this->html_tag( array(
 				'tag' => 'a',
 				'href' => htmlentities( $this->ui_url . '&wp_super_edit_ui=plugins' ),
-				'content' => 'Configure Editor Plugins',
+				'content' => __('Configure Editor Plugins'),
 				'return' => true
 			) );
 			$ui_tabs['options'] = $this->html_tag( array(
 				'tag' => 'a',
 				'href' => htmlentities( $this->ui_url . '&wp_super_edit_ui=options' ),
-				'content' => 'WP Super Edit Options',
+				'content' => __('WP Super Edit Options'),
 				'return' => true
 			) );
 			
@@ -596,23 +602,20 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 
 		/**
-		* Show the management mode
-		* 
+		* Display the current management mode
 		*/
 		function display_management_mode() {
 			$this->html_tag( array(
 				'tag' => 'div',
 				'id' => 'wp_super_edit_management_mode',
-				'content' => 'Management Mode: ' . $this->management_modes[ $this->management_mode ]
+				'content' => __('Management Mode: ') . $this->management_modes[ $this->management_mode ]
 			) );
 		}
 		
 		/**
-		* Create deactivation user interface
-		* 
+		* Display installation user interfaces
 		*/
 		function install_ui() {
-
 			$this->html_tag( array(
 				'tag' => 'div',
 				'tag_type' => 'open',
@@ -623,14 +626,14 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'id' => 'wp_super_edit_install_scanner',
 				'class' => 'wp_super_edit_install',
-				'content' => 'Click here to start the WP Super Edit installation by scanning your editor settings.'
+				'content' => __('Click here to start the WP Super Edit installation by scanning your editor settings.')
 			) );
 			
 			$this->html_tag( array(
 				'tag' => 'div',
 				'id' => 'wp_super_edit_install_wait',
 				'class' => 'wp_super_edit_install',
-				'content' => 'Please wait while we check your editor settings!'
+				'content' => __('Please wait while we check your editor settings!')
 			) );
 			
 			$this->html_tag( array(
@@ -640,7 +643,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'class' => 'wp_super_edit_install'
 			) );
 			
-			$button = $this->submit_button( 'Install WP Super Edit', '<strong>Install default settings and database tables for WP Super Edit.</strong>', true );
+			$button = $this->submit_button( __('Install WP Super Edit'), __('<strong>Install default settings and database tables for WP Super Edit.</strong>'), true );
 			
 			$this->form( 'install', $button );
 			
@@ -653,12 +656,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'tag_type' => 'close'
 			) );
-			
 		}
 
 		/**
-		* Create deactivation user interface
-		* 
+		* Display deactivation user interface
 		*/
 		function uninstall_ui() {
 			$this->html_tag( array(
@@ -667,7 +668,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_deactivate'
 			) );
 						
-			$button = $this->submit_button( 'Uninstall WP Super Edit', '<strong>This option will remove settings and deactivate WP Super Edit. </strong>', true );
+			$button = $this->submit_button( __('Uninstall WP Super Edit'), __('<strong>This option will remove settings and deactivate WP Super Edit. </strong>'), true );
 
 			$this->form( 'uninstall', $button );
 
@@ -675,13 +676,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'tag' => 'div',
 				'tag_type' => 'close'
 			) );
-			
 		}
 		
 
 		/**
-		* WP Super Edit Options Interface
-		* 
+		* Display WP Super Edit Options Interface
 		*/
 		function options_ui() {
 			$this->html_tag( array(
@@ -692,7 +691,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			$this->display_management_mode();
 			
-			$submit_button = $this->submit_button( 'Update Options', '', true );
+			$submit_button = $this->submit_button( __('Update Options'), '', true );
 			$submit_button_group = $this->html_tag( array(
 				'tag' => 'p',
 				'class' => 'submit',
@@ -702,46 +701,46 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$mode_select = $this->form_select( 'wp_super_edit_management_mode', $this->management_modes, $this->management_mode, true );
 			
-			$table_row = $this->form_table_row( 'Manage editor buttons using:', $mode_select, true );
+			$table_row = $this->form_table_row( __('Manage editor buttons using:'), $mode_select, true );
 
 			$reset_default_user_box = $this->html_tag( array(
 				'tag' => 'input',
 				'tag_type' => 'single-after',
 				'type' => 'checkbox',
-				'name' => "wp_super_edit_reset_default_user",
-				'id' => "wp_super_edit_reset_default_user_i",
+				'name' => 'wp_super_edit_reset_default_user',
+				'id' => 'wp_super_edit_reset_default_user_i',
 				'value' => 'reset_default_user',
-				'content' => "<br /> Reset Default User Setting to original scanned TinyMCE editor settings",
+				'content' => __('<br /> Reset Default User Setting to original scanned TinyMCE editor settings'),
 				'return' => true
 			) );
 
-			$table_row .= $this->form_table_row( 'Reset Default User Settings:', $reset_default_user_box, true );
+			$table_row .= $this->form_table_row( __('Reset Default User Settings:'), $reset_default_user_box, true );
 			
 			$reset_users_box = $this->html_tag( array(
 				'tag' => 'input',
 				'tag_type' => 'single-after',
 				'type' => 'checkbox',
-				'name' => "wp_super_edit_reset_users",
-				'id' => "wp_super_edit_reset_users_i",
+				'name' => 'wp_super_edit_reset_users',
+				'id' => 'wp_super_edit_reset_users_i',
 				'value' => 'reset_users',
-				'content' => "<br /> Reset all users and roles using Default Editor Settings",
+				'content' => __('<br /> Reset all users and roles using Default Editor Settings'),
 				'return' => true
 			) );
 			
-			$table_row .= $this->form_table_row( 'Reset All User and Role Settings:', $reset_users_box, true );
+			$table_row .= $this->form_table_row( __('Reset All User and Role Settings:'), $reset_users_box, true );
 			
 			$rescan_plugins_box = $this->html_tag( array(
 				'tag' => 'input',
 				'tag_type' => 'single-after',
 				'type' => 'checkbox',
-				'name' => "wp_super_edit_rescan_plugins",
-				'id' => "wp_super_edit_rescan_plugins_i",
+				'name' => 'wp_super_edit_rescan_plugins',
+				'id' => 'wp_super_edit_rescan_plugins_i',
 				'value' => 'rescan_plugins',
-				'content' => "<br /> Rescan plugins added to the WP Super Edit tinymce_plugins folder to add unregistered plugins and buttons.",
+				'content' => __('<br /> Rescan plugins added to the WP Super Edit tinymce_plugins folder to add unregistered plugins and buttons.'),
 				'return' => true
 			) );
 			
-			$table_row .= $this->form_table_row( 'Rescan tinymce_plugins Folder:', $rescan_plugins_box, true );			
+			$table_row .= $this->form_table_row( __('Rescan tinymce_plugins Folder:'), $rescan_plugins_box, true );			
 			
 			$form_content .= $this->form_table( $table_row, true );
 			$form_content .= $submit_button_group;
@@ -758,8 +757,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 		
 		/**
-		* WP Super Edit Plugins Interface
-		* 
+		* Display WP Super Edit Plugins Interface
 		*/
 		function plugins_ui() {
 		
@@ -784,10 +782,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					'tag' => 'input',
 					'tag_type' => 'single-after',
 					'type' => 'checkbox',
-					'name' => "wp_super_edit_plugins[$plugin->name]",
-					'id' => "wp_super_edit_plugins-$plugin->name",
+					'name' => 'wp_super_edit_plugins[$plugin->name]',
+					'id' => 'wp_super_edit_plugins-$plugin->name',
 					'value' => 'yes',
-					'content' => "<br /> $plugin->description",
+					'content' => '<br />' . $plugin->description,
 					'return' => true
 				);
 				
@@ -810,15 +808,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 
 		}
+		
 		/**
-		* Creates Javascript array for buttons and plugins.
+		* Output Javascript array for buttons.
 		*
 		* Javascript arrays are used for various client side actions including button positioning and dialog boxes.
-		*
-		* @param $settings Button or plugin array.
-		* @param $name Button or plugin name.
-		* @param $type Define as button or plugin.
-		* @global array $superedit_ini
 		*/
 		function buttons_js_objects() {
 			foreach ( $this->buttons as $button ) {
@@ -828,22 +822,21 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 
 		/**
-		* User management
-		* 
+		* Display user management interfaces based on options.
 		*/
 		function user_management_ui() {
 			global $wp_roles;
         	
         	switch ( $this->management_mode ) {
 				case 'single':
-					$user_management_text = 'This arrangement of visual editor buttons will apply to all users';
+					$user_management_text = __('This arrangement of visual editor buttons will apply to all users');
 					break;
 				case 'roles':
-					$user_management_text = 'The arrangement of visual editor buttons will apply to all users in the selected Role or Default user button setting.<br />';
+					$user_management_text = __('The arrangement of visual editor buttons will apply to all users in the selected Role or Default user button setting.<br />');
 					
 					$roles = Array();
 
-					$roles['wp_super_edit_default'] = 'Default Button Settings';
+					$roles['wp_super_edit_default'] = __('Default Button Settings');
 
 					foreach( $wp_roles->role_names as $role => $name ) {
 						$name = translate_with_context($name);
@@ -855,10 +848,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					
 					$role_select = $this->form_select( 'wp_super_edit_manage_role', $roles, $selected, true );
 										
-					$submit_button = $this->submit_button( 'Load Button Settings', '', true );
+					$submit_button = $this->submit_button( __('Load Button Settings'), '', true );
 					$submit_button_group = $this->html_tag( array(
 						'tag' => 'p',
-						'content' => 'Select User Role to Edit: ' . $role_select . $submit_button,
+						'content' => __('Select User Role to Edit: ') . $role_select . $submit_button,
 						'return' => true
 					) );						
 					
@@ -866,7 +859,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 					break;
 				case 'users':
-					$user_management_text = 'Users can arrange buttons under the Users tab. Changes to this button arrangement will only affect the defult button settings.';        	
+					$user_management_text = __('Users can arrange buttons under the Users tab. Changes to this button arrangement will only affect the defult button settings.');        	
 					break;
 				default:
 					break;
@@ -884,8 +877,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		}
 		
 		/**
-		* WP Super Edit Make Dragable Buttons
-		* 
+		* Display WP Super Edit dragable button
 		*/
 		function make_button_ui( $button, $separator = false ) {
 		
@@ -893,17 +885,21 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			if ( $separator ) $button_class .= ' button_separator';
 			
+			$button_info_text = __('Button info for ');
+			
 			$button_info = $this->html_tag( array(
 				'tag' => 'img',
 				'tag_type' => 'single',
 				'src' => $this->core_uri . 'images/info.png',
 				'width' => '14',
 				'height' => '16',
-				'alt' => 'Button info for ' . $button->nicename,
-				'title' => 'Button info for ' . $button->nicename,
+				'alt' => $button_info_text. $button->nicename,
+				'title' => $button_info_text . $button->nicename,
 				'onclick' => "getButtonInfo('$button->name');",
 				'return' => true
 			) );
+			
+			$separator_info_text = __('Toggle separator for ');
 			
 			$button_separator_toggle = $this->html_tag( array(
 				'tag' => 'img',
@@ -911,8 +907,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'src' => $this->core_uri . 'images/separator.png',
 				'width' => '14',
 				'height' => '7',
-				'alt' => 'Toggle separator for' . $button->nicename,
-				'title' => 'Toggle separator for ' . $button->nicename,
+				'alt' => $separator_info_text . $button->nicename,
+				'title' => $separator_info_text . $button->nicename,
 				'onclick' => "toggleSeparator('$button->name');",
 				'return' => true
 			) );
@@ -934,8 +930,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 		
 		/**
-		* WP Super Edit Buttons Interface
-		* 
+		* Display WP Super Edit Buttons Interface
 		*/
 		function buttons_ui() {
         	global $userdata;
@@ -1010,9 +1005,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			}
 			
 			$action_options = array(
-				'update' => 'Update Buttons',
-				'reset_default' => 'Reset to Defaults',
-				'set_default' => 'Set as Default'
+				'update' => __('Update Buttons'),
+				'reset_default' => __('Reset to Defaults'),
+				'set_default' => __('Set as Default')
 			);
 
 			if ( $user == 'wp_super_edit_default' ) {
@@ -1024,7 +1019,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$set_default_controls = $this->form_select( 'wp_super_edit_action_control', $action_options, 'update', true );			
 
-			$submit_button = $this->submit_button( 'Update Button Settings For: ' . $current_user['user_nicename'], $hidden_form_user . $hidden_form_items , true );								
+			$submit_button = $this->submit_button( __('Update Button Settings For: ') . $current_user['user_nicename'], $hidden_form_user . $hidden_form_items , true );								
 
 			$this->html_tag( array(
 				'tag' => 'div',
@@ -1057,7 +1052,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				$this->html_tag( array(
 					'tag' => 'h3',
 					'class' => 'row_title',
-					'content' => "Editor Button Row $button_row"
+					'content' => __('Editor Button Row ') . $button_row
 				) );
 
 				
@@ -1110,7 +1105,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$this->html_tag( array(
 				'tag' => 'h3',
 				'class' => 'row_title',
-				'content' => "Disabled Buttons"
+				'content' => __('Disabled Buttons')
 			) );
 		
 			$this->html_tag( array(

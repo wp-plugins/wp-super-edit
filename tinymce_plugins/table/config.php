@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'table', 
-	'nicename' => 'Tables Plugin', 
-	'description' => 'Allows the creation and manipulation of tables using the TABLE HTML tag. Provides the Tables and Table Controls Buttons.', 
+	'nicename' => __('Tables Plugin'), 
+	'description' => __('Allows the creation and manipulation of tables using the TABLE HTML tag. Provides the Tables and Table Controls Buttons.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'table', 
-	'nicename' => 'Tables', 
-	'description' => 'Interface to create and change table, row, and cell properties.', 
+	'nicename' => __('Tables'), 
+	'description' => __('Interface to create and change table, row, and cell properties.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'table', 
 	'status' => 'no'
@@ -32,8 +32,8 @@ $wp_super_edit->register_tinymce_button( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'tablecontrols', 
-	'nicename' => 'Table controls', 
-	'description' => 'Interface to manipulate tables and access to cell and row properties.', 
+	'nicename' => __('Table controls'), 
+	'description' => __('Interface to manipulate tables and access to cell and row properties.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'table', 
 	'status' => 'no'

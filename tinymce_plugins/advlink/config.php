@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'advlink', 
-	'nicename' => 'Advanced Link', 
-	'description' => 'A more advanded dialog for the Create Link button.', 
+	'nicename' => __('Advanced Link'), 
+	'description' => __('A more advanded dialog for the Create Link button.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''

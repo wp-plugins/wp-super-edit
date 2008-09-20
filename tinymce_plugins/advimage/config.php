@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'advimage', 
-	'nicename' => 'Advanced Image Link', 
-	'description' => 'A more advanded dialog for the Image Link button.', 
+	'nicename' => __('Advanced Image Link'), 
+	'description' => __('A more advanded dialog for the Image Link button.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''

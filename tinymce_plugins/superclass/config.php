@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'superclass', 
-	'nicename' => 'Custom CSS Classes', 
-	'description' => 'Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.', 
+	'nicename' => __('Custom CSS Classes'), 
+	'description' => __('Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => 'superedit_custom_editor_css'
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'styleselect', 
-	'nicename' => 'Custom CSS Classes', 
-	'description' => 'Shows a drop down list of CSS Classes that the editor has access to.', 
+	'nicename' => __('Custom CSS Classes'), 
+	'description' => __('Shows a drop down list of CSS Classes that the editor has access to.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'superclass', 
 	'status' => 'no'

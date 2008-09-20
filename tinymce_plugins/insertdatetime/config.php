@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'insertdatetime', 
-	'nicename' => 'Insert Date / Time Plugin', 
-	'description' => 'Adds insert date and time buttons to automatically insert date and time.', 
+	'nicename' => __('Insert Date / Time Plugin'), 
+	'description' => __('Adds insert date and time buttons to automatically insert date and time.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'insertdate', 
-	'nicename' => 'Insert Date', 
-	'description' => 'Insert current date in editor', 
+	'nicename' => __('Insert Date'), 
+	'description' => __('Insert current date in editor'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'insertdatetime', 
 	'status' => 'no'
@@ -32,8 +32,8 @@ $wp_super_edit->register_tinymce_button( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'inserttime', 
-	'nicename' => 'Insert Time', 
-	'description' => 'Insert current time in editor', 
+	'nicename' => __('Insert Time'), 
+	'description' => __('Insert current time in editor'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'insertdatetime', 
 	'status' => 'no'

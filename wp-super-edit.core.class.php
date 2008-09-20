@@ -110,6 +110,13 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			foreach ( $plugin_result as $plugin ) {
 				$this->plugins[$plugin->name] = $plugin;
 			}
+			
+			$load_buttons = false;
+			
+			if ( $this->is_tinymce == true )$load_buttons = true;
+			if ( $this->ui == 'buttons' ) $load_buttons = true;
+
+        	if ( !$load_buttons ) return;
 
 			$button_query = "
 				SELECT name, provider, plugin, status FROM $this->db_buttons

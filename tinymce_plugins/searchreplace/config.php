@@ -12,8 +12,8 @@
 
 $wp_super_edit->register_tinymce_plugin( array(
 	'name' => 'searchreplace', 
-	'nicename' => 'Search and Replace Plugin', 
-	'description' => 'Adds search and replace buttons and options to the editor.', 
+	'nicename' => __('Search and Replace Plugin'), 
+	'description' => __('Adds search and replace buttons and options to the editor.'), 
 	'provider' => 'wp_super_edit', 
 	'status' => 'no', 
 	'callbacks' => ''
@@ -23,8 +23,8 @@ $wp_super_edit->register_tinymce_plugin( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'search', 
-	'nicename' => 'Search', 
-	'description' => 'Search for text in editor area.', 
+	'nicename' => __('Search'), 
+	'description' => __('Search for text in editor area.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'searchreplace', 
 	'status' => 'no'
@@ -32,8 +32,8 @@ $wp_super_edit->register_tinymce_button( array(
 
 $wp_super_edit->register_tinymce_button( array(
 	'name' => 'replace', 
-	'nicename' => 'Replace', 
-	'description' => 'Replace text in editor area.', 
+	'nicename' => __('Replace'), 
+	'description' => __('Replace text in editor area.'), 
 	'provider' => 'wp_super_edit', 
 	'plugin' => 'searchreplace', 
 	'status' => 'no'
