@@ -176,30 +176,22 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					if ( $this->buttons[$name]->name == $name ) return true;
 					$db_table = $this->db_buttons;
 					break;
-				case 'user':
+				case 'users':
 					$db_table = $this->db_users;
 					$name_col = 'user_name';
-					switch ( $this->management_mode ) {
-						case 'single':
-							$role = " AND user_type='single'";
-							break;
-						case 'roles':
-							$role = " AND user_type='roles'";
-							break;
-						case 'users':
-							$role = " AND user_type='users'";
-							break;
-					}
+					$role = " AND user_type='$this->management_mode'";
 					break;
 				case 'option':
 					$db_table = $this->db_options;
 			}
-
-			$register_check = $wpdb->get_var( $wpdb->prepare( "
-				SELECT $name_col FROM $db_table
-				WHERE $name_col=%s $role
-			", $name ) );
 			
+			$name = $wpdb->prepare( $name );
+			
+			$register_check = $wpdb->get_var( "
+				SELECT $name_col FROM $db_table
+				WHERE $name_col='$name'$role
+			" );
+						
 			if ( $register_check == $name) return true;
 			
 			return false;
@@ -314,8 +306,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			}
 			
 			if ( !$this->check_registered( 'users', $user ) ) $user = 'wp_super_edit_default';
-			$user_settings = $this->get_user_settings( $user );
 			
+			$user_settings = $this->get_user_settings( $user );
+						
 			$tinymce_user_settings = maybe_unserialize( $user_settings->editor_options );
 			
 			$button_check = array_keys( $this->buttons );
