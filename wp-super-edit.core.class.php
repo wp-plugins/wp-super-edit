@@ -176,7 +176,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					if ( $this->buttons[$name]->name == $name ) return true;
 					$db_table = $this->db_buttons;
 					break;
-				case 'users':
+				case 'user':
 					$db_table = $this->db_users;
 					$name_col = 'user_name';
 					$role = " AND user_type='$this->management_mode'";
@@ -305,7 +305,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					break;
 			}
 			
-			if ( !$this->check_registered( 'users', $user ) ) $user = 'wp_super_edit_default';
+			if ( !$this->check_registered( 'user', $user ) ) $user = 'wp_super_edit_default';
 			
 			$user_settings = $this->get_user_settings( $user );
 						
