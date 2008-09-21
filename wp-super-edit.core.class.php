@@ -185,7 +185,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					$db_table = $this->db_options;
 			}
 			
-			$name = $wpdb->prepare( $name );
+			$name = $wpdb->escape( $name );
 			
 			$register_check = $wpdb->get_var( "
 				SELECT $name_col FROM $db_table
