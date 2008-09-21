@@ -1,0 +1,758 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-super-edit\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-20 12:36-0600\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jess Planck <jess@funroe.net>\n"
+"Language-Team: Jess Planck <jess@funroe.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: wp-super-edit-admin.php:55
+#: wp-super-edit-admin.php:58
+#: wp-super-edit-admin.php:59
+#: wp-super-edit.admin.class.php:370
+msgid "WP Super Edit"
+msgstr ""
+
+#: wp-super-edit-defaults.php:110
+msgid "Bold"
+msgstr ""
+
+#: wp-super-edit-defaults.php:111
+msgid "Bold content with strong HTML tag. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:119
+msgid "Italic"
+msgstr ""
+
+#: wp-super-edit-defaults.php:120
+msgid "Italicize content with em HTML tag. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:128
+msgid "Strikethrough"
+msgstr ""
+
+#: wp-super-edit-defaults.php:129
+msgid "Strike out content with strike HTML tag. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:137
+msgid "Bulleted List"
+msgstr ""
+
+#: wp-super-edit-defaults.php:138
+msgid "An unordered list. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:146
+msgid "Numbered List"
+msgstr ""
+
+#: wp-super-edit-defaults.php:147
+msgid "An ordered list. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:155
+msgid "Block Quote"
+msgstr ""
+
+#: wp-super-edit-defaults.php:156
+msgid "Blockquotes are used when quoting other content. Usually this content is displayed as indented."
+msgstr ""
+
+#: wp-super-edit-defaults.php:165
+msgid "Left Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:166
+msgid "Set the alignment to left justification. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:174
+msgid "Center Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:175
+msgid "Set the alignment to center justification. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:183
+msgid "Right Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:184
+msgid "Set the alignment to right justification. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:192
+msgid "Create Link"
+msgstr ""
+
+#: wp-super-edit-defaults.php:193
+msgid "Create a link. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:201
+msgid "Remove Link"
+msgstr ""
+
+#: wp-super-edit-defaults.php:202
+msgid "Remove a link. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:210
+msgid "Wordpress More Tag"
+msgstr ""
+
+#: wp-super-edit-defaults.php:211
+msgid "Insert Wordpress MORE tag to divide content to multiple views. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:219
+msgid "Spell Check"
+msgstr ""
+
+#: wp-super-edit-defaults.php:220
+msgid "Wordpress spell check. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:228
+msgid "Full Screen"
+msgstr ""
+
+#: wp-super-edit-defaults.php:229
+msgid "Toggle Full Screen editor mode."
+msgstr ""
+
+#: wp-super-edit-defaults.php:237
+msgid "Show/Hide Advanced toolbar"
+msgstr ""
+
+#: wp-super-edit-defaults.php:238
+msgid "Built in Wordpress button <strong>normally hidden</strong>. When pressed it will show extra rows of buttons (or press Ctrl-Alt-V on FF, Alt-V on IE)."
+msgstr ""
+
+#: wp-super-edit-defaults.php:246
+msgid "Paragraphs and Headings"
+msgstr ""
+
+#: wp-super-edit-defaults.php:247
+msgid "Set Paragraph or Headings for content."
+msgstr ""
+
+#: wp-super-edit-defaults.php:255
+msgid "Underline Text"
+msgstr ""
+
+#: wp-super-edit-defaults.php:256
+msgid "Built in Wordpress button to underline selected text."
+msgstr ""
+
+#: wp-super-edit-defaults.php:264
+msgid "Full Justification"
+msgstr ""
+
+#: wp-super-edit-defaults.php:265
+msgid "Set the alignment to full justification. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:273
+msgid "Foreground color"
+msgstr ""
+
+#: wp-super-edit-defaults.php:274
+msgid "Set foreground or text color. May produce evil font tags. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:282
+msgid "Paste as Text"
+msgstr ""
+
+#: wp-super-edit-defaults.php:283
+msgid "Paste clipboard text and remove formatting. Useful for pasting text from applications that produce substandard HTML. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:291
+msgid "Paste from Microsoft Word"
+msgstr ""
+
+#: wp-super-edit-defaults.php:292
+msgid "Attempts to clean up HTML produced by Microsoft Word during cut and paste. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:300
+msgid "Remove HTML Formatting"
+msgstr ""
+
+#: wp-super-edit-defaults.php:301
+msgid "Removes HTML formatting from selected item. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:309
+msgid "Media"
+msgstr ""
+
+#: wp-super-edit-defaults.php:310
+msgid "Add or edit embedded media like Flash, Quicktime, or Windows Media. Different from WordPress Media tools."
+msgstr ""
+
+#: wp-super-edit-defaults.php:318
+msgid "Special Characters"
+msgstr ""
+
+#: wp-super-edit-defaults.php:319
+msgid "Insert special characters or entities using a visual interface. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:327
+msgid "Decrease Indentation"
+msgstr ""
+
+#: wp-super-edit-defaults.php:328
+msgid "This will decrease the level of indentation based on content position. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:336
+msgid "Increase Indentation"
+msgstr ""
+
+#: wp-super-edit-defaults.php:337
+msgid "This will increase the level of indentation based on content position. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:345
+msgid "Undo option"
+msgstr ""
+
+#: wp-super-edit-defaults.php:346
+msgid "Undo previous formatting changes. Not useful once you save. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:354
+msgid "Redo option"
+msgstr ""
+
+#: wp-super-edit-defaults.php:355
+msgid "Redo previous formatting changes. Not useful once you save. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:363
+msgid "Wordpress Help"
+msgstr ""
+
+#: wp-super-edit-defaults.php:364
+msgid "Built in Wordpress help documentation. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:375
+msgid "Clean up HTML"
+msgstr ""
+
+#: wp-super-edit-defaults.php:376
+msgid "Attempts to clean up bad HTML in the editor. Built in Wordpress button."
+msgstr ""
+
+#: wp-super-edit-defaults.php:384
+msgid "Image Link"
+msgstr ""
+
+#: wp-super-edit-defaults.php:385
+msgid "Insert linked image. Wordpress default editor option for first row."
+msgstr ""
+
+#: wp-super-edit-defaults.php:393
+msgid "Anchors"
+msgstr ""
+
+#: wp-super-edit-defaults.php:394
+msgid "Create named anchors."
+msgstr ""
+
+#: wp-super-edit-defaults.php:402
+msgid "Subscript"
+msgstr ""
+
+#: wp-super-edit-defaults.php:403
+msgid "Format text as Subscript."
+msgstr ""
+
+#: wp-super-edit-defaults.php:411
+msgid "Superscript"
+msgstr ""
+
+#: wp-super-edit-defaults.php:412
+msgid "Format text as Superscript."
+msgstr ""
+
+#: wp-super-edit-defaults.php:420
+msgid "Background color"
+msgstr ""
+
+#: wp-super-edit-defaults.php:421
+msgid "Set background color for selected tag or text. "
+msgstr ""
+
+#: wp-super-edit-defaults.php:429
+msgid "HTML Source"
+msgstr ""
+
+#: wp-super-edit-defaults.php:430
+msgid "View and edit the HTML source code."
+msgstr ""
+
+#: wp-super-edit-defaults.php:438
+msgid "Wordpress Next Page Tag"
+msgstr ""
+
+#: wp-super-edit-defaults.php:439
+msgid "Insert Wordpress Next Page tag to divide page content into multiple views."
+msgstr ""
+
+#: wp-super-edit.admin.class.php:376
+msgid "To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href=\"http://factory.funroe.net/projects/wp-super-edit/\">WP Super Edit project.</a> You can help continue development by making a <a href=\"http://factory.funroe.net/contribute/\">donation or other contribution</a>."
+msgstr ""
+
+#: wp-super-edit.admin.class.php:558
+msgid "Arrange Editor Buttons"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:564
+msgid "Configure Editor Plugins"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:570
+msgid "WP Super Edit Options"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:611
+msgid "Management Mode: "
+msgstr ""
+
+#: wp-super-edit.admin.class.php:629
+msgid "Click here to start the WP Super Edit installation by scanning your editor settings."
+msgstr ""
+
+#: wp-super-edit.admin.class.php:636
+msgid "Please wait while we check your editor settings!"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:646
+msgid "Install WP Super Edit"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:646
+msgid "<strong>Install default settings and database tables for WP Super Edit.</strong>"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:671
+msgid "Uninstall WP Super Edit"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:671
+msgid "<strong>This option will remove settings and deactivate WP Super Edit. </strong>"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:694
+msgid "Update Options"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:704
+msgid "Manage editor buttons using:"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:713
+msgid "<br /> Reset Default User Setting to original scanned TinyMCE editor settings"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:717
+msgid "Reset Default User Settings:"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:726
+msgid "<br /> Reset all users and roles using Default Editor Settings"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:730
+msgid "Reset All User and Role Settings:"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:739
+msgid "<br /> Rescan plugins added to the WP Super Edit tinymce_plugins folder to add unregistered plugins and buttons."
+msgstr ""
+
+#: wp-super-edit.admin.class.php:743
+msgid "Rescan tinymce_plugins Folder:"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:832
+msgid "This arrangement of visual editor buttons will apply to all users"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:835
+msgid "The arrangement of visual editor buttons will apply to all users in the selected Role or Default user button setting.<br />"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:839
+msgid "Default Button Settings"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:851
+msgid "Load Button Settings"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:854
+msgid "Select User Role to Edit: "
+msgstr ""
+
+#: wp-super-edit.admin.class.php:862
+msgid "Users can arrange buttons under the Users tab. Changes to this button arrangement will only affect the defult button settings."
+msgstr ""
+
+#: wp-super-edit.admin.class.php:888
+msgid "Button info for "
+msgstr ""
+
+#: wp-super-edit.admin.class.php:902
+msgid "Toggle separator for "
+msgstr ""
+
+#: wp-super-edit.admin.class.php:1008
+msgid "Update Buttons"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:1009
+msgid "Reset to Defaults"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:1010
+msgid "Set as Default"
+msgstr ""
+
+#: wp-super-edit.admin.class.php:1022
+msgid "Update Button Settings For: "
+msgstr ""
+
+#: wp-super-edit.admin.class.php:1055
+msgid "Editor Button Row "
+msgstr ""
+
+#: wp-super-edit.admin.class.php:1108
+msgid "Disabled Buttons"
+msgstr ""
+
+#: wp-super-edit.core.class.php:68
+msgid "One editor setting for all users"
+msgstr ""
+
+#: wp-super-edit.core.class.php:69
+msgid "Role based editor settings"
+msgstr ""
+
+#: wp-super-edit.core.class.php:70
+msgid "Individual user editor settings"
+msgstr ""
+
+#: tinymce_plugins/advhr/config.php:15
+msgid "Advanced Horizontal Rule Lines"
+msgstr ""
+
+#: tinymce_plugins/advhr/config.php:16
+msgid "Advanced rule lines with options for &lt;hr&gt; HTML tag."
+msgstr ""
+
+#: tinymce_plugins/advhr/config.php:26
+msgid "Horizontal Rule Lines"
+msgstr ""
+
+#: tinymce_plugins/advhr/config.php:27
+msgid "Options for using the &lt;hr&gt; HTML tag"
+msgstr ""
+
+#: tinymce_plugins/advimage/config.php:15
+msgid "Advanced Image Link"
+msgstr ""
+
+#: tinymce_plugins/advimage/config.php:16
+msgid "A more advanded dialog for the Image Link button."
+msgstr ""
+
+#: tinymce_plugins/advlink/config.php:15
+msgid "Advanced Link"
+msgstr ""
+
+#: tinymce_plugins/advlink/config.php:16
+msgid "A more advanded dialog for the Create Link button."
+msgstr ""
+
+#: tinymce_plugins/compat2x/config.php:15
+msgid "TinyMCE 2.x Compatiblity"
+msgstr ""
+
+#: tinymce_plugins/compat2x/config.php:16
+msgid "This plugin attempts to offer compatibility with old TinyMCE 2.x plugins. Please suggest to the author to upgrade development to TinyMCE 3.x"
+msgstr ""
+
+#: tinymce_plugins/contextmenu/config.php:15
+msgid "Context Menu"
+msgstr ""
+
+#: tinymce_plugins/contextmenu/config.php:16
+msgid "TinyMCE context menu is used by some plugins. The context menu is activated by right mouse click or crtl click on Mac in the editor area."
+msgstr ""
+
+#: tinymce_plugins/insertdatetime/config.php:15
+msgid "Insert Date / Time Plugin"
+msgstr ""
+
+#: tinymce_plugins/insertdatetime/config.php:16
+msgid "Adds insert date and time buttons to automatically insert date and time."
+msgstr ""
+
+#: tinymce_plugins/insertdatetime/config.php:26
+msgid "Insert Date"
+msgstr ""
+
+#: tinymce_plugins/insertdatetime/config.php:27
+msgid "Insert current date in editor"
+msgstr ""
+
+#: tinymce_plugins/insertdatetime/config.php:35
+msgid "Insert Time"
+msgstr ""
+
+#: tinymce_plugins/insertdatetime/config.php:36
+msgid "Insert current time in editor"
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:15
+msgid "Layers (DIV) Plugin"
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:16
+msgid "Insert layers using DIV HTML tag. This plugin will change the editor to allow all DIV tags. Provides the Insert Layer, Move Layer Forward, Move Layer Backward, and Toggle Layer Positioning Buttons."
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:26
+msgid "Insert Layer"
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:27
+msgid "Insert a layer using the DIV HTML tag. Be careful layers are tricky to position."
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:35
+msgid "Move Layer Forward"
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:36
+msgid "Move selected layer forward in stacked view."
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:44
+msgid "Move Layer Backward"
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:45
+msgid "Move selected layer backward in stacked view."
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:53
+msgid "Toggle Layer Positioning"
+msgstr ""
+
+#: tinymce_plugins/layer/config.php:54
+msgid "Toggle the layer positioning as absolute or relative. Be careful layers are tricky to position."
+msgstr ""
+
+#: tinymce_plugins/nonbreaking/config.php:15
+msgid "Nonbreaking Spaces"
+msgstr ""
+
+#: tinymce_plugins/nonbreaking/config.php:16
+msgid "Adds button to insert nonbreaking space entity."
+msgstr ""
+
+#: tinymce_plugins/nonbreaking/config.php:26
+msgid "Nonbreaking Space"
+msgstr ""
+
+#: tinymce_plugins/nonbreaking/config.php:27
+msgid "Inserts nonbreaking space entities."
+msgstr ""
+
+#: tinymce_plugins/print/config.php:15
+msgid "Print Button Plugin"
+msgstr ""
+
+#: tinymce_plugins/print/config.php:16
+msgid "Adds print button to editor that should print only the edit area contents."
+msgstr ""
+
+#: tinymce_plugins/print/config.php:26
+msgid "Print"
+msgstr ""
+
+#: tinymce_plugins/print/config.php:27
+msgid "Print editor area contents."
+msgstr ""
+
+#: tinymce_plugins/searchreplace/config.php:15
+msgid "Search and Replace Plugin"
+msgstr ""
+
+#: tinymce_plugins/searchreplace/config.php:16
+msgid "Adds search and replace buttons and options to the editor."
+msgstr ""
+
+#: tinymce_plugins/searchreplace/config.php:26
+msgid "Search"
+msgstr ""
+
+#: tinymce_plugins/searchreplace/config.php:27
+msgid "Search for text in editor area."
+msgstr ""
+
+#: tinymce_plugins/searchreplace/config.php:35
+msgid "Replace"
+msgstr ""
+
+#: tinymce_plugins/searchreplace/config.php:36
+msgid "Replace text in editor area."
+msgstr ""
+
+#: tinymce_plugins/style/config.php:15
+msgid "Advanced CSS / styles Plugin"
+msgstr ""
+
+#: tinymce_plugins/style/config.php:16
+msgid "Allows access to properties that can be used in a STYLE attribute. Provides the Style Properties Button."
+msgstr ""
+
+#: tinymce_plugins/style/config.php:26
+msgid "Style Properties"
+msgstr ""
+
+#: tinymce_plugins/style/config.php:27
+msgid "Interface for properties that can be manipulated using the STYLE attribute."
+msgstr ""
+
+#: tinymce_plugins/superclass/config.php:15
+#: tinymce_plugins/superclass/config.php:26
+msgid "Custom CSS Classes"
+msgstr ""
+
+#: tinymce_plugins/superclass/config.php:16
+msgid "Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button."
+msgstr ""
+
+#: tinymce_plugins/superclass/config.php:27
+msgid "Shows a drop down list of CSS Classes that the editor has access to."
+msgstr ""
+
+#: tinymce_plugins/superemotions/config.php:15
+msgid "Super Emoticon / Icon Plugin"
+msgstr ""
+
+#: tinymce_plugins/superemotions/config.php:16
+msgid "Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API."
+msgstr ""
+
+#: tinymce_plugins/superemotions/config.php:26
+msgid "Super Emoticon / Icons"
+msgstr ""
+
+#: tinymce_plugins/superemotions/config.php:27
+msgid "Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API."
+msgstr ""
+
+#: tinymce_plugins/table/config.php:15
+msgid "Tables Plugin"
+msgstr ""
+
+#: tinymce_plugins/table/config.php:16
+msgid "Allows the creation and manipulation of tables using the TABLE HTML tag. Provides the Tables and Table Controls Buttons."
+msgstr ""
+
+#: tinymce_plugins/table/config.php:26
+msgid "Tables"
+msgstr ""
+
+#: tinymce_plugins/table/config.php:27
+msgid "Interface to create and change table, row, and cell properties."
+msgstr ""
+
+#: tinymce_plugins/table/config.php:35
+msgid "Table controls"
+msgstr ""
+
+#: tinymce_plugins/table/config.php:36
+msgid "Interface to manipulate tables and access to cell and row properties."
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:15
+msgid "XHTML Extras Plugin"
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:16
+msgid "Allows access to interfaces for some XHTML tags like CITE, ABBR, ACRONYM, DEL and INS. Also can give access to advanced XHTML properties such as javascript events. Provides the Citation, Abbreviation, Acronym, Deletion, Insertion, and XHTML Attributes Buttons."
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:26
+msgid "Citation"
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:27
+msgid "Indicate a citation using the HTML CITE tag."
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:35
+msgid "Abbreviation"
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:36
+msgid "Indicate an abbreviation using the HTML ABBR tag."
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:44
+msgid "Acronym"
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:45
+msgid "Indicate an acronym using the HTML ACRONYM tag."
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:53
+msgid "Deletion"
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:54
+msgid "Use the HTML DEL tag to indicate recently deleted content."
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:62
+msgid "Insertion"
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:63
+msgid "Use the HTML INS tag to indicate newly inserted content."
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:71
+msgid "XHTML Attributes"
+msgstr ""
+
+#: tinymce_plugins/xhtmlxtras/config.php:72
+msgid "Modify advanced attributes and javascript events."
+msgstr ""
+
