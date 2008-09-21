@@ -197,7 +197,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 
 			$register_check = $wpdb->get_var( $wpdb->prepare( "
 				SELECT $name_col FROM $db_table
-				WHERE $name_col=&s $role
+				WHERE $name_col=%s $role
 			", $name ) );
 			
 			if ( $register_check == $name) return true;
