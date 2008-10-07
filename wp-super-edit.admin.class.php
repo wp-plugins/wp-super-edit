@@ -365,6 +365,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'class' => 'wrap',
 			) );
 			
+			if ( $this->user_profile ) return;
+			
 			$this->html_tag( array(
 				'tag' => 'h2',
 				'content' => __('WP Super Edit'),
