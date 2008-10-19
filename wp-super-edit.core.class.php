@@ -47,7 +47,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		* Constructor initializes private variables. Set for php4 compatiblity. 
 		*/	
         function wp_super_edit_core() { // Maintain php4 compatiblity  
-        	global $wpdb;
+        	global $wpdb, $wp_version;
 
         	$this->db_options = $wpdb->prefix . 'wp_super_edit_options';
         	$this->db_plugins =  $wpdb->prefix . 'wp_super_edit_plugins';
@@ -68,13 +68,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				'single' => __('One editor setting for all users'),
 				'roles' => __('Role based editor settings'),
 				'users' => __('Individual user editor settings')
-			);
-			
-			if ( preg_match( '/tiny_mce_config\.php|page-new\.php|page\.php|post-new\.php|post\.php/',$_SERVER['SCRIPT_FILENAME'] ) == 0 ) {
-				$this->is_tinymce = false;
-			} else {
-				$this->is_tinymce = true;
-			}    	
+			); 	
         	
         	if ( is_admin() ) {
 				$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
@@ -91,6 +85,18 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			}
 			
         	if ( !$this->is_installed ) return;
+        	
+			if ( $wp_version >= 2.7 ) {
+				$tinymce_check = '/tiny_mce_config\.php|page-new\.php|page\.php|post-new\.php|post\.php/';
+			} else {
+				$tinymce_check = '/tiny_mce_config\.php/';
+			}
+			
+			if ( preg_match( $tinymce_check, $_SERVER['SCRIPT_FILENAME'] ) == 0 ) {
+				$this->is_tinymce = false;
+			} else {
+				$this->is_tinymce = true;
+			}           	
         	
         	$this->management_mode = $this->get_option( 'management_mode' );	
 			
@@ -293,6 +299,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			global $current_user;
 									
 			if ( !$this->is_tinymce ) return;
+			
+        	if ( !$this->is_installed ) return;
 			
 			switch ( $this->management_mode ) {
 				case 'single':
