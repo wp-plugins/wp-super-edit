@@ -68,13 +68,13 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				'single' => __('One editor setting for all users'),
 				'roles' => __('Role based editor settings'),
 				'users' => __('Individual user editor settings')
-			);		
-
-        	if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) == false ) {
-        		$this->is_tinymce = false;
-        	} else {
-        		$this->is_tinymce = true;
-        	}        	
+			);
+			
+			if ( preg_match( '/tiny_mce_config\.php|page-new\.php|page\.php|post-new\.php|post\.php/',$_SERVER['SCRIPT_FILENAME'] ) == 0 ) {
+				$this->is_tinymce = false;
+			} else {
+				$this->is_tinymce = true;
+			}    	
         	
         	if ( is_admin() ) {
 				$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
@@ -113,7 +113,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
 			$load_buttons = false;
 			
-			if ( $this->is_tinymce == true )$load_buttons = true;
+			if ( $this->is_tinymce == true ) $load_buttons = true;
 			if ( $this->ui == 'buttons' ) $load_buttons = true;
 
         	if ( !$load_buttons ) return;
@@ -292,6 +292,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		function tinymce_settings( $initArray ) {
 			global $current_user;
 									
+			if ( !$this->is_tinymce ) return;
+			
 			switch ( $this->management_mode ) {
 				case 'single':
 					$user = 'wp_super_edit_default';

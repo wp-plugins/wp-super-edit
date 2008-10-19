@@ -135,7 +135,9 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	global $wp_super_edit;
 		
 	if ( !$wp_super_edit->is_installed ) return $tinymce_plugins;
-
+	
+	if ( !is_array( $wp_super_edit->plugins ) ) return;
+	
 	foreach( $wp_super_edit->plugins as $plugin ) {
 		if ( $plugin->status != 'yes' ) continue;
 		if ( $plugin->url != '' ) {
@@ -161,10 +163,8 @@ add_action('init', 'wp_super_edit_init', 5);
 /**
 * @internal: Conditional activation for WP Super Edit interfaces when accessing tiny_mce_config.php file
 */
-if ( strpos( $_SERVER['SCRIPT_FILENAME'], 'tiny_mce_config.php' ) !== false ) {
-	add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
-	add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
-}
+add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
+add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
 
 /**
 * @internal: Conditional activation for WP Super Edit interfaces in WordPress admin panels
