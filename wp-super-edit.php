@@ -2,9 +2,9 @@
 /*
 Plugin Name: WP Super Edit
 Plugin URI: http://factory.funroe.net/projects/wp-super-edit/
-Description: Get some control over the visual/wysiwyg editor and add some functionality without modifying the Wordpress source code.
+Description: Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and customized TinyMCE plugins.
 Author: Jess Planck
-Version: 2.0.4
+Version: 2.0.5
 Author URI: http://funroe.net
 
 Copyright (c) 2007 Jess Planck (http://funroe.net)

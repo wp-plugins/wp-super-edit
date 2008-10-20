@@ -151,25 +151,6 @@ function wp_super_edit_admin_head() {
 }
 
 /**
-* Display user profile WP Super Edit interface
-*
-* Very advanced control interface for TinyMCE buttons and plugins using
-* drag and drop.
-* @global object $wp_super_edit 
-*/
-function wp_super_edit_user_page() {
-	global $wp_super_edit;
-		
-	$updated = false;
-	
-	$wp_super_edit->ui_header();
-	
-	$wp_super_edit->buttons_ui();
-	
-	$wp_super_edit->ui_footer();
-}
-
-/**
 * Display administrative WP Super Edit interface
 *
 * Very advanced control interface for TinyMCE buttons and plugins using
