@@ -7,15 +7,16 @@ p#wp_super_edit_info {
 
 div#wp_super_edit_installer {
 	position: relative;
-	width: 90%;
-	margin: 2em auto;
+	width: 32em;
+	height: 10em;
+	margin: 1em auto;
 }
 
 div.wp_super_edit_install {
 	width: 100%;	
 	position: absolute;
 	top: 0;
-	margin: 2em 0;
+	margin: 0;
 	padding: 1em;
 	text-align: center;
 }
