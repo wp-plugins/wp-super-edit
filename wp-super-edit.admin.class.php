@@ -531,14 +531,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		* @param boolean $return
 		* @return mixed
 		*/
-		function submit_button( $button_text = 'Update Options &raquo;', $message = '', $return = false ) {
+		function submit_button( $button_text = 'Update Options &raquo;', $message = '', $return = false, $primary = false ) {
+			
+			$button_class = ( !$primary ? 'button' : 'button-primary' );
+			
 			$content_array = array(
 				'tag' => 'input',
 				'tag_type' => 'single',
 				'type' => 'submit',
 				'name' => 'wp_super_edit_submit',
 				'id' => 'wp_super_edit_submit_id',
-				'class' => 'button',
+				'class' => $button_class,
 				'value' => $button_text,
 				'content' => $message,
 				'return' => $return,
@@ -645,7 +648,12 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'class' => 'wp_super_edit_install'
 			) );
 			
-			$button = $this->submit_button( __('Install WP Super Edit'), __('<strong>Install default settings and database tables for WP Super Edit.</strong>'), true );
+			$this->html_tag( array(
+				'tag' => 'p',
+				'content' => __('<strong>Install default settings and database tables for WP Super Edit.</strong>')
+			) );			
+			
+			$button = $this->submit_button( __('Install WP Super Edit'), '', true, true );
 			
 			$this->form( 'install', $button );
 			
@@ -693,7 +701,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			$this->display_management_mode();
 			
-			$submit_button = $this->submit_button( __('Update Options'), '', true );
+			$submit_button = $this->submit_button( __('Update Options'), '', true, true );
 			$submit_button_group = $this->html_tag( array(
 				'tag' => 'p',
 				'class' => 'submit',
@@ -769,7 +777,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				'id' => 'wp_super_edit_settings'
 			) );
 			
-			$submit_button = $this->submit_button( 'Update Options', '', true );
+			$submit_button = $this->submit_button( 'Update Options', '', true, true );
 			$submit_button_group = $this->html_tag( array(
 				'tag' => 'p',
 				'class' => 'submit',
@@ -1021,7 +1029,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$set_default_controls = $this->form_select( 'wp_super_edit_action_control', $action_options, 'update', true );			
 
-			$submit_button = $this->submit_button( __('Update Button Settings For: ') . $current_user['user_nicename'], $hidden_form_user . $hidden_form_items , true );								
+			$submit_button = $this->submit_button( __('Update Button Settings For: ') . $current_user['user_nicename'], $hidden_form_user . $hidden_form_items , true, true );								
 
 			$this->html_tag( array(
 				'tag' => 'div',

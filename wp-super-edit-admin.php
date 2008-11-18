@@ -11,6 +11,97 @@
 */
 
 /**
+* WP Super Edit Psuedo TinyMCE initialization for settings scan
+*
+* Scans tinymce_plugin folder for config files with registration commands.
+* @global object $wp_super_edit 
+*/
+function wp_super_edit_tiny_mce() {
+
+	if ( $_REQUEST['scan'] != 'wp_super_edit_tinymce_scan' ) return;
+	
+	if ( !is_user_logged_in() ) die;
+	
+	$baseurl = includes_url('js/tinymce');
+
+	$mce_css = $baseurl . '/wordpress.css';
+	$mce_css = apply_filters('mce_css', $mce_css);
+
+	$mce_locale = ( '' == get_locale() ) ? 'en' : strtolower( substr(get_locale(), 0, 2) ); // only ISO 639-1
+
+    $mce_spellchecker_languages = apply_filters('mce_spellchecker_languages', '+English=en,Danish=da,Dutch=nl,Finnish=fi,French=fr,German=de,Italian=it,Polish=pl,Portuguese=pt,Spanish=es,Swedish=sv');
+
+	$plugins = array( 'safari', 'inlinepopups', 'autosave', 'spellchecker', 'paste', 'wordpress', 'media', 'fullscreen', 'wpeditimage' );
+
+	$mce_external_plugins = apply_filters('mce_external_plugins', array());
+
+	$mce_external_languages = apply_filters('mce_external_languages', array());
+
+	$plugins = implode($plugins, ',');
+	
+	$mce_buttons = apply_filters('mce_buttons', array('bold', 'italic', 'strikethrough', '|', 'bullist', 'numlist', 'blockquote', '|', 'justifyleft', 'justifycenter', 'justifyright', '|', 'link', 'unlink', 'wp_more', '|', 'spellchecker', 'fullscreen', 'wp_adv' ));
+	$mce_buttons = implode($mce_buttons, ',');
+
+	$mce_buttons_2 = apply_filters('mce_buttons_2', array('formatselect', 'underline', 'justifyfull', 'forecolor', '|', 'pastetext', 'pasteword', 'removeformat', '|', 'media', 'charmap', '|', 'outdent', 'indent', '|', 'undo', 'redo', 'wp_help' ));
+	$mce_buttons_2 = implode($mce_buttons_2, ',');
+
+	$mce_buttons_3 = apply_filters('mce_buttons_3', array());
+	$mce_buttons_3 = implode($mce_buttons_3, ',');
+
+	$mce_buttons_4 = apply_filters('mce_buttons_4', array());
+	$mce_buttons_4 = implode($mce_buttons_4, ',');
+
+	$no_captions = ( apply_filters( 'disable_captions', '' ) ) ? true : false;
+
+	// TinyMCE init settings
+	$initArray = array (
+		'mode' => 'none',
+		'onpageload' => 'switchEditors.edInit',
+		'width' => '100%',
+		'theme' => 'advanced',
+		'skin' => 'wp_theme',
+		'theme_advanced_buttons1' => "$mce_buttons",
+		'theme_advanced_buttons2' => "$mce_buttons_2",
+		'theme_advanced_buttons3' => "$mce_buttons_3",
+		'theme_advanced_buttons4' => "$mce_buttons_4",
+		'language' => "$mce_locale",
+		'spellchecker_languages' => "$mce_spellchecker_languages",
+		'theme_advanced_toolbar_location' => 'top',
+		'theme_advanced_toolbar_align' => 'left',
+		'theme_advanced_statusbar_location' => 'bottom',
+		'theme_advanced_resizing' => true,
+		'theme_advanced_resize_horizontal' => false,
+		'dialog_type' => 'modal',
+		'relative_urls' => false,
+		'remove_script_host' => false,
+		'convert_urls' => false,
+		'apply_source_formatting' => false,
+		'remove_linebreaks' => true,
+		'paste_convert_middot_lists' => true,
+		'paste_remove_spans' => true,
+		'paste_remove_styles' => true,
+		'gecko_spellcheck' => true,
+		'entities' => '38,amp,60,lt,62,gt',
+		'accessibility_focus' => true,
+		'tab_focus' => ':prev,:next',
+		'content_css' => "$mce_css",
+		'save_callback' => 'switchEditors.saveCallback',
+		'wpeditimage_disable_captions' => $no_captions,
+		'plugins' => "$plugins"
+	);
+
+	$initArray = apply_filters('tiny_mce_before_init', $initArray);
+
+	$language = $initArray['language'];
+
+	$ver = apply_filters('tiny_mce_version', '3101');
+
+	$mce_options = rtrim( trim($mce_options), '\n\r,' );
+	
+	die( 'Complete');
+}
+
+/**
 * WP Super Edit Plugin Folder Scan
 *
 * Scans tinymce_plugin folder for config files with registration commands.
@@ -97,12 +188,13 @@ function wp_super_edit_admin_setup() {
 	
 		if ( $wp_super_edit->ui == 'buttons' ) {
 
-			wp_enqueue_script( 'wp-super-edit-ui',  '/wp-content/plugins/wp-super-edit/js/jquery-ui-1.5.2.packed.js', false, '2135' );
+			wp_enqueue_script( 'wp-super-edit-ui',  $wp_super_edit->core_uri . 'js/jquery-ui-1.5.2.packed.js', false, '1.5.2' );
 			
 			add_action('admin_footer', 'wp_super_edit_admin_footer');
 		}
 
-		add_action('admin_head', 'wp_super_edit_admin_head');
+		wp_enqueue_style( 'p-super-edit-css', $wp_super_edit->core_uri . 'css/wp_super_edit.css', false, '2.0', 'screen' );
+		if ( !$wp_super_edit->is_installed ) add_action('admin_head', 'wp_super_edit_admin_head');
 
 	}
 }
@@ -117,14 +209,13 @@ function wp_super_edit_admin_head() {
 	global $wp_super_edit;
 ?>
 
-	<link rel="stylesheet" href="<?php echo $wp_super_edit->core_uri ?>css/wp_super_edit.css" type="text/css" />
-		
-	<?php if ( $wp_super_edit->is_installed == true ) return; ?>
-	
 	<script type='text/javascript'>
 	/* <![CDATA[ */
 		jQuery(document).ready( function() {
 						
+			jQuery( '#wp_super_edit_installer' ).fadeIn();
+
+			
 			jQuery( '#wp_super_edit_install_form' ).hide();
 			jQuery( '#wp_super_edit_install_wait' ).hide();
 
@@ -132,20 +223,23 @@ function wp_super_edit_admin_head() {
 			
 				jQuery( '#wp_super_edit_install_scanner' ).fadeOut();
 				jQuery( '#wp_super_edit_install_wait' ).fadeIn();
-
-				jQuery( '#wp_super_edit_null' ).load( 
-					'<?php bloginfo( 'wpurl' ); ?>/wp-includes/js/tinymce/tiny_mce_config.php', 
-					{ scan: 'wp_super_edit_tinymce_scan', uncache: <?php echo rand( 100, 500 ); ?> },
-					function() {
+				
+				jQuery.ajax( {
+					type: "GET",
+					url: "<?php bloginfo( 'wpurl' ); ?>",
+					data: [{ name: "scan", value: "wp_super_edit_tinymce_scan" }],
+					dataType: 'html',
+					success: function( html ){				
 						jQuery( '#wp_super_edit_install_wait' ).fadeOut();
 						jQuery( '#wp_super_edit_install_form' ).fadeIn();
+						jQuery( '#wp_super_edit_null' ).text( html );
 					}
-				);
+				});					
+				
 			} );
 		} );
 	/* ]]> */
 	</script>
-
 
 <?php
 }

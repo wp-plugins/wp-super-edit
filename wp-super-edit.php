@@ -54,7 +54,7 @@ require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 * Set $wp_super_edit primary object instance
 * @global object $wp_super_edit 
 */
-if ( is_admin() ) {
+if ( is_admin() || $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit-admin.php' );
 	$wp_super_edit = new wp_super_edit_admin();
@@ -76,7 +76,6 @@ function wp_super_edit_init() {
 							
 	foreach ( $wp_super_edit->plugins as $plugin_name => $plugin ) {
 			
-		if ( $plugin->provider != 'wp_super_edit' ) continue;
 		if ( $plugin->status == 'no' ) continue;
 		
 		if ( strlen( $plugin->callbacks ) < 2 ) continue;
@@ -112,8 +111,6 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 			$wp_super_edit->set_option( 'tinymce_scan', $initArray );	
 		}
 
-		unset( $initArray['disk_cache'] );
-		unset( $initArray['compress'] );
 		return $initArray;
 	}
 
@@ -140,6 +137,8 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	
 	foreach( $wp_super_edit->plugins as $plugin ) {
 		if ( $plugin->status != 'yes' ) continue;
+		if ( $plugin->provider == 'tinymce' ) continue;
+
 		if ( $plugin->url != '' ) {
 			if ( preg_match("/^(http:|https:)/i", $plugin->url ) ) {
 				$tinymce_plugins[$plugin->name] = $plugin->url;
@@ -157,7 +156,6 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 /**
 * Define core Wordpress actions and filters
 */
-
 add_action('init', 'wp_super_edit_init', 5);
 
 /**
@@ -172,6 +170,9 @@ add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
 if ( is_admin() ) {
 	load_plugin_textdomain( 'wp-super-edit', WP_PLUGIN_DIR . '/' .dirname(plugin_basename(__FILE__)) . '/languages', dirname(plugin_basename(__FILE__)) . '/languages' );
 	add_action('admin_init', 'wp_super_edit_admin_setup');
-} 
+}
+if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
+	add_action( 'template_redirect', 'wp_super_edit_tiny_mce' );
+}
 
 ?>
