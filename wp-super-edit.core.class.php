@@ -107,7 +107,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			if ( $this->ui == 'plugins' ) {
 				$plugin_query = "
 					SELECT name, nicename, description, provider, status 
-					FROM $this->db_plugins
+					FROM $this->db_plugins ORDER BY name
 				";
 			}
 
@@ -125,13 +125,13 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	if ( !$load_buttons ) return;
 
 			$button_query = "
-				SELECT name, provider, plugin, status FROM $this->db_buttons
+				SELECT name, provider, plugin, status FROM $this->db_buttons ORDER BY name
 			";
 			
 			if ( $this->ui == 'buttons' ) {
 				$button_query = "
 					SELECT name, nicename, description, provider, status 
-					FROM $this->db_buttons
+					FROM $this->db_buttons ORDER BY name
 				";
 			}
 			
