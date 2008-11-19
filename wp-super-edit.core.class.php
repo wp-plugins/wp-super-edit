@@ -41,6 +41,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		var $user_profile;
 		
 		var $is_tinymce;
+		var $js_cache_use;
 		var $js_cache_count;
 		
 		/**
@@ -88,8 +89,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	
 			if ( $wp_version >= 2.7 ) {
 				$tinymce_check = '/tiny_mce_config\.php|page-new\.php|page\.php|post-new\.php|post\.php/';
+				$this->js_cache_use = false;
 			} else {
 				$tinymce_check = '/tiny_mce_config\.php/';
+				$this->js_cache_use = true;
+				$this->js_cache_count = 1 + $wpdb->get_var( $wpdb->prepare ( "
+					SELECT COUNT(*) FROM $this->db_users WHERE user_type = %s", 
+					$this->management_mode
+				) );
 			}
 			
 			if ( preg_match( $tinymce_check, $_SERVER['SCRIPT_FILENAME'] ) == 0 ) {
@@ -143,11 +150,6 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					$this->active_buttons[$button->name] = $button;
 				}
 			}
-			
-			$this->js_cache_count = 1 + $wpdb->get_var( $wpdb->prepare ( "
-				SELECT COUNT(*) FROM $this->db_users WHERE user_type = %s", 
-				$this->management_mode
-			) );
 				
         }
         
@@ -363,7 +365,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
 			}
 			
-			if ( $this->management_mode != 'single' ) $initArray['old_cache_max'] = $this->js_cache_count;
+			if ( $this->management_mode != 'single' && $this->js_cache_use ) $initArray['old_cache_max'] = $this->js_cache_count;
 			
 			return $initArray;
 		
