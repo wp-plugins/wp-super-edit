@@ -7,7 +7,7 @@ Author: Jess Planck
 Version: 2.2
 Author URI: http://funroe.net
 
-Copyright (c) 2007 Jess Planck (http://funroe.net)
+Copyright (c) Jess Planck (http://funroe.net)
 WP Super Edit is released under the GNU General Public
 License: http://www.gnu.org/licenses/gpl.txt
 
@@ -41,7 +41,7 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 * is a javascript application known as TinyMCE provided by Moxicode AB. 
 * @package wp-super-edit
 * @author Jess Planck
-* @version 2.0
+* @version 2.2
 */
 
 /**
