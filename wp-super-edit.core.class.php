@@ -78,8 +78,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 					$this->ui = 'buttons';
 				}
 				
-				$this->ui_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'];
-				$this->ui_form_url = $_SERVER['PHP_SELF'] . '?page=' . $_REQUEST['page'] . '&wp_super_edit_ui=' . $this->ui;
+				$this->ui_url = preg_replace( '/\?.*$/', '', $_SERVER ['REQUEST_URI'] ) . '?page=' . $_REQUEST['page'];
+				$this->ui_form_url = $this->ui_url . '&wp_super_edit_ui=' . $this->ui;
 				$this->nonce = 'wp-super-edit-update-key';
 			}
 			
