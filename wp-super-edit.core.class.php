@@ -41,8 +41,6 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		var $user_profile;
 		
 		var $is_tinymce;
-		var $js_cache_use;
-		var $js_cache_count;
 		
 		/**
 		* Constructor initializes private variables. Set for php4 compatiblity. 
@@ -87,17 +85,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			
         	if ( !$this->is_installed ) return;
         	
-			if ( $wp_version >= 2.7 ) {
-				$tinymce_check = '/tiny_mce_config\.php|page-new\.php|page\.php|post-new\.php|post\.php/';
-				$this->js_cache_use = false;
-			} else {
-				$tinymce_check = '/tiny_mce_config\.php/';
-				$this->js_cache_use = true;
-				$this->js_cache_count = 1 + $wpdb->get_var( $wpdb->prepare ( "
-					SELECT COUNT(*) FROM $this->db_users WHERE user_type = %s", 
-					$this->management_mode
-				) );
-			}
+			$tinymce_check = '/tiny_mce_config\.php|page-new\.php|page\.php|post-new\.php|post\.php/';
 			
 			if ( preg_match( $tinymce_check, $_SERVER['SCRIPT_FILENAME'] ) == 0 ) {
 				$this->is_tinymce = false;
@@ -364,9 +352,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				$initArray[$row_name] = $wp_super_edit_row . $unregistered;
 			
 			}
-			
-			if ( $this->management_mode != 'single' && $this->js_cache_use ) $initArray['old_cache_max'] = $this->js_cache_count;
-			
+						
 			return $initArray;
 		
 		}
