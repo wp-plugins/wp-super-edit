@@ -438,40 +438,46 @@ function wp_super_edit_admin_footer() {
 * @param array $html_options options and content to display
 * @return mixed
 */
-function wp_super_edit_html_tag( $html_options = array() ) {
+function wp_super_edit_html_tag( $html = array() ) {
 
 	$attributes = '';
 	$composite = '';
+	$spacer = '';
+	$reserved = array(
+		'tag', 'tag_type', 'attributes', 'tag_content', 'tag_content_before', 'tag_content_after', 'return'
+	);
 	
-	foreach ( $html_options as $name => $option ) {
-		if ( $name == 'tag' ) continue;
-		if ( $name == 'content' ) continue;
-		if ( $name == 'return' ) continue;
-		if ( $name == 'tag_type' ) continue;
-		$html_attributes .= sprintf( ' %s="%s"', $name, $option );
+	foreach ( $html as $name => $option ) {
+		if ( in_array( $name, $reserved ) ) continue;
+		$attributes .= $name . '="' . $option . '" ';
 	}
 	
-	switch ( $html_options['tag_type'] ) {
+	if ( $html['attributes'] != '' ) $attributes = $html['attributes'] . ' ' . $attributes;
+	
+	if ( $attributes != '' ) {
+		$attributes = rtrim( $attributes );
+		$spacer = ' ';
+	}
+	
+	switch ( $html['tag_type'] ) {
 		case 'single':
-			$format = '%3$s <%1$s%2$s />' ;
-			break;
-		case 'single-after':
-			$format = '<%1$s%2$s /> %3$s' ;
+			$composite = $html['tag_content_before'] . $html['tag_content'] . '<' . $html['tag'] . $spacer . $attributes . '/>' . $html['tag_content_after'];
 			break;
 		case 'open':
-			$format = '<%1$s%2$s>%3$s';
+			$composite = $html['tag_content_before'] . '<' . $html['tag'] . $spacer . $attributes . '>' . $html['tag_content'] . $html['tag_content_after'];
 			break;
 		case 'close':
-			$format = '%3$s</%1$s>';
+			$composite = $html['tag_content_before'] . $html['tag_content'] . '</' . $html['tag'] . '>' . $html['tag_content_after'];
 			break;
+		case 'attributes':
+			$composite = $attributes;
+			break;			
 		default:
-			$format = '<%1$s%2$s>%3$s</%1$s>';
+			$composite = $html['tag_content_before'] . '<' . $html['tag'] . $spacer . $attributes . '>' . $html['tag_content'] . '</' . $html['tag'] . '>' . $html['tag_content_after'];
 			break;
 	}
-		
-	$composite = sprintf( $format, $html_options['tag'], $html_attributes, $html_options['content'] );
 	
-	if ( $html_options['return'] == true ) return $composite ;
+	if ( $html['return'] == true ) return $composite ;
 	
 	echo $composite;
 }
@@ -501,13 +507,13 @@ function wp_super_edit_ui_header() {
 	
 	wp_super_edit_html_tag( array(
 		'tag' => 'h2',
-		'content' => __('WP Super Edit'),
+		'tag_content' => __('WP Super Edit'),
 	) );
 
 	wp_super_edit_html_tag( array(
 		'tag' => 'p',
 		'id' => 'wp_super_edit_info',
-		'content' => __('To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://factory.funroe.net/contribute/">donation or other contribution</a>.'),
+		'tag_content' => __('To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://factory.funroe.net/projects/wp-super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://factory.funroe.net/contribute/">donation or other contribution</a>.'),
 	) );
 }
 
@@ -555,7 +561,7 @@ function wp_super_edit_form( $action = '', $content = '', $return = false, $onsu
 		'enctype' => 'application/x-www-form-urlencoded',
 		'action' => htmlentities( $wp_super_edit->ui_form_url ),
 		'method' => 'post',
-		'content' => $form_contents,
+		'tag_content' => $form_contents,
 		'return' => $return
 	);
 	
@@ -578,7 +584,7 @@ function wp_super_edit_form_table( $content = '', $return = false ) {
 	$content_array = array(
 		'tag' => 'table',
 		'class' => 'form-table',
-		'content' => $content,
+		'tag_content' => $content,
 		'return' => $return
 	);
 	
@@ -599,20 +605,20 @@ function wp_super_edit_form_table_row( $header = '', $content = '', $return = fa
 	$row_content = wp_super_edit_html_tag( array(
 		'tag' => 'th',
 		'scope' => 'row',
-		'content' => $header,
+		'tag_content' => $header,
 		'return' => true
 	) );
 	
 	$row_content .= wp_super_edit_html_tag( array(
 		'tag' => 'td',
-		'content' => $content,
+		'tag_content' => $content,
 		'return' => true
 	) );
 	
 	$content_array = array(
 		'tag' => 'tr',
 		'valign' => 'top',
-		'content' => $row_content,
+		'tag_content' => $row_content,
 		'return' => $return
 	);
 	
@@ -635,7 +641,7 @@ function wp_super_edit_form_select( $option_name = '', $options = array(), $sele
 		$option_array = array(
 			'tag' => 'option',
 			'value' => $option_value,
-			'content' => $option_text,
+			'tag_content' => $option_text,
 			'return' => true
 		);			
 		
@@ -648,7 +654,7 @@ function wp_super_edit_form_select( $option_name = '', $options = array(), $sele
 		'tag' => 'select',
 		'name' => $option_name,
 		'id' => $option_name,
-		'content' => $option_content,
+		'tag_content' => $option_content,
 		'return' => $return
 	);
 	
@@ -676,7 +682,7 @@ function wp_super_edit_submit_button( $button_text = 'Update Options &raquo;', $
 		'id' => 'wp_super_edit_submit_id',
 		'class' => $button_class,
 		'value' => $button_text,
-		'content' => $message,
+		'tag_content' => $message,
 		'return' => $return,
 	);
 
@@ -694,19 +700,19 @@ function wp_super_edit_admin_menu_ui() {
 	$ui_tabs['buttons'] = wp_super_edit_html_tag( array(
 		'tag' => 'a',
 		'href' => htmlentities( $wp_super_edit->ui_url . '&wp_super_edit_ui=buttons' ),
-		'content' => __('Arrange Editor Buttons'),
+		'tag_content' => __('Arrange Editor Buttons'),
 		'return' => true
 	) );
 	$ui_tabs['plugins'] = wp_super_edit_html_tag( array(
 		'tag' => 'a',
 		'href' => htmlentities( $wp_super_edit->ui_url . '&wp_super_edit_ui=plugins' ),
-		'content' => __('Configure Editor Plugins'),
+		'tag_content' => __('Configure Editor Plugins'),
 		'return' => true
 	) );
 	$ui_tabs['options'] = wp_super_edit_html_tag( array(
 		'tag' => 'a',
 		'href' => htmlentities( $wp_super_edit->ui_url . '&wp_super_edit_ui=options' ),
-		'content' => __('WP Super Edit Options'),
+		'tag_content' => __('WP Super Edit Options'),
 		'return' => true
 	) );
 	
@@ -715,7 +721,7 @@ function wp_super_edit_admin_menu_ui() {
 		if ( $ui_tab == $wp_super_edit->ui ) {
 			$current_tab_html = wp_super_edit_html_tag( array(
 				'tag' => 'h3',
-				'content' => $ui_tab_html,
+				'tag_content' => $ui_tab_html,
 				'return' => true
 			) );
 			$ui_tab_html = $current_tab_html;
@@ -723,7 +729,7 @@ function wp_super_edit_admin_menu_ui() {
 		
 		$list = array(
 			'tag' => 'li',
-			'content' => $ui_tab_html,
+			'tag_content' => $ui_tab_html,
 			'return' => true
 		);
 		
@@ -734,7 +740,7 @@ function wp_super_edit_admin_menu_ui() {
 	
 	wp_super_edit_html_tag( array(
 		'tag' => 'ul',
-		'content' => $ui_tab_list,
+		'tag_content' => $ui_tab_list,
 		'id' => 'wp_super_edit_ui_menu'
 	) );
 	
@@ -749,7 +755,7 @@ function wp_super_edit_display_management_mode() {
 	wp_super_edit_html_tag( array(
 		'tag' => 'div',
 		'id' => 'wp_super_edit_management_mode',
-		'content' => __('Management Mode: ') . $wp_super_edit->management_modes[ $wp_super_edit->management_mode ]
+		'tag_content' => __('Management Mode: ') . $wp_super_edit->management_modes[ $wp_super_edit->management_mode ]
 	) );
 }
 
@@ -767,14 +773,14 @@ function wp_super_edit_install_ui() {
 		'tag' => 'div',
 		'id' => 'wp_super_edit_install_scanner',
 		'class' => 'wp_super_edit_install',
-		'content' => __('Click here to start the WP Super Edit installation by scanning your editor settings.')
+		'tag_content' => __('Click here to start the WP Super Edit installation by scanning your editor settings.')
 	) );
 	
 	wp_super_edit_html_tag( array(
 		'tag' => 'div',
 		'id' => 'wp_super_edit_install_wait',
 		'class' => 'wp_super_edit_install',
-		'content' => __('Please wait while we check your editor settings!')
+		'tag_content' => __('Please wait while we check your editor settings!')
 	) );
 	
 	wp_super_edit_html_tag( array(
@@ -786,7 +792,7 @@ function wp_super_edit_install_ui() {
 	
 	wp_super_edit_html_tag( array(
 		'tag' => 'p',
-		'content' => __('<strong>Install default settings and database tables for WP Super Edit.</strong>')
+		'tag_content' => __('<strong>Install default settings and database tables for WP Super Edit.</strong>')
 	) );			
 	
 	$button = wp_super_edit_submit_button( __('Install WP Super Edit'), '', true, true );
@@ -843,7 +849,7 @@ function wp_super_edit_options_ui() {
 	$submit_button_group = wp_super_edit_html_tag( array(
 		'tag' => 'p',
 		'class' => 'submit',
-		'content' => $submit_button,
+		'tag_content' => $submit_button,
 		'return' => true
 	) );
 	
@@ -858,7 +864,7 @@ function wp_super_edit_options_ui() {
 		'name' => 'wp_super_edit_reset_default_user',
 		'id' => 'wp_super_edit_reset_default_user_i',
 		'value' => 'reset_default_user',
-		'content' => __('<br /> Reset Default User Setting to original scanned TinyMCE editor settings'),
+		'tag_content' => __('<br /> Reset Default User Setting to original scanned TinyMCE editor settings'),
 		'return' => true
 	) );
 
@@ -871,7 +877,7 @@ function wp_super_edit_options_ui() {
 		'name' => 'wp_super_edit_reset_users',
 		'id' => 'wp_super_edit_reset_users_i',
 		'value' => 'reset_users',
-		'content' => __('<br /> Reset all users and roles using Default Editor Settings'),
+		'tag_content' => __('<br /> Reset all users and roles using Default Editor Settings'),
 		'return' => true
 	) );
 	
@@ -884,7 +890,7 @@ function wp_super_edit_options_ui() {
 		'name' => 'wp_super_edit_rescan_plugins',
 		'id' => 'wp_super_edit_rescan_plugins_i',
 		'value' => 'rescan_plugins',
-		'content' => __('<br /> Rescan plugins added to the WP Super Edit tinymce_plugins folder to add unregistered plugins and buttons.'),
+		'tag_content' => __('<br /> Rescan plugins added to the WP Super Edit tinymce_plugins folder to add unregistered plugins and buttons.'),
 		'return' => true
 	) );
 	
@@ -920,7 +926,7 @@ function wp_super_edit_plugins_ui() {
 	$submit_button_group = wp_super_edit_html_tag( array(
 		'tag' => 'p',
 		'class' => 'submit',
-		'content' => $submit_button,
+		'tag_content' => $submit_button,
 		'return' => true
 	) );
 	
@@ -934,7 +940,7 @@ function wp_super_edit_plugins_ui() {
 			'name' => "wp_super_edit_plugins[$plugin->name]",
 			'id' => "wp_super_edit_plugins-$plugin->name",
 			'value' => 'yes',
-			'content' => '<br />' . $plugin->description,
+			'tag_content' => '<br />' . $plugin->description,
 			'return' => true
 		);
 		
@@ -1002,7 +1008,7 @@ function wp_super_edit_user_management_ui() {
 			$submit_button = wp_super_edit_submit_button( __('Load Button Settings'), '', true );
 			$submit_button_group = wp_super_edit_html_tag( array(
 				'tag' => 'p',
-				'content' => __('Select User Role to Edit: ') . $role_select . $submit_button,
+				'tag_content' => __('Select User Role to Edit: ') . $role_select . $submit_button,
 				'return' => true
 			) );						
 			
@@ -1022,7 +1028,7 @@ function wp_super_edit_user_management_ui() {
 	wp_super_edit_html_tag( array(
 		'tag' => 'div',
 		'id' => 'wp_super_edit_user_management',
-		'content' => $user_management_text
+		'tag_content' => $user_management_text
 	) );
 	
 }
@@ -1068,7 +1074,7 @@ function wp_super_edit_make_button_ui( $button, $separator = false ) {
 	$button_options = wp_super_edit_html_tag( array(
 		'tag' => 'div',
 		'class' => 'button_info',
-		'content' => $button_info . $button_separator_toggle,
+		'tag_content' => $button_info . $button_separator_toggle,
 		'return' => true
 	) );
 	
@@ -1076,7 +1082,7 @@ function wp_super_edit_make_button_ui( $button, $separator = false ) {
 		'tag' => 'li',
 		'id' => $button->name,
 		'class' => $button_class,
-		'content' => $button_options . $button->nicename,
+		'tag_content' => $button_options . $button->nicename,
 	) );
 }
 
@@ -1204,7 +1210,7 @@ function wp_super_edit_buttons_ui() {
 		wp_super_edit_html_tag( array(
 			'tag' => 'h3',
 			'class' => 'row_title',
-			'content' => __('Editor Button Row ') . $button_row
+			'tag_content' => __('Editor Button Row ') . $button_row
 		) );
 
 		
@@ -1257,7 +1263,7 @@ function wp_super_edit_buttons_ui() {
 	wp_super_edit_html_tag( array(
 		'tag' => 'h3',
 		'class' => 'row_title',
-		'content' => __('Disabled Buttons')
+		'tag_content' => __('Disabled Buttons')
 	) );
 
 	wp_super_edit_html_tag( array(

@@ -175,5 +175,4 @@ if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
 	add_action( 'template_redirect', 'wp_super_edit_tiny_mce' );
 }
 
-error_reporting(E_ALL ^ E_NOTICE);
 ?>
