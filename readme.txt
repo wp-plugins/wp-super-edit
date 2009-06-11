@@ -2,15 +2,17 @@
 Contributors: ev3rywh3re
 Donate link: http://factory.funroe.net/contribute/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
-Requires at least: 2.6
-Tested up to: 2.7
-Stable tag: 2.1
+Requires at least: 2.8
+Tested up to: 2.8
+Stable tag: 2.2
 
 Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and custom TinyMCE plugins.
 
 == Description ==
 
 WP Super Edit is designed to get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and customized TinyMCE plugins. WP Super edit acts as framework for TinyMCE visual editor plugins and buttons allowing administrators (or users) to arrange buttons and add TinyMCE plugins to the visual editor.
+
+Your feedback is always welcome!
 
 **Features**
 
@@ -22,12 +24,16 @@ WP Super Edit is designed to get control of the WordPress wysiwyg visual editor 
 
 **More Information & Documentation**
 
-
 * For detailed information, visit the **[WP Super Edit project](http://factory.funroe.net/projects/wp-super-edit/)**
 * For in depth documentation visit **[Using WP Super Edit](http://factory.funroe.net/projects/wp-super-edit/using/)**
 
+**Version Notice**
 
-Your feedback is always welcome!
+This version has been tested for use with the versions of WordPress indicated. I attempt to keep WP Super Edit up to date with changes to WordPress and the visual editor, but the complex changes can make it unproductive to maintain compatiblity with some older versions of WordPress. This is a list of recent versions available for older WordPress sites.
+
+* Use WP Super Edit 2.1 for WordPress 2.6 to 2.7.1 
+
+**[Download Older Versions of WP Super Edit](http://wordpress.org/extend/plugins/wp-super-edit/download/)**
 
 == Installation ==
 
@@ -43,7 +49,6 @@ Your feedback is always welcome!
 Before you install WP Super Edit, you should deactivate the old version of WP Super Edit and remove the superedit folder from WordPress Plugin folder for your WordPress installation. Follow the installation instructions for the updated version. The updated version should use the wp-super-edit folder in the WordPress Plugin folder and be more compatible and easier to update in the future. Due to the changes in the WordPress editor your old settings will not be updated for the new version of WP Super Edit.
 
 * For in depth documentation visit **[Using WP Super Edit](http://factory.funroe.net/projects/wp-super-edit/using/)**
-
 
 == Frequently Asked Questions ==
 
