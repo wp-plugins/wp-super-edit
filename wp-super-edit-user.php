@@ -21,11 +21,11 @@ global $wp_super_edit;
 	
 $updated = false;
 
-$wp_super_edit->ui_header();
+wp_super_edit_ui_header();
 
-$wp_super_edit->buttons_ui();
+wp_super_edit_buttons_ui();
 
-$wp_super_edit->ui_footer();
+wp_super_edit_ui_footer();
 
 
 // End - WP Super Edit User Panel //
