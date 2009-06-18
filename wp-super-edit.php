@@ -169,6 +169,7 @@ add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
 */
 if ( is_admin() ) {
 	load_plugin_textdomain( 'wp-super-edit', WP_PLUGIN_DIR . '/' .dirname(plugin_basename(__FILE__)) . '/languages', dirname(plugin_basename(__FILE__)) . '/languages' );
+	add_action('admin_menu', 'wp_super_edit_admin_menu_setup');
 	add_action('admin_init', 'wp_super_edit_admin_setup');
 }
 if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {

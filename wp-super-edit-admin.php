@@ -135,6 +135,33 @@ function wp_super_edit_plugin_folder_scan() {
 }
 
 /**
+* Set up administration menus
+*
+* Function used by WordPress action to set up adminstration menus and pages
+* @global object $wp_super_edit 
+*/
+function wp_super_edit_admin_menu_setup() {
+	global $wp_super_edit;
+				
+	$wp_super_edit_option_page = add_options_page( 
+		__('WP Super Edit', 'wp_super_edit'), 
+		__('WP Super Edit', 'wp_super_edit'), 
+		10, 
+		basename(__FILE__), 
+		'wp_super_edit_admin_page'
+	);
+
+    if ( $wp_super_edit->management_mode == 'users' ) {
+		$wp_super_edit_user_page = add_users_page(
+			__('Visual Editor Options', 'wp_super_edit'),
+			__('Visual Editor Options', 'wp_super_edit'),
+			0, 
+			'wp-super-edit/wp-super-edit-user.php'
+		);
+	}
+}
+
+/**
 * Set up administration interface
 *
 * Function used by Wordpress to initialize the adminsitrative interface. This function also handles option changes based on user interface.
@@ -142,12 +169,6 @@ function wp_super_edit_plugin_folder_scan() {
 */
 function wp_super_edit_admin_setup() {
 	global $wp_super_edit;
-				
-	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 5, __FILE__, 'wp_super_edit_admin_page');
-
-    if ( $wp_super_edit->management_mode == 'users' ) {
-		$wp_super_edit_user_page = add_users_page( __('Visual Editor Options', 'wp_super_edit'), __('Visual Editor Options', 'wp_super_edit'), 0, 'wp-super-edit/wp-super-edit-user.php' );
-	}
 	
 	if ( strstr( $_GET['page'], 'wp-super-edit-' ) != false ) {
 
