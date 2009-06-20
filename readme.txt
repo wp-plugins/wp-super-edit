@@ -62,3 +62,26 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 2. WP Super Edit settings.
 3. Drag and drop button settings.
 
+== Changelog ==
+
+**Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://factory.funroe.net/projects/wp-super-edit/using/) for more information about changes, current issues, and planned development.**
+
+= 2.2 =
+* WordPress 2.8 compatibility fixes.
+* Big cleanup to move some of the interface class functions to normal php functions.
+* A bug fix from vituko that should work better with some server setups.
+* Removed backwards compatibility checks because several changes to TinyMCE and WordPress make backwards compatibility prohibitive to maintain.
+* It is now using jQuery UI scripts that ship with WordPress. No more stupid big JS downloads for button settings.
+* Updates to most of the packaged TinyMCE plugins for TinyMCE 3.2.4.1 (that’s a bunch of dots)
+
+= 2.1 =
+* A bonus backport added as suggested by vituko that should make things work on more serve setups.
+* Add font tag styling options for font face, size, etc as requested in wordpress.org forums.
+* Fix missing bad javascript URL for admin interface.
+* Switch to template_redirect method for settings scanning using a pseudo tinymce init.
+* Do version checks and remove javascript caching options for WordPress 2.7.
+* Clean up CSS for WordPress 2.7
+
+= 2.0.x and Earlier =
+* Sorry didn’t keep good notes for these changes. WP Super Edit 2.0 was a major rewrite to make this plugin compatible with WordPress 2.5 to 2.6.
+	
