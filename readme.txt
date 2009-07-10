@@ -3,8 +3,8 @@ Contributors: ev3rywh3re
 Donate link: http://factory.funroe.net/contribute/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
 Requires at least: 2.8
-Tested up to: 2.8
-Stable tag: 2.2
+Tested up to: 2.8.1
+Stable tag: 2.2.1
 
 Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and custom TinyMCE plugins.
 
@@ -72,7 +72,7 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 * A bug fix from vituko that should work better with some server setups.
 * Removed backwards compatibility checks because several changes to TinyMCE and WordPress make backwards compatibility prohibitive to maintain.
 * It is now using jQuery UI scripts that ship with WordPress. No more stupid big JS downloads for button settings.
-* Updates to most of the packaged TinyMCE plugins for TinyMCE 3.2.4.1 (thatÕs a bunch of dots)
+* Updates to most of the packaged TinyMCE plugins for TinyMCE 3.2.4.1 (thatâ€™s a bunch of dots)
 
 = 2.1 =
 * A bonus backport added as suggested by vituko that should make things work on more serve setups.
@@ -83,5 +83,5 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 * Clean up CSS for WordPress 2.7
 
 = 2.0.x and Earlier =
-* Sorry didnÕt keep good notes for these changes. WP Super Edit 2.0 was a major rewrite to make this plugin compatible with WordPress 2.5 to 2.6.
+* Sorry didnâ€™t keep good notes for these changes. WP Super Edit 2.0 was a major rewrite to make this plugin compatible with WordPress 2.5 to 2.6.
 	
