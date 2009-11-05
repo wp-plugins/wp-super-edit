@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: ev3rywh3re
-Donate link: http://factory.funroe.net/contribute/
+Donate link: http://funroe.net/contribute/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
 Requires at least: 2.8
 Tested up to: 2.8.1
@@ -24,8 +24,8 @@ Your feedback is always welcome!
 
 **More Information & Documentation**
 
-* For detailed information, visit the **[WP Super Edit project](http://factory.funroe.net/projects/wp-super-edit/)**
-* For in depth documentation visit **[Using WP Super Edit](http://factory.funroe.net/projects/wp-super-edit/using/)**
+* For detailed information, visit the **[WP Super Edit project](http://funroe.net/projects/super-edit/)**
+* For in depth documentation visit **[Using WP Super Edit](http://funroe.net/projects/super-edit//using/)**
 
 **Version Notice**
 
@@ -48,13 +48,13 @@ This version has been tested for use with the versions of WordPress indicated. I
 
 Before you install WP Super Edit, you should deactivate the old version of WP Super Edit and remove the superedit folder from WordPress Plugin folder for your WordPress installation. Follow the installation instructions for the updated version. The updated version should use the wp-super-edit folder in the WordPress Plugin folder and be more compatible and easier to update in the future. Due to the changes in the WordPress editor your old settings will not be updated for the new version of WP Super Edit.
 
-* For in depth documentation visit **[Using WP Super Edit](http://factory.funroe.net/projects/wp-super-edit/using/)**
+* For in depth documentation visit **[Using WP Super Edit](http://funroe.net/projects/super-edit/using/)**
 
 == Frequently Asked Questions ==
 
 = Can this be used in my language? =
 
-Yes! It may require some work. You can check out the documentation at **[Using WP Super Edit](http://factory.funroe.net/projects/wp-super-edit/using/)**
+Yes! It may require some work. You can check out the documentation at **[Using WP Super Edit](http://funroe.net/projects/super-edit/using/)**
 
 == Screenshots ==
 
@@ -64,7 +64,7 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 
 == Changelog ==
 
-**Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://factory.funroe.net/projects/wp-super-edit/using/) for more information about changes, current issues, and planned development.**
+**Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://funroe.net/projects/super-edit/using/) for more information about changes, current issues, and planned development.**
 
 = 2.2 =
 * WordPress 2.8 compatibility fixes.
