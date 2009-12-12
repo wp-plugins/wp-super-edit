@@ -14,6 +14,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		/**
 		* Initialize private variables. Set for php4 compatiblity. 
 		*/		
+		var $db_prefix;
 		var $db_options;
 		var $db_plugins;
 		var $db_buttons;
@@ -24,6 +25,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 
 		var $tinymce_plugins_path;
 		var $tinymce_plugins_uri;
+		var $alt_tinymce_plugins_path;
+		var $alt_tinymce_plugins_uri;
 		
 		var $management_modes;
 		var $management_mode;
@@ -57,6 +60,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->core_uri = WP_PLUGIN_URL . '/wp-super-edit/';
         	$this->tinymce_plugins_path = $this->core_path . 'tinymce_plugins/';
         	$this->tinymce_plugins_uri = $this->core_uri . 'tinymce_plugins/';
+
+        	$this->alt_tinymce_plugins_path = WP_CONTENT_DIR . '/wp-super-edit/';
+        	$this->alt_tinymce_plugins_uri = WP_CONTENT_URL . '/wp-super-edit/';
         	
         	$this->is_installed = $this->is_db_installed();
         	

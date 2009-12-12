@@ -63,6 +63,15 @@ if ( is_admin() || $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
 }
 
 /**
+* WP Super Edit WPMU Detection
+*
+* This function used to detect WordPressMU functions.
+*/
+function wp_super_edit_is_wpmu() {
+	return function_exists( 'switch_to_blog' );
+}
+
+/**
 * WP Super Edit Initialization
 *
 * This function used by Wordpress to initialize this application. Some TinyMCE
