@@ -25,7 +25,7 @@ Your feedback is always welcome!
 **More Information & Documentation**
 
 * For detailed information, visit the **[WP Super Edit project](http://funroe.net/projects/super-edit/)**
-* For in depth documentation visit **[Using WP Super Edit](http://funroe.net/projects/super-edit//using/)**
+* For in depth documentation visit **[Using WP Super Edit](http://funroe.net/projects/super-edit/using/)**
 
 **Version Notice**
 
@@ -83,5 +83,5 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 * Clean up CSS for WordPress 2.7
 
 = 2.0.x and Earlier =
-* Sorry didn’t keep good notes for these changes. WP Super Edit 2.0 was a major rewrite to make this plugin compatible with WordPress 2.5 to 2.6.
+* Sorry didn't keep good notes for these changes. WP Super Edit 2.0 was a major rewrite to make this plugin compatible with WordPress 2.5 to 2.6.
 	
