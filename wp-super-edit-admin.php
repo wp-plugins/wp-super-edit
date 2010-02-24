@@ -102,39 +102,6 @@ function wp_super_edit_tiny_mce() {
 }
 
 /**
-* WP Super Edit Plugin Folder Scan
-*
-* Scans tinymce_plugin folder for config files with registration commands.
-* @global object $wp_super_edit 
-*/
-function wp_super_edit_plugin_folder_scan() {
-	global $wp_super_edit;
-	
-	$tinymce_plugins = @ dir( $wp_super_edit->tinymce_plugins_path );
-	
-	while( ( $tinymce_plugin = $tinymce_plugins->read() ) !== false) {
-	
-		$tinymce_plugin_path = $wp_super_edit->tinymce_plugins_path . $tinymce_plugin . '/';
-		
-		if ( is_dir( $tinymce_plugin_path ) && is_readable( $tinymce_plugin_path ) ) {
-			if ( $tinymce_plugin{0} == '.' || $tinymce_plugin == '..' ) continue;
-
-			$tinymce_plugin_dir = @ dir( $tinymce_plugin_path );
-			
-			while ( ( $tinymce_plugin_config = $tinymce_plugin_dir->read() ) !== false) {
-			
-				if ( $tinymce_plugin_config == 'config.php' ) {
-					include_once( $tinymce_plugin_path . $tinymce_plugin_config );
-					break;
-				}
-				
-			}
-		}
-	}
-	
-}
-
-/**
 * Set up administration menus
 *
 * Function used by WordPress action to set up adminstration menus and pages
@@ -178,7 +145,6 @@ function wp_super_edit_admin_setup() {
 			include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
 			wp_super_edit_install_db_tables();
 			wp_super_edit_wordpress_button_defaults();
-			wp_super_edit_plugin_folder_scan();
 			wp_super_edit_set_user_default();
 		}
 		
@@ -903,20 +869,7 @@ function wp_super_edit_options_ui() {
 	) );
 	
 	$table_row .= wp_super_edit_form_table_row( __('Reset All User and Role Settings:'), $reset_users_box, true );
-	
-	$rescan_plugins_box = wp_super_edit_html_tag( array(
-		'tag' => 'input',
-		'tag_type' => 'single-after',
-		'type' => 'checkbox',
-		'name' => 'wp_super_edit_rescan_plugins',
-		'id' => 'wp_super_edit_rescan_plugins_i',
-		'value' => 'rescan_plugins',
-		'tag_content' => __('<br /> Rescan plugins added to the WP Super Edit tinymce_plugins folder to add unregistered plugins and buttons.'),
-		'return' => true
-	) );
-	
-	$table_row .= wp_super_edit_form_table_row( __('Rescan tinymce_plugins Folder:'), $rescan_plugins_box, true );			
-	
+		
 	$form_content .= wp_super_edit_form_table( $table_row, true );
 	$form_content .= $submit_button_group;
 	

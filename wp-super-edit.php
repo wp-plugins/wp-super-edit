@@ -49,6 +49,13 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 */
 require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 
+
+
+/**
+* Filtier to set init of the wp_super_edit_core class with basic functionality
+*/
+$wp_super_edit_run_mode = 'off';
+
 /**
 * Conditional includes for WP Super Edit fuctions and classes in WordPress admin panels
 * Set $wp_super_edit primary object instance
@@ -57,18 +64,39 @@ require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 if ( is_admin() || $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit-admin.php' );
-	$wp_super_edit = new wp_super_edit_admin();
-} else {
-	$wp_super_edit = new wp_super_edit_core();
+	$wp_super_edit_run_mode = 'admin';
 }
 
+if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
+	$wp_super_edit_run_mode = 'scan';	
+}
+
+$wp_super_edit_run_mode = apply_filters( 'wp_super_edit_run_mode',  $wp_super_edit_run_mode );
+
 /**
-* WP Super Edit WPMU Detection
-*
-* This function used to detect WordPressMU functions.
+* @internal: Conditional activation for WP Super Edit interfaces
 */
-function wp_super_edit_is_wpmu() {
-	return function_exists( 'switch_to_blog' );
+switch( $wp_super_edit_run_mode ) {
+	// Minimal WP Super Edit usage
+	case 'core':
+		$wp_super_edit = new wp_super_edit_core();
+		add_action('init', 'wp_super_edit_init', 5);
+		break;
+	// TinyMCE configuration scan WP Super Edit usage	
+	case 'scan':
+		$wp_super_edit = new wp_super_edit_admin();	
+		add_action( 'template_redirect', 'wp_super_edit_tiny_mce' );
+	// WP Super Edit Administration interfaces and default manipulation of TinyMCE.
+	case 'admin':
+		$wp_super_edit = new wp_super_edit_admin();
+		load_plugin_textdomain( 'wp-super-edit', WP_PLUGIN_DIR . '/' .dirname(plugin_basename(__FILE__)) . '/languages', dirname(plugin_basename(__FILE__)) . '/languages' );
+		
+		add_action('init', 'wp_super_edit_init', 5);
+		add_action('admin_menu', 'wp_super_edit_admin_menu_setup');
+		add_action('admin_init', 'wp_super_edit_admin_setup');		
+		add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
+		add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
+
 }
 
 /**
@@ -91,14 +119,22 @@ function wp_super_edit_init() {
 				
 		$callbacks = explode( ',', $plugin->callbacks );
 		
-		require_once( $wp_super_edit->tinymce_plugins_path . $plugin->name . '/functions.php' );
-		
 		foreach ( $callbacks as $callback => $command ) {
+			if ( !function_exists( $command ) ) continue;
 			call_user_func( trim( $command ) );
 		}
 			
 	}
 
+}
+
+/**
+* WP Super Edit WPMU Detection
+*
+* This function used to detect WordPressMU functions.
+*/
+function wp_super_edit_is_wpmu() {
+	return function_exists( 'switch_to_blog' );
 }
 
 /**
@@ -160,29 +196,6 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	}
 	
 	return $tinymce_plugins;
-}
-
-/**
-* Define core Wordpress actions and filters
-*/
-add_action('init', 'wp_super_edit_init', 5);
-
-/**
-* @internal: Conditional activation for WP Super Edit interfaces when accessing tiny_mce_config.php file
-*/
-add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
-add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
-
-/**
-* @internal: Conditional activation for WP Super Edit interfaces in WordPress admin panels
-*/
-if ( is_admin() ) {
-	load_plugin_textdomain( 'wp-super-edit', WP_PLUGIN_DIR . '/' .dirname(plugin_basename(__FILE__)) . '/languages', dirname(plugin_basename(__FILE__)) . '/languages' );
-	add_action('admin_menu', 'wp_super_edit_admin_menu_setup');
-	add_action('admin_init', 'wp_super_edit_admin_setup');
-}
-if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
-	add_action( 'template_redirect', 'wp_super_edit_tiny_mce' );
 }
 
 ?>

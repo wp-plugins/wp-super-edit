@@ -441,7 +441,409 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes'
 	));
+	
+	// Start Included Plugin Defaults
+	
+	// advhr
+	
+	// WP Super Edit options for this plugin
 
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'advhr', 
+		'nicename' => __('Advanced Horizontal Rule Lines'), 
+		'description' => __('Advanced rule lines with options for &lt;hr&gt; HTML tag.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'advhr', 
+		'nicename' => __('Horizontal Rule Lines'), 
+		'description' => __('Options for using the &lt;hr&gt; HTML tag'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'advhr', 
+		'status' => 'no'
+	));
+	
+	// advimage
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'advimage', 
+		'nicename' => __('Advanced Image Link'), 
+		'description' => __('A more advanded dialog for the Image Link button.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// advlink
+	
+	// WP Super Edit options for this plugin
+
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'advlink', 
+		'nicename' => __('Advanced Link'), 
+		'description' => __('A more advanded dialog for the Create Link button.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// compat2x
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'compat2x', 
+		'nicename' => __('TinyMCE 2.x Compatiblity'), 
+		'description' => __('This plugin attempts to offer compatibility with old TinyMCE 2.x plugins. Please suggest to the author to upgrade development to TinyMCE 3.x'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// contextmenu
+	
+	// WP Super Edit options for this plugin
+
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'contextmenu', 
+		'nicename' => __('Context Menu'), 
+		'description' => __('TinyMCE context menu is used by some plugins. The context menu is activated by right mouse click or crtl click on Mac in the editor area.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// fonttools
+
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'fonttools', 
+		'nicename' => __('Font Tools'), 
+		'description' => __('Adds the Font Family and Font Size buttons to the editor.'), 
+		'provider' => 'tinymce', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'fontselect', 
+		'nicename' => __('Font Select'), 
+		'description' => __('Shows a drop down list of Font Typefaces.'), 
+		'provider' => 'tinymce', 
+		'plugin' => 'fonttools', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'fontsizeselect', 
+		'nicename' => __('Font Size Select'), 
+		'description' => __('Shows a drop down list of Font Sizes.'), 
+		'provider' => 'tinymce', 
+		'plugin' => 'fonttools', 
+		'status' => 'no'
+	));
+	
+	// insertdatetime
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'insertdatetime', 
+		'nicename' => __('Insert Date / Time Plugin'), 
+		'description' => __('Adds insert date and time buttons to automatically insert date and time.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'insertdate', 
+		'nicename' => __('Insert Date'), 
+		'description' => __('Insert current date in editor'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'insertdatetime', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'inserttime', 
+		'nicename' => __('Insert Time'), 
+		'description' => __('Insert current time in editor'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'insertdatetime', 
+		'status' => 'no'
+	));
+	
+	// layer
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'layer', 
+		'nicename' => __('Layers (DIV) Plugin'), 
+		'description' => __('Insert layers using DIV HTML tag. This plugin will change the editor to allow all DIV tags. Provides the Insert Layer, Move Layer Forward, Move Layer Backward, and Toggle Layer Positioning Buttons.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'insertlayer', 
+		'nicename' => __('Insert Layer'), 
+		'description' => __('Insert a layer using the DIV HTML tag. Be careful layers are tricky to position.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'layer', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'moveforward', 
+		'nicename' => __('Move Layer Forward'), 
+		'description' => __('Move selected layer forward in stacked view.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'layer', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'movebackward', 
+		'nicename' => __('Move Layer Backward'), 
+		'description' => __('Move selected layer backward in stacked view.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'layer', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'absolute', 
+		'nicename' => __('Toggle Layer Positioning'), 
+		'description' => __('Toggle the layer positioning as absolute or relative. Be careful layers are tricky to position.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'layer', 
+		'status' => 'no'
+	));
+	
+	// nonbreaking
+	
+	// WP Super Edit options for this plugin
+
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'nonbreaking', 
+		'nicename' => __('Nonbreaking Spaces'), 
+		'description' => __('Adds button to insert nonbreaking space entity.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'nonbreaking', 
+		'nicename' => __('Nonbreaking Space'), 
+		'description' => __('Inserts nonbreaking space entities.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'nonbreaking', 
+		'status' => 'no'
+	));
+	
+	// print
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'print', 
+		'nicename' => __('Print Button Plugin'), 
+		'description' => __('Adds print button to editor that should print only the edit area contents.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'print', 
+		'nicename' => __('Print'), 
+		'description' => __('Print editor area contents.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'print', 
+		'status' => 'no'
+	));
+	
+	// searchreplace
+
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'searchreplace', 
+		'nicename' => __('Search and Replace Plugin'), 
+		'description' => __('Adds search and replace buttons and options to the editor.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'search', 
+		'nicename' => __('Search'), 
+		'description' => __('Search for text in editor area.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'searchreplace', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'replace', 
+		'nicename' => __('Replace'), 
+		'description' => __('Replace text in editor area.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'searchreplace', 
+		'status' => 'no'
+	));
+	
+	// style
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'style', 
+		'nicename' => __('Advanced CSS / styles Plugin'), 
+		'description' => __('Allows access to properties that can be used in a STYLE attribute. Provides the Style Properties Button.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'styleprops', 
+		'nicename' => __('Style Properties'), 
+		'description' => __('Interface for properties that can be manipulated using the STYLE attribute.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'style', 
+		'status' => 'no'
+	));
+	
+	// table
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'table', 
+		'nicename' => __('Tables Plugin'), 
+		'description' => __('Allows the creation and manipulation of tables using the TABLE HTML tag. Provides the Tables and Table Controls Buttons.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'table', 
+		'nicename' => __('Tables'), 
+		'description' => __('Interface to create and change table, row, and cell properties.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'table', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'tablecontrols', 
+		'nicename' => __('Table controls'), 
+		'description' => __('Interface to manipulate tables and access to cell and row properties.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'table', 
+		'status' => 'no'
+	));
+	
+	// xhtmlxtras
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'xhtmlxtras', 
+		'nicename' => __('XHTML Extras Plugin'), 
+		'description' => __('Allows access to interfaces for some XHTML tags like CITE, ABBR, ACRONYM, DEL and INS. Also can give access to advanced XHTML properties such as javascript events. Provides the Citation, Abbreviation, Acronym, Deletion, Insertion, and XHTML Attributes Buttons.'), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'cite', 
+		'nicename' => __('Citation'), 
+		'description' => __('Indicate a citation using the HTML CITE tag.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'xhtmlxtras', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'abbr', 
+		'nicename' => __('Abbreviation'), 
+		'description' => __('Indicate an abbreviation using the HTML ABBR tag.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'xhtmlxtras', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'acronym', 
+		'nicename' => __('Acronym'), 
+		'description' => __('Indicate an acronym using the HTML ACRONYM tag.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'xhtmlxtras', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'del', 
+		'nicename' => __('Deletion'), 
+		'description' => __('Use the HTML DEL tag to indicate recently deleted content.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'xhtmlxtras', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'ins', 
+		'nicename' => __('Insertion'), 
+		'description' => __('Use the HTML INS tag to indicate newly inserted content.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'xhtmlxtras', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'attribs', 
+		'nicename' => __('XHTML Attributes'), 
+		'description' => __('Modify advanced attributes and javascript events.'), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'xhtmlxtras', 
+		'status' => 'no'
+	));
+	
 }
 
 ?>

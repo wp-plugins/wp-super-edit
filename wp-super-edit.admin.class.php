@@ -94,10 +94,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 				) );
 
 			}
-			
-			if ( $_REQUEST['wp_super_edit_rescan_plugins'] == 'rescan_plugins' ) {
-				wp_super_edit_plugin_folder_scan();
-			}			
+		
 		}
 		
 		/**
