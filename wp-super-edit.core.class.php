@@ -49,12 +49,13 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		* Constructor initializes private variables. Set for php4 compatiblity. 
 		*/	
         function wp_super_edit_core() { // Maintain php4 compatiblity  
-        	global $wpdb, $wp_version;
+        	global $wpdb;
 
-        	$this->db_options = $wpdb->prefix . 'wp_super_edit_options';
-        	$this->db_plugins =  $wpdb->prefix . 'wp_super_edit_plugins';
-        	$this->db_buttons =  $wpdb->prefix . 'wp_super_edit_buttons';
-        	$this->db_users =  $wpdb->prefix . 'wp_super_edit_users';
+        	// $wpdb->base_prefix for multisite
+        	$this->db_options = $wpdb->base_prefix . 'wp_super_edit_options';
+        	$this->db_plugins =  $wpdb->base_prefix . 'wp_super_edit_plugins';
+        	$this->db_buttons =  $wpdb->base_prefix . 'wp_super_edit_buttons';
+        	$this->db_users =  $wpdb->base_prefix . 'wp_super_edit_users';
         	
 			$this->core_path = WP_PLUGIN_DIR . '/wp-super-edit/';
         	$this->core_uri = WP_PLUGIN_URL . '/wp-super-edit/';

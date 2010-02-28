@@ -45,14 +45,17 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 */
 
 /**
+* WP Super Edit core variables defined
+*/
+define( WPSE_VERSION, '2.3' );
+
+/**
 * WP Super Edit core class always required
 */
 require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 
-
-
 /**
-* Filtier to set init of the wp_super_edit_core class with basic functionality
+* Filter to set init of the wp_super_edit_core class with basic functionality
 */
 $wp_super_edit_run_mode = 'off';
 
@@ -61,14 +64,19 @@ $wp_super_edit_run_mode = 'off';
 * Set $wp_super_edit primary object instance
 * @global object $wp_super_edit 
 */
-if ( is_admin() || $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
+if ( is_admin() ) {
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit-admin.php' );
 	$wp_super_edit_run_mode = 'admin';
 }
 
-if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
-	$wp_super_edit_run_mode = 'scan';	
+/**
+* Conditional include for WP Super Edit installation fuctions
+* Set $wp_super_edit primary object instance
+* @global object $wp_super_edit 
+*/
+if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
+	include_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php');
 }
 
 $wp_super_edit_run_mode = apply_filters( 'wp_super_edit_run_mode',  $wp_super_edit_run_mode );
@@ -82,10 +90,6 @@ switch( $wp_super_edit_run_mode ) {
 		$wp_super_edit = new wp_super_edit_core();
 		add_action('init', 'wp_super_edit_init', 5);
 		break;
-	// TinyMCE configuration scan WP Super Edit usage	
-	case 'scan':
-		$wp_super_edit = new wp_super_edit_admin();	
-		add_action( 'template_redirect', 'wp_super_edit_tiny_mce' );
 	// WP Super Edit Administration interfaces and default manipulation of TinyMCE.
 	case 'admin':
 		$wp_super_edit = new wp_super_edit_admin();
@@ -129,35 +133,14 @@ function wp_super_edit_init() {
 }
 
 /**
-* WP Super Edit WPMU Detection
-*
-* This function used to detect WordPressMU functions.
-*/
-function wp_super_edit_is_wpmu() {
-	return function_exists( 'switch_to_blog' );
-}
-
-/**
 * WP Super Edit TinyMCE filter
 *
-* This function is a WordPress filter designed to use the array built by tinymce_config.php. This
-* filter is used to create a scan of default tinymce settings, and to create the tinymce 
-* configuration created by WP Super Edit.
+* This function is a WordPress filter designed to replace the TinyMCE configuration array
+* with the configuration array created by WP Super Edit.
 * @global object $wp_super_edit 
 */
 function wp_super_edit_tinymce_filter( $initArray ) {
 	global $wp_super_edit;
-
-	if ( $_REQUEST['scan'] == 'wp_super_edit_tinymce_scan' ) {
-
-		if ( !$wp_super_edit->is_installed ) {
-			add_option( 'wp_super_edit_tinymce_scan', $initArray );
-		} else {
-			$wp_super_edit->set_option( 'tinymce_scan', $initArray );	
-		}
-
-		return $initArray;
-	}
 
 	if ( !$wp_super_edit->is_installed ) return $initArray;
 

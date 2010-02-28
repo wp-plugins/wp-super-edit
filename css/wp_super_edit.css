@@ -21,20 +21,6 @@ div.wp_super_edit_install {
 	text-align: center;
 }
 
-div#wp_super_edit_install_scanner {
-	font-weight: bold;
-	border: 1px solid #F00;
-	background: #333;
-	color: #CCC;
-}
-
-div#wp_super_edit_install_wait {
-	font-weight: bold;
-	border: 1px solid #FF3;
-	background: #F00;
-	color: #FF3;
-}
-
 div#wp_super_edit_install_form {
 	background: #FF3;
 	border: 1px solid #F00;

@@ -58,9 +58,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_plugins ));
 			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_buttons ));
 			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_users ));
-			
-			delete_option( 'wp_super_edit_tinymce_scan' );
-			
+						
 			$this->is_installed = false;
 
 			// $url = add_query_arg( '_wpnonce', wp_create_nonce( 'deactivate-plugin_wp-super-edit/wp-super-edit.php' ), get_bloginfo('wpurl') . '/wp-admin/plugins.php?action=deactivate&plugin=wp-super-edit/wp-super-edit.php' );
@@ -207,6 +205,22 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         }
         
 		/**
+		* Unregister WP Super Edit TinyMCE plugin in plugin database table. 
+		* @param string $plugin_name 
+		*/
+        function unregister_tinymce_plugin( $plugin_name ) {
+        	global $wpdb;
+						
+			if ( $plugin_name == '' ) return false;
+			
+			$wpdb->query( $wpdb->prepare( "
+				DELETE FROM $this->db_plugins
+				WHERE name = %s", $plugin_name
+			) );
+        	
+        }        
+        
+		/**
 		* Register WP Super Edit TinyMCE button in button database table. 
 		* @param array $button 
 		*/
@@ -223,6 +237,22 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			) );
 
 		}
+		
+		/**
+		* Unregister WP Super Edit TinyMCE button in button database table. 
+		* @param array $button 
+		*/
+        function unregister_tinymce_button( $button_name ) {
+        	global $wpdb;
+			
+			if ( $button_name == '' ) return false;
+
+			$wpdb->query( $wpdb->prepare( "
+				DELETE FROM $this->db_buttons
+				WHERE name = %s", $button_name
+			) );
+
+		}		
 
 		/**
 		* Register WP Super Edit user settings in users database table. 

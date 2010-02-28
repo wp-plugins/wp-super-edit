@@ -70,21 +70,35 @@ function wp_super_edit_install_db_tables() {
 		
 }
 
+function wp_super_edit_installer_tinymce_filter( $initArray ) {
+	global $wp_super_edit_tinymce_default;
+	$wp_super_edit_tinymce_default = $initArray;
+	return $initArray;
+}
+add_filter('tiny_mce_before_init','wp_super_edit_installer_tinymce_filter', 99);
+
+
 /**
 * WP Super Edit Default User
 *
 * Sets default user settings from most recent TinyMCE scan, sets initial options, and removes unnecessary WordPress options
 */
 function wp_super_edit_set_user_default() {
-	global $wp_super_edit;
+	global $wp_super_edit, $wp_super_edit_tinymce_default;
 
-	$tiny_mce_scan = get_option( 'wp_super_edit_tinymce_scan' );
-	
-	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $tiny_mce_scan, 'single' );
+	// Output buffering to get default TinyMCE init
+	ob_start();
+	wp_tiny_mce();
+	ob_end_clean();
+		
+	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $wp_super_edit_tinymce_default, 'single' );
 
-	$wp_super_edit->set_option( 'tinymce_scan', $tiny_mce_scan );
+	$wp_super_edit->set_option( 'tinymce_scan', $wp_super_edit_tinymce_default );
 	$wp_super_edit->set_option( 'management_mode', 'single' );
 	
+	/**
+	* Remove old options for versions 2.2
+	*/	
 	delete_option( 'wp_super_edit_tinymce_scan' );
 	
 	/**
