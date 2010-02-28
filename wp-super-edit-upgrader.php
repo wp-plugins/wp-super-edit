@@ -33,6 +33,20 @@ You can also view a copy of the HTML version of the GNU General
 Public License at http://www.gnu.org/copyleft/gpl.html
 */
 
+// register_activation_hook(__FILE__,'wp_super_edit_upgrader');
+
+function wp_super_edit_upgrader() {
+	echo 'Thanks for all the fish!';
+}
+add_action('init', 'wp_super_edit_upgrader', 5);
+
+
+function wp_super_edit_upgrader_shutdown() {	
+	// Deactivate once completed
+	echo 'WP Super Edit Upgrade Completed!';
+	deactivate_plugins( __FILE__ );
+}
+add_action('admin_notices', 'wp_super_edit_upgrader_shutdown', 5);
 
 
 ?>
