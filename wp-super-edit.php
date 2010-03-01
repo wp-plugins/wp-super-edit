@@ -181,6 +181,8 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	return $tinymce_plugins;
 }
 
-do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' )
+do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
+
+print_r($wp_super_edit);
 
 ?>
