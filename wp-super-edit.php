@@ -88,49 +88,24 @@ switch( $wp_super_edit_run_mode ) {
 	// Minimal WP Super Edit usage
 	case 'core':
 		$wp_super_edit = new wp_super_edit_core();
-		add_action('init', 'wp_super_edit_init', 5);
-		break;
+
+		do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );		
 	// WP Super Edit Administration interfaces and default manipulation of TinyMCE.
 	case 'admin':
 		$wp_super_edit = new wp_super_edit_admin();
-		load_plugin_textdomain( 'wp-super-edit', WP_PLUGIN_DIR . '/' .dirname(plugin_basename(__FILE__)) . '/languages', dirname(plugin_basename(__FILE__)) . '/languages' );
+		load_plugin_textdomain( 'wp-super-edit', false, '/wp-super-edit/languages' );
 		
-		add_action('init', 'wp_super_edit_init', 5);
 		add_action('admin_menu', 'wp_super_edit_admin_menu_setup');
 		add_action('admin_init', 'wp_super_edit_admin_setup');		
 		add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
 		add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
 
+		do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
+
+	default:
+		echo 'Issue: Test-Hellow';
 }
 
-/**
-* WP Super Edit Initialization
-*
-* This function used by Wordpress to initialize this application. Some TinyMCE
-* plugins used in WP Super Edit may have callback functions that need to run
-* @global object $wp_super_edit 
-*/
-function wp_super_edit_init() {
-	global $wp_super_edit;
-	
-	if ( !$wp_super_edit->is_installed ) return;
-							
-	foreach ( $wp_super_edit->plugins as $plugin_name => $plugin ) {
-			
-		if ( $plugin->status == 'no' ) continue;
-		
-		if ( strlen( $plugin->callbacks ) < 2 ) continue;
-				
-		$callbacks = explode( ',', $plugin->callbacks );
-		
-		foreach ( $callbacks as $callback => $command ) {
-			if ( !function_exists( $command ) ) continue;
-			call_user_func( trim( $command ) );
-		}
-			
-	}
-
-}
 
 /**
 * WP Super Edit TinyMCE filter
@@ -171,18 +146,14 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 			if ( preg_match("/^(http:|https:)/i", $plugin->url ) ) {
 				$tinymce_plugins[$plugin->name] = $plugin->url;
 			} else {
-				$tinymce_plugins[$plugin->name] = $wp_super_edit->tinymce_plugins_uri . $plugin->name . $plugin->url;
+				$tinymce_plugins[$plugin->name] = WP_PLUGIN_URL . $plugin->url;
 			}
 		} else { 
-			$tinymce_plugins[$plugin->name] = $wp_super_edit->tinymce_plugins_uri . $plugin->name . '/editor_plugin.js';
+			$tinymce_plugins[$plugin->name] = $this->core_uri . '/tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
 		}
 	}
 	
 	return $tinymce_plugins;
 }
-
-do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
-
-print_r($wp_super_edit);
 
 ?>

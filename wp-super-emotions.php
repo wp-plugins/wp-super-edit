@@ -49,7 +49,7 @@ function wp_super_emoticons_register() {
 		'description' => __('Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API.'), 
 		'provider' => 'wp_super_edit', 
 		'status' => 'no', 
-		'callbacks' => 'wp_super_emoticons_add_shortcode'
+		'callbacks' => ''
 	));
 	
 	// Tiny MCE Buttons provided by this plugin
@@ -68,13 +68,6 @@ add_action('wp_super_edit_loaded', 'wp_super_emoticons_register', 5);
 /**
 * WP Super Emoticons to add shortcode to WordPress editor
 */
-function wp_super_emoticons_add_shortcode() {
-	add_shortcode('superemotions', 'wp_super_emoticons_shortcode');
-}
-
-/**
-* WP Super Emoticons to add shortcode to WordPress editor
-*/
 function wp_super_emoticons_shortcode ($attr, $content = null ) {
 	$attr = shortcode_atts(array(
 		'file'   => 'file',
@@ -83,6 +76,7 @@ function wp_super_emoticons_shortcode ($attr, $content = null ) {
 								 
 	return '<img class="superemotions" title="' . $attr['title'] . '" alt="'  . $attr['title'] . '" border="0" src="' . get_bloginfo('wpurl') . '/wp-includes/images/smilies/' . $attr['file'] . '" />';
 }
+add_shortcode('superemotions', 'wp_super_emoticons_shortcode');
 
 
 

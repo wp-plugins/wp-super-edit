@@ -42,14 +42,14 @@ function wp_super_class_register() {
 	global $wp_super_edit;
 	
 	// WP Super Edit options for this plugin
-	
+		
 	$wp_super_edit->register_tinymce_plugin( array(
 		'name' => 'wp-super-class', 
 		'nicename' => __('Custom CSS Classes'), 
 		'description' => __('Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.'), 
 		'provider' => 'wp_super_edit', 
 		'status' => 'no', 
-		'callbacks' => 'wp_super_class_css_add_filter'
+		'callbacks' => ''
 	));
 	
 	// Tiny MCE Buttons provided by this plugin
@@ -67,18 +67,11 @@ add_action('wp_super_edit_loaded', 'wp_super_class_register', 5);
 
 /**
 * WP Super Class custom CSS filter to add a theme/editor.css file to TinyMCE
-* using mce_css filter
-*/
-function wp_super_class_css_add_filter() {
-	add_filter('mce_css', 'wp_super_class_css');
-}
-
-/**
-* WP Super Class custom CSS filter to add a theme/editor.css file to TinyMCE
 */
 function wp_super_class_css($mce_css) {
 	$mce_css .= ',' . get_bloginfo('stylesheet_directory') . '/editor.css';
 	return $mce_css; 
 }
+add_filter('mce_css', 'wp_super_class_css');
 
 ?>
