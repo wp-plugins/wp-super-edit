@@ -102,8 +102,6 @@ switch( $wp_super_edit_run_mode ) {
 
 		do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
 
-	default:
-		echo 'Issue: Test-Hellow';
 }
 
 
@@ -149,7 +147,7 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 				$tinymce_plugins[$plugin->name] = WP_PLUGIN_URL . $plugin->url;
 			}
 		} else { 
-			$tinymce_plugins[$plugin->name] = $this->core_uri . '/tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
+			$tinymce_plugins[$plugin->name] = $wp_super_edit->core_uri . '/tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
 		}
 	}
 	
