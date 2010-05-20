@@ -84,7 +84,6 @@ switch( $wp_super_edit_run_mode ) {
 	// Minimal WP Super Edit usage
 	case 'core':
 		$wp_super_edit = new wp_super_edit_core();
-
 		do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );		
 	// WP Super Edit Administration interfaces and default manipulation of TinyMCE.
 	case 'admin':
