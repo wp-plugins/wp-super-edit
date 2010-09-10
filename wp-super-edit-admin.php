@@ -353,7 +353,7 @@ function wp_super_edit_ui_header() {
 	wp_super_edit_html_tag( array(
 		'tag' => 'p',
 		'id' => 'wp_super_edit_info',
-		'tag_content' => __('To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://funroe.net/projects/super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://factory.funroe.net/contribute/">donation or other contribution</a>.'),
+		'tag_content' => __('To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://funroe.net/projects/super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://funroe.net/contribute/">donation or other contribution</a>.'),
 	) );
 }
 

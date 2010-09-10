@@ -76,7 +76,7 @@
 				longname : 'Super Class plugin',
 				author : 'Jess Planck',
 				authorurl : 'http://funroe.net',
-				infourl : 'http://factory.funroe.net',
+				infourl : 'http://funroe.net',
 				version : "2.0"
 			};
 		}

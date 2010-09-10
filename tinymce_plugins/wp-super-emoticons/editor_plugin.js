@@ -74,7 +74,7 @@
 				longname : 'Super Emotions',
 				author : 'Jess Planck',
 				authorurl : 'http://funroe.net',
-				infourl : 'http://factory.funroe.net',
+				infourl : 'http://funroe.net',
 				version : '1.0'
 			};
 		}
