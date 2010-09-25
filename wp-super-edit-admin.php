@@ -646,7 +646,7 @@ function wp_super_edit_uninstall_ui() {
 		'id' => 'wp_super_edit_deactivate'
 	) );
 				
-	$button = wp_super_edit_submit_button( __('Uninstall WP Super Edit'), __('<strong>This option will remove settings and deactivate WP Super Edit. </strong>'), true );
+	$button = wp_super_edit_submit_button( __('Uninstall WP Super Edit Database Tables'), __('<strong>This option will remove settings for WP Super Edit. </strong>'), true );
 
 	wp_super_edit_form( 'uninstall', $button );
 

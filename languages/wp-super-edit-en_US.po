@@ -62,11 +62,11 @@ msgid "Install WP Super Edit"
 msgstr ""
 
 #: wp-super-edit-admin.php:823
-msgid "Uninstall WP Super Edit"
+msgid "Uninstall WP Super Edit Database Tables"
 msgstr ""
 
 #: wp-super-edit-admin.php:823
-msgid "<strong>This option will remove settings and deactivate WP Super Edit. </strong>"
+msgid "<strong>This option will remove settings for WP Super Edit. </strong>"
 msgstr ""
 
 #: wp-super-edit-admin.php:848
