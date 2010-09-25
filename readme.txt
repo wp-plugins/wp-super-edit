@@ -68,7 +68,7 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 
 **Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://funroe.net/projects/super-edit/using/) for more information about changes, current issues, and planned development.**
 
-= 2.2 =
+= 2.3 =
 * WordPress 3.0.1 support (beta multi-site support)
 * Removing callback functionality, so additional TinyMCE external plugins can be added by building independent WordPress plugins.
 * uninstall.php to do the right thing when you delete this crap. 
