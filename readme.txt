@@ -3,8 +3,8 @@ Contributors: ev3rywh3re
 Donate link: http://funroe.net/contribute/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
 Requires at least: 3.0
-Tested up to: 3.0
-Stable tag: 2.2.1
+Tested up to: 3.0.1
+Stable tag: 2.3
 
 Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and custom TinyMCE plugins.
 
@@ -14,13 +14,15 @@ WP Super Edit is designed to get control of the WordPress wysiwyg visual editor 
 
 Your feedback is always welcome!
 
+Current release announcement: [http://funroe.net/projects/2010/09/25/wp-super-edit-2-3/](http://funroe.net/projects/2010/09/25/wp-super-edit-2-3/)
+
 **Features**
 
 * Drag and Drop interface for arranging the WordPress visual editor buttons.
 * Access to built-in WordPress visual editor buttons and functions. 
-* Customized TinyMCE plugins to add additional buttons and features like tables, layers (div tag), advanced XHTML properties, advanced image and link properties, WordPress emoticons, style attributes, css classes for themes, search / replace, and more.
+* Additional TinyMCE plugins to add buttons and features like tables, layers (div tag), advanced XHTML properties, advanced image and link properties, WordPress emoticons, style attributes, css classes for themes, search / replace, and more.
 * Options for allowing users to configure visual editor settings; One editor setting for all users, role based editor settings, and individual user editor settings. **Only WordPress administrators can activate or deactivate TinyMCE wysiwyg visual editor plugins. In single or role based modes, only administrators can arrange editor buttons.**
-* Easy to install and remove. WP Super Edit uses separate database tables for its settings. Currently only the **Super Emoticon / Icon Plugin** will leave short tags in your posts or pages. 
+* Easy to install and remove. WP Super Edit uses separate database tables for settings and to support multi-site configurations. Currently only the **Super Emoticon / Icon Plugin** will leave short tags in your posts or pages. 
 
 **More Information & Documentation**
 
@@ -67,15 +69,22 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 **Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://funroe.net/projects/super-edit/using/) for more information about changes, current issues, and planned development.**
 
 = 2.2 =
+* WordPress 3.0.1 support (beta multi-site support)
+* Removing callback functionality, so additional TinyMCE external plugins can be added by building independent WordPress plugins.
+* uninstall.php to do the right thing when you delete this crap. 
+* Moved Super-CSS-Classes and Super-Emoticons to separate plugins in this package.
+* A hopefully a better method of setting up default TinyMCE settings.
+
+= 2.2 =
 * WordPress 2.8 compatibility fixes.
 * Big cleanup to move some of the interface class functions to normal php functions.
 * A bug fix from vituko that should work better with some server setups.
 * Removed backwards compatibility checks because several changes to TinyMCE and WordPress make backwards compatibility prohibitive to maintain.
 * It is now using jQuery UI scripts that ship with WordPress. No more stupid big JS downloads for button settings.
-* Updates to most of the packaged TinyMCE plugins for TinyMCE 3.2.4.1 (that’s a bunch of dots)
+* Updates to most of the packaged TinyMCE plugins for TinyMCE 3.2.4.1 (that is a bunch of dots)
 
 = 2.1 =
-* A bonus backport added as suggested by vituko that should make things work on more serve setups.
+* A bonus backport added as suggested by vituko that should make things work on more server setups.
 * Add font tag styling options for font face, size, etc as requested in wordpress.org forums.
 * Fix missing bad javascript URL for admin interface.
 * Switch to template_redirect method for settings scanning using a pseudo tinymce init.
