@@ -44,7 +44,7 @@ This version has been tested for use with the versions of WordPress indicated. I
 3. Click on the Settings option and you will see WP Super Edit in the sub menu.
 4. WP Super Edit should lead you through the final installation steps. **Please be patient!** WP Super Edit will attempt to scan and save your original wysiwyg visual editor settings while installing. WP Super Edit will not work until the installation has been completed!
 
-**Upgrade**
+== Upgrade Notice ==
 
 **Versions 1.5 or earlier:**
 
