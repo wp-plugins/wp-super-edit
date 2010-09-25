@@ -38,13 +38,13 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 * Use $wp_super_edit primary object instance to add settings to database using register_tinymce_plugin() and register_tinymce_button() as many times as needed.
 * @global object $wp_super_edit 
 */
-function wp_super_class_activate() {
+function wp_super_css_classes_activate() {
 	global $wp_super_edit;
 	
 	// WP Super Edit options for this plugin
 		
 	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'wp-super-class', 
+		'name' => 'supercssclasses', 
 		'nicename' => __('Custom CSS Classes'), 
 		'description' => __('Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.'), 
 		'provider' => 'wp_super_edit', 
@@ -59,11 +59,11 @@ function wp_super_class_activate() {
 		'nicename' => __('Custom CSS Classes'), 
 		'description' => __('Shows a drop down list of CSS Classes that the editor has access to.'), 
 		'provider' => 'wp_super_edit', 
-		'plugin' => 'wp-super-class', 
+		'plugin' => 'supercssclasses', 
 		'status' => 'no'
 	));
 }
-register_activation_hook( __FILE__, 'wp_super_class_activate' );
+register_activation_hook( __FILE__, 'wp_super_css_classes_activate' );
 
 
 /**
@@ -71,7 +71,7 @@ register_activation_hook( __FILE__, 'wp_super_class_activate' );
 * Use $wp_super_edit primary object instance to remove settings from database using unregister_tinymce_plugin() and unregister_tinymce_button() for the registered items.
 * @global object $wp_super_edit 
 */
-function wp_super_class_deactivate() {
+function wp_super_css_classes_deactivate() {
 	global $wp_super_edit;
 	
 	// Unregister WP Super Edit options for this plugin
@@ -80,16 +80,16 @@ function wp_super_class_deactivate() {
 	// Unregister Tiny MCE Buttons provided by this plugin
 	$wp_super_edit->unregister_tinymce_button( 'styleselect' );
 }
-register_deactivation_hook( __FILE__, 'wp_super_class_deactivate' );
+register_deactivation_hook( __FILE__, 'wp_super_css_classes_deactivate' );
 
 /**
 * WP Super Class custom CSS filter to add a theme/editor.css file to TinyMCE
 */
-function wp_super_class_css($mce_css) {
+function wp_super_css_classes($mce_css) {
 	if ( empty( $mce_css ) ) $mce_css .= ',';
 	$mce_css .= get_bloginfo('stylesheet_directory') . '/editor.css';
 	return $mce_css; 
 }
-add_filter('mce_css', 'wp_super_class_css');
+add_filter('mce_css', 'wp_super_css_classes');
 
 ?>

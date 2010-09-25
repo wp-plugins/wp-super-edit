@@ -34,17 +34,17 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 */
 
 /**
-* WP Super Class function to register items in WP Super Edit
-* Use $wp_super_edit primary object instance to add settings to database
+* WP Super Emoticon function to register items in WP Super Edit
+* Use $wp_super_edit primary object instance to add settings to database using register_tinymce_plugin() and register_tinymce_button() as many times as needed.
 * @global object $wp_super_edit 
 */
-function wp_super_emoticons_register() {
+function wp_super_emoticons_activate() {
 	global $wp_super_edit;
 	
 	// WP Super Edit options for this plugin
 	
 	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'wp-super-emoticons', 
+		'name' => 'superemotions', 
 		'nicename' => __('Super Emoticon / Icon Plugin'), 
 		'description' => __('Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API.'), 
 		'provider' => 'wp_super_edit', 
@@ -59,11 +59,28 @@ function wp_super_emoticons_register() {
 		'nicename' => __('Super Emoticon / Icons'), 
 		'description' => __('Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API.'), 
 		'provider' => 'wp_super_edit', 
-		'plugin' => 'wp-super-emoticons', 
+		'plugin' => 'superemotions', 
 		'status' => 'no'
 	));
 }
-add_action('wp_super_edit_loaded', 'wp_super_emoticons_register', 5);
+register_activation_hook( __FILE__, 'wp_super_emoticons_activate' );
+
+
+/**
+* WP Super Emoticon function to unregister items in WP Super Edit
+* Use $wp_super_edit primary object instance to remove settings from database using unregister_tinymce_plugin() and unregister_tinymce_button() for the registered items.
+* @global object $wp_super_edit 
+*/
+function wp_super_emoticons_deactivate() {
+	global $wp_super_edit;
+	
+	// Unregister WP Super Edit options for this plugin
+	$wp_super_edit->unregister_tinymce_plugin( 'superemotions');
+	
+	// Unregister Tiny MCE Buttons provided by this plugin
+	$wp_super_edit->unregister_tinymce_button( 'superemotions' );
+}
+register_deactivation_hook( __FILE__, 'wp_super_emoticons_deactivate' );
 
 /**
 * WP Super Emoticons to add shortcode to WordPress editor
@@ -77,7 +94,6 @@ function wp_super_emoticons_shortcode ($attr, $content = null ) {
 	return '<img class="superemotions" title="' . $attr['title'] . '" alt="'  . $attr['title'] . '" border="0" src="' . get_bloginfo('wpurl') . '/wp-includes/images/smilies/' . $attr['file'] . '" />';
 }
 add_shortcode('superemotions', 'wp_super_emoticons_shortcode');
-
 
 
 ?>
