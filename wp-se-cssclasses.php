@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit Theme Classes
 Plugin URI: http://funroe.net/projects/super-edit/
 Description: Adds CSS classes from your themes editor.css file to the visual editor.
 Author: Jess Planck
-Version: 2.3
+Version: 2.3.2
 Author URI: http://funroe.net
 
 Copyright (c) Jess Planck (http://funroe.net)
@@ -58,7 +58,7 @@ function wp_super_css_classes_activate() {
 		'name' => 'styleselect', 
 		'nicename' => __('Custom CSS Classes'), 
 		'description' => __('Shows a drop down list of CSS Classes that the editor has access to.'), 
-		'provider' => 'wp_super_edit', 
+		'provider' => 'tinymce', 
 		'plugin' => 'supercssclasses', 
 		'status' => 'no'
 	));
