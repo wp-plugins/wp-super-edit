@@ -44,7 +44,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		* Constructor initializes private variables. Set for php4 compatiblity. 
 		*/	
         function wp_super_edit_core() { // Maintain php4 compatiblity  
-        	global $wpdb;
+        	global $wpdb, $wp_super_edit_run_mode;
 
         	// $wpdb->base_prefix for multisite
         	$this->db_options = $wpdb->base_prefix . 'wp_super_edit_options';
@@ -54,6 +54,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	
 			$this->core_path = WP_PLUGIN_DIR . '/wp-super-edit/';
         	$this->core_uri = WP_PLUGIN_URL . '/wp-super-edit/';
+        	
+        	$this->run_mode = $wp_super_edit_run_mode;
+        	if ( $this->run_mode == 'off' ) return;
         	
         	$this->is_installed = $this->is_db_installed();
         	

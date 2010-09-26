@@ -54,7 +54,6 @@ define( WPSE_VERSION, '2.3.1' );
 */
 require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 
-
 /**
 * Filter to set init of the wp_super_edit_core class with basic functionality
 */
@@ -72,8 +71,6 @@ if ( is_admin() ) {
 	$wp_super_edit_run_mode = 'admin';
 		
 }
-
-
 
 $wp_super_edit_run_mode = apply_filters( 'wp_super_edit_run_mode',  $wp_super_edit_run_mode );
 
@@ -96,9 +93,7 @@ switch( $wp_super_edit_run_mode ) {
 		add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
 
 		do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
-
 }
-
 
 /**
 * WP Super Edit TinyMCE filter
