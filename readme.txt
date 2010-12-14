@@ -4,7 +4,7 @@ Donate link: http://funroe.net/contribute/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 2.3.3
+Stable tag: 2.3.4
 
 Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and custom TinyMCE plugins.
 
