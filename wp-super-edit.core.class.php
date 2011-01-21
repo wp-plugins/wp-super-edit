@@ -288,9 +288,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		function tinymce_settings( $initArray ) {
 			global $current_user;
 									
-			if ( !$this->is_tinymce ) return;
+			if ( !$this->is_tinymce ) return $initArray;
 			
-        	if ( !$this->is_installed ) return;
+        	if ( !$this->is_installed ) return $initArray;
 			
 			switch ( $this->management_mode ) {
 				case 'single':
