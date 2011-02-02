@@ -21,10 +21,10 @@
 function wp_super_edit_admin_menu_setup() {
 	global $wp_super_edit;
 				
-	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 10, basename(__FILE__), 'wp_super_edit_admin_page' );
+	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 'manage_options', basename(__FILE__), 'wp_super_edit_admin_page' );
 
     if ( $wp_super_edit->management_mode == 'users' ) {
-		$wp_super_edit_user_page = add_users_page( __('Visual Editor Options', 'wp_super_edit'), __('Visual Editor Options', 'wp_super_edit'), 0, 'wp-super-edit/wp-super-edit-user.php' );
+		$wp_super_edit_user_page = add_users_page( __('Visual Editor Options', 'wp_super_edit'), __('Visual Editor Options', 'wp_super_edit'), 'edit_posts', 'wp-super-edit/wp-super-edit-user.php' );
 	}
 }
 
@@ -37,7 +37,7 @@ function wp_super_edit_admin_menu_setup() {
 function wp_super_edit_admin_setup() {
 	global $wp_super_edit;
 	
-	if ( strstr( $_GET['page'], 'wp-super-edit-' ) != false ) {
+	if ( isset( $_GET['page'] ) && strstr( $_GET['page'], 'wp-super-edit-' ) != false ) {
 
 		if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );

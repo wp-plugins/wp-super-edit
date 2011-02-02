@@ -70,15 +70,17 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			); 	
         	
         	if ( is_admin() ) {
-				$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
+				if ( isset( $_REQUEST['wp_super_edit_ui'] ) )
+					$this->ui = ( !$_REQUEST['wp_super_edit_ui'] ? 'options' : $_REQUEST['wp_super_edit_ui'] );			
 				if ( !$this->is_installed ) $this->ui = 'options';
 				
-				if ( strstr( $_REQUEST['page'], 'wp-super-edit-user.php' ) != false ) {
+				if ( isset( $_REQUEST['page'] ) && strstr( $_REQUEST['page'], 'wp-super-edit-user.php' ) != false ) {
 					$this->user_profile = true;
 					$this->ui = 'buttons';
 				}
 				
-				$this->ui_url = preg_replace( '/\?.*$/', '', $_SERVER ['REQUEST_URI'] ) . '?page=' . $_REQUEST['page'];
+				$this->ui_url = preg_replace( '/\?.*$/', '', $_SERVER ['REQUEST_URI'] );
+				if ( isset( $_REQUEST['page'] ) ) $this->ui_url .= '?page=' . $_REQUEST['page'];
 				$this->ui_form_url = $this->ui_url . '&wp_super_edit_ui=' . $this->ui;
 				$this->nonce = 'wp-super-edit-update-key';
 			}
