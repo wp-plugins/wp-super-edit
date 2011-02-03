@@ -167,11 +167,11 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 	
 			switch ( $type ) {
 				case 'plugin':
-					if ( $this->plugins[$name]->name == $name ) return true;
+					if ( isset( $this->plugins[$name] ) && $this->plugins[$name]->name == $name ) return true;
 					$db_table = $this->db_plugins;
 					break;
 				case 'button':
-					if ( $this->buttons[$name]->name == $name ) return true;
+					if ( isset( $this->buttons[$name] ) && $this->buttons[$name]->name == $name ) return true;
 					$db_table = $this->db_buttons;
 					break;
 				case 'user':

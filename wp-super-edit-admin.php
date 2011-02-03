@@ -39,37 +39,36 @@ function wp_super_edit_admin_setup() {
 	
 	if ( isset( $_GET['page'] ) && strstr( $_GET['page'], 'wp-super-edit-' ) != false ) {
 
-		if (  $_REQUEST['wp_super_edit_action'] == 'install' ) {
+		if ( isset( $_REQUEST['wp_super_edit_action'] ) ) {
+
 			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
-			if ( !current_user_can('manage_options') ) return;
-			wp_super_edit_install_db_tables();
-			wp_super_edit_wordpress_button_defaults();
-			wp_super_edit_set_user_default();
-		}
+
+			switch ( $_REQUEST['wp_super_edit_action'] ) {
+				case 'install':
+					if ( !current_user_can('manage_options') ) return;
+					wp_super_edit_install_db_tables();
+					wp_super_edit_wordpress_button_defaults();
+					wp_super_edit_set_user_default();
+					break;
+				case 'uninstall':
+					if ( !current_user_can('manage_options') ) return;
+					$wp_super_edit->uninstall();
+					$wp_super_edit->is_installed = false;
+					break;
+				case 'options':
+					if ( !current_user_can('manage_options') ) return;
+					$wp_super_edit->do_options();
+					break;
+				case 'plugins':
+					if ( !current_user_can('manage_options') ) return;
+					$wp_super_edit->do_plugins();
+					break;
+				case 'buttons':
+					if ( !current_user_can('edit_posts') ) return;
+					$wp_super_edit->do_buttons();
+					break;
+			}		
 		
-		if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
-			if ( !current_user_can('manage_options') ) return;
-			$wp_super_edit->uninstall();
-			$wp_super_edit->is_installed = false;
-		}
-		
-		if (  $_REQUEST['wp_super_edit_action'] == 'options' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
-			if ( !current_user_can('manage_options') ) return;
-			$wp_super_edit->do_options();
-		}
-		
-		if (  $_REQUEST['wp_super_edit_action'] == 'plugins' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
-			if ( !current_user_can('manage_options') ) return;
-			$wp_super_edit->do_plugins();
-		}
-		
-		if (  $_REQUEST['wp_super_edit_action'] == 'buttons' ) {
-			check_admin_referer( 'wp_super_edit_nonce-' . $wp_super_edit->nonce );
-			if ( !current_user_can('edit_posts') ) return;
-			$wp_super_edit->do_buttons();
 		}		
 	
 		if ( $wp_super_edit->ui == 'buttons' ) {
@@ -102,13 +101,18 @@ function wp_super_edit_admin_page() {
 	
 	wp_super_edit_ui_header();
 	
-	if ( !$wp_super_edit->is_installed && $_REQUEST['wp_super_edit_action'] != 'install' ) {
+	if ( isset( $_REQUEST['wp_super_edit_action'] ) ) 
+		$wp_super_edit_action = $_REQUEST['wp_super_edit_action'];
+	else
+		$wp_super_edit_action = '';
+	
+	if ( !$wp_super_edit->is_installed && $wp_super_edit_action != 'install' ) {
 		wp_super_edit_install_ui();
 		wp_super_edit_ui_footer();
 		return;
 	}
 
-	if (  $_REQUEST['wp_super_edit_action'] == 'uninstall' ) {
+	if (  $wp_super_edit_action == 'uninstall' ) {
 		wp_super_edit_install_ui();
 		wp_super_edit_ui_footer();
 		return;
@@ -283,6 +287,7 @@ function wp_super_edit_html_tag( $html = array() ) {
 	$attributes = '';
 	$composite = '';
 	$spacer = '';
+	if ( !isset( $html['return'] ) ) $html['return'] = false;
 	$reserved = array(
 		'tag', 'tag_type', 'attributes', 'tag_content', 'tag_content_before', 'tag_content_after', 'return'
 	);
@@ -292,30 +297,41 @@ function wp_super_edit_html_tag( $html = array() ) {
 		$attributes .= $name . '="' . $option . '" ';
 	}
 	
-	if ( $html['attributes'] != '' ) $attributes = $html['attributes'] . ' ' . $attributes;
+	if ( isset( $html['attributes'] ) ) $attributes .= $html['attributes'] . ' ' . $attributes;
 	
 	if ( $attributes != '' ) {
 		$attributes = rtrim( $attributes );
 		$spacer = ' ';
 	}
 	
+	if ( !isset( $html['tag_type'] ) ) $html['tag_type'] = 'default';
+	
+	if ( isset( $html['tag_content_before'] ) ) $composite .= $html['tag_content_before'];
+	
 	switch ( $html['tag_type'] ) {
 		case 'single':
-			$composite = $html['tag_content_before'] . $html['tag_content'] . '<' . $html['tag'] . $spacer . $attributes . '/>' . $html['tag_content_after'];
+			if ( isset( $html['tag_content'] ) ) $composite .= $html['tag_content'];
+			if ( isset( $html['tag'] ) ) $composite .= '<' . $html['tag'] . $spacer . $attributes . '/>';
 			break;
 		case 'open':
-			$composite = $html['tag_content_before'] . '<' . $html['tag'] . $spacer . $attributes . '>' . $html['tag_content'] . $html['tag_content_after'];
+			if ( isset( $html['tag'] ) ) $composite .= '<' . $html['tag'] . $spacer . $attributes . '>';
+			if ( isset( $html['tag_content'] ) ) $composite .= $html['tag_content'];			
 			break;
 		case 'close':
-			$composite = $html['tag_content_before'] . $html['tag_content'] . '</' . $html['tag'] . '>' . $html['tag_content_after'];
+			if ( isset( $html['tag_content'] ) ) $composite .= $html['tag_content'];		
+			if ( isset( $html['tag'] ) ) $composite .= '</' . $html['tag'] . '>';
 			break;
 		case 'attributes':
 			$composite = $attributes;
 			break;			
-		default:
-			$composite = $html['tag_content_before'] . '<' . $html['tag'] . $spacer . $attributes . '>' . $html['tag_content'] . '</' . $html['tag'] . '>' . $html['tag_content_after'];
+		case 'default':
+			if ( isset( $html['tag'] ) ) $composite .= '<' . $html['tag'] . $spacer . $attributes . '>';
+			if ( isset( $html['tag_content'] ) ) $composite .= $html['tag_content'];
+			if ( isset( $html['tag'] ) ) $composite .= '</' . $html['tag'] . '>';			
 			break;
 	}
+	
+	if ( isset( $html['tag_content_after'] ) ) $composite .= $html['tag_content_after'];	
 	
 	if ( $html['return'] == true ) return $composite ;
 	
@@ -477,6 +493,8 @@ function wp_super_edit_form_table_row( $header = '', $content = '', $return = fa
 */
 function wp_super_edit_form_select( $option_name = '', $options = array(), $selected = '', $return = false ) {
 	
+	$option_content = '';
+	
 	foreach( $options as $option_value => $option_text ) {
 		$option_array = array(
 			'tag' => 'option',
@@ -555,6 +573,8 @@ function wp_super_edit_admin_menu_ui() {
 		'tag_content' => __('WP Super Edit Options'),
 		'return' => true
 	) );
+	
+	$ui_tab_list = '';
 	
 	foreach ( $ui_tabs as $ui_tab => $ui_tab_html ) {
 
@@ -685,12 +705,12 @@ function wp_super_edit_options_ui() {
 
 	$reset_default_user_box = wp_super_edit_html_tag( array(
 		'tag' => 'input',
-		'tag_type' => 'single-after',
+		'tag_type' => 'single',
 		'type' => 'checkbox',
 		'name' => 'wp_super_edit_reset_default_user',
 		'id' => 'wp_super_edit_reset_default_user_i',
 		'value' => 'reset_default_user',
-		'tag_content' => __('<br /> Reset Default User Setting to original TinyMCE editor settings'),
+		'tag_content_after' => __('<br /> Reset Default User Setting to original TinyMCE editor settings'),
 		'return' => true
 	) );
 
@@ -698,18 +718,18 @@ function wp_super_edit_options_ui() {
 	
 	$reset_users_box = wp_super_edit_html_tag( array(
 		'tag' => 'input',
-		'tag_type' => 'single-after',
+		'tag_type' => 'single',
 		'type' => 'checkbox',
 		'name' => 'wp_super_edit_reset_users',
 		'id' => 'wp_super_edit_reset_users_i',
 		'value' => 'reset_users',
-		'tag_content' => __('<br /> Reset all users and roles using Default Editor Settings'),
+		'tag_content_after' => __('<br /> Reset all users and roles using Default Editor Settings'),
 		'return' => true
 	) );
 	
 	$table_row .= wp_super_edit_form_table_row( __('Reset All User and Role Settings:'), $reset_users_box, true );
 		
-	$form_content .= wp_super_edit_form_table( $table_row, true );
+	$form_content = wp_super_edit_form_table( $table_row, true );
 	$form_content .= $submit_button_group;
 	
 	wp_super_edit_form( 'options', $form_content );
@@ -744,16 +764,17 @@ function wp_super_edit_plugins_ui() {
 	) );
 	
 	
+	$table_row = ''; 
 	foreach ( $wp_super_edit->plugins as $plugin ) {
 		
 		$plugin_check_box_options = array(
 			'tag' => 'input',
-			'tag_type' => 'single-after',
+			'tag_type' => 'single',
 			'type' => 'checkbox',
 			'name' => "wp_super_edit_plugins[$plugin->name]",
 			'id' => "wp_super_edit_plugins-$plugin->name",
 			'value' => 'yes',
-			'tag_content' => '<br />' . $plugin->description,
+			'tag_content_after' => '<br />' . $plugin->description,
 			'return' => true
 		);
 		
@@ -765,7 +786,7 @@ function wp_super_edit_plugins_ui() {
 	}
 
 
-	$form_content .= wp_super_edit_form_table( $table_row, true );
+	$form_content = wp_super_edit_form_table( $table_row, true );
 	$form_content .= $submit_button_group;
 	
 	wp_super_edit_form( 'plugins', $form_content );
@@ -951,7 +972,7 @@ function wp_super_edit_buttons_ui() {
 		'return' => true
 	) );
 	
-	$hidden_form_items .= wp_super_edit_html_tag( array(
+	$hidden_form_items = wp_super_edit_html_tag( array(
 		'tag' => 'input',
 		'tag_type' => 'single',
 		'type' => 'hidden',
@@ -1038,7 +1059,7 @@ function wp_super_edit_buttons_ui() {
 
 			$separator = false;
 			
-			if ( $current_user['buttons'][$button_row][$button_num +1] == '|' ) $separator = true;
+			if ( isset( $current_user['buttons'][$button_row][$button_num +1] ) && $current_user['buttons'][$button_row][$button_num +1] == '|' ) $separator = true;
 			
 			if ( $button == '|' ) continue;
 
