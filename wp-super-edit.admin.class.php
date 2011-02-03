@@ -72,15 +72,17 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function do_options() {
 			global $wpdb;
 			
-			$this->set_option( 'management_mode', $_REQUEST['wp_super_edit_management_mode'] );
-			$this->management_mode = $this->get_option( 'management_mode' );
+			if ( isset( $_REQUEST['wp_super_edit_management_mode'] ) ) {
+				$this->set_option( 'management_mode', $_REQUEST['wp_super_edit_management_mode'] );
+				$this->management_mode = $this->get_option( 'management_mode' );
+			}
 
-			if ( $_REQUEST['wp_super_edit_reset_default_user'] == 'reset_default_user' ) {
+			if ( isset( $_REQUEST['wp_super_edit_reset_default_user'] ) && $_REQUEST['wp_super_edit_reset_default_user'] == 'reset_default_user' ) {
 				$tiny_mce_scan = $this->get_option( 'tinymce_scan' );
 				$this->update_user_settings( 'wp_super_edit_default', $tiny_mce_scan );
 			}
 			
-			if ( $_REQUEST['wp_super_edit_reset_users'] == 'reset_users' ) {
+			if ( isset( $_REQUEST['wp_super_edit_reset_users'] ) && $_REQUEST['wp_super_edit_reset_users'] == 'reset_users' ) {
 
 				$user_settings = $this->get_user_settings( 'wp_super_edit_default' );
 						
@@ -102,7 +104,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			global $wpdb;
 			
 			foreach ( $this->plugins as $plugin ) {
-				if ( $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
+				if ( isset( $_REQUEST['wp_super_edit_plugins'][$plugin->name] ) && $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
 					$status = 'yes';
 				} else {
 					$status = 'no';
@@ -133,55 +135,65 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
 		function do_buttons() {
 									
-			if ( $_REQUEST['wp_super_edit_action_control'] == 'reset_default' ) {
+			if ( isset( $_REQUEST['wp_super_edit_action_control'] ) && $_REQUEST['wp_super_edit_action_control'] == 'reset_default' ) {
 				$user = 'wp_super_edit_default';
 			} else {
-				$user = $_REQUEST['wp_super_edit_user'];
+				if ( isset( $_REQUEST['wp_super_edit_user'] ) ) $user = $_REQUEST['wp_super_edit_user'];
 			}
 
 			$current_settings = $this->get_user_settings_ui( $user );
 			$current_user_settings = $current_settings['editor_options'];
 			unset( $current_settings );
 			
-			if ( $_REQUEST['wp_super_edit_action_control'] == 'update' || $_REQUEST['wp_super_edit_action_control'] == 'set_default' ) {
-				
-				$separators = explode( ',', $_REQUEST['wp_super_edit_separators'] );
-				
-				$wp_super_edit_rows[1] = explode( ',', $_REQUEST['wp_super_edit_row_1'] );
-				$wp_super_edit_rows[2] = explode( ',', $_REQUEST['wp_super_edit_row_2'] );
-				$wp_super_edit_rows[3] = explode( ',', $_REQUEST['wp_super_edit_row_3'] );
-				$wp_super_edit_rows[4] = explode( ',', $_REQUEST['wp_super_edit_row_4'] );
-	
-				foreach( $wp_super_edit_rows as $wp_super_edit_row_number => $wp_super_edit_row ) {
-					if ( empty( $wp_super_edit_row ) ) continue;
-						
-					$button_row_setting = array();
-					$button_row = '';
-					
-					foreach( $wp_super_edit_row as $wp_super_edit_button ) {
-					
-						if ( empty( $wp_super_edit_button ) ) continue;
-						
-						$button_row_setting[] = $wp_super_edit_button;
-						
-						if ( in_array( $wp_super_edit_button, $separators ) ) {
-							$button_row_setting[] = '|';
-						}
-					
-					}
-									
-					$button_row = implode( ',', $button_row_setting );
-					$button_array_key = 'theme_advanced_buttons' . $wp_super_edit_row_number;
-					
-					$current_user_settings[$button_array_key] = $button_row;
-					
-				}
-			} 
-			
-			$this->update_user_settings( $_REQUEST['wp_super_edit_user'], $current_user_settings );
+			if ( isset( $_REQUEST['wp_super_edit_action_control'] ) ) {
+				if ( $_REQUEST['wp_super_edit_action_control'] == 'update' || $_REQUEST['wp_super_edit_action_control'] == 'set_default' ) {
 
-			if ( $_REQUEST['wp_super_edit_action_control'] == 'set_default' && !$this->user_profile ) {
-				$this->update_user_settings( 'wp_super_edit_default', $current_user_settings );
+					if ( isset( $_REQUEST['wp_super_edit_separators'] ) )
+						$separators = explode( ',', $_REQUEST['wp_super_edit_separators'] );
+
+					if ( isset( $_REQUEST['wp_super_edit_row_1'] ) )
+						$wp_super_edit_rows[1] = explode( ',', $_REQUEST['wp_super_edit_row_1'] );
+					if ( isset( $_REQUEST['wp_super_edit_row_2'] ) )
+						$wp_super_edit_rows[2] = explode( ',', $_REQUEST['wp_super_edit_row_2'] );
+					if ( isset( $_REQUEST['wp_super_edit_row_3'] ) )
+						$wp_super_edit_rows[3] = explode( ',', $_REQUEST['wp_super_edit_row_3'] );
+					if ( isset( $_REQUEST['wp_super_edit_row_4'] ) )
+						$wp_super_edit_rows[4] = explode( ',', $_REQUEST['wp_super_edit_row_4'] );
+		
+					foreach( $wp_super_edit_rows as $wp_super_edit_row_number => $wp_super_edit_row ) {
+						if ( empty( $wp_super_edit_row ) ) continue;
+							
+						$button_row_setting = array();
+						$button_row = '';
+						
+						foreach( $wp_super_edit_row as $wp_super_edit_button ) {
+						
+							if ( empty( $wp_super_edit_button ) ) continue;
+							
+							$button_row_setting[] = $wp_super_edit_button;
+							
+							if ( in_array( $wp_super_edit_button, $separators ) ) {
+								$button_row_setting[] = '|';
+							}
+						
+						}
+										
+						$button_row = implode( ',', $button_row_setting );
+						$button_array_key = 'theme_advanced_buttons' . $wp_super_edit_row_number;
+						
+						$current_user_settings[$button_array_key] = $button_row;
+						
+					}
+				}
+			}
+
+			if ( isset( $_REQUEST['wp_super_edit_user'] ) )
+				$this->update_user_settings( $_REQUEST['wp_super_edit_user'], $current_user_settings );
+
+			if ( isset( $_REQUEST['wp_super_edit_action_control'] ) ) {
+				if ( $_REQUEST['wp_super_edit_action_control'] == 'set_default' && !$this->user_profile ) {
+					$this->update_user_settings( 'wp_super_edit_default', $current_user_settings );
+				}
 			}
 			
 		}

@@ -1068,7 +1068,7 @@ function wp_super_edit_buttons_ui() {
 				continue;
 			}
 								
-			if ( !is_object( $wp_super_edit->active_buttons[$button] ) ) continue;
+			if ( !isset( $wp_super_edit->active_buttons[$button] ) ) continue;
 			
 			wp_super_edit_make_button_ui( $wp_super_edit->active_buttons[$button], $separator );
 			
