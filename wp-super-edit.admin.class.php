@@ -72,6 +72,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function do_options() {
 			global $wpdb;
 			
+			if ( !$this->is_installed ) return false;
+
 			if ( isset( $_REQUEST['wp_super_edit_management_mode'] ) ) {
 				$this->set_option( 'management_mode', $_REQUEST['wp_super_edit_management_mode'] );
 				$this->management_mode = $this->get_option( 'management_mode' );
@@ -103,6 +105,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function do_plugins() {
 			global $wpdb;
 			
+			if ( !$this->is_installed ) return false;
+
 			foreach ( $this->plugins as $plugin ) {
 				if ( isset( $_REQUEST['wp_super_edit_plugins'][$plugin->name] ) && $_REQUEST['wp_super_edit_plugins'][$plugin->name] == 'yes' ) {
 					$status = 'yes';
@@ -135,6 +139,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
 		function do_buttons() {
 									
+			if ( !$this->is_installed ) return false;
+
 			if ( isset( $_REQUEST['wp_super_edit_action_control'] ) && $_REQUEST['wp_super_edit_action_control'] == 'reset_default' ) {
 				$user = 'wp_super_edit_default';
 			} else {
@@ -204,7 +210,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
         function register_tinymce_plugin( $plugin = array() ) {
         	global $wpdb;
-			
+
+			if ( !$this->is_installed ) return false;
+
 			if ( $this->check_registered( 'plugin', $plugin['name'] ) ) return true;
 			
 			$wpdb->query( $wpdb->prepare( "
@@ -222,6 +230,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
         function unregister_tinymce_plugin( $plugin_name ) {
         	global $wpdb;
+        	
+			if ( !$this->is_installed ) return false;
 						
 			if ( $plugin_name == '' ) return false;
 			
@@ -239,6 +249,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function register_tinymce_button( $button = array() ) {
         	global $wpdb;
 			
+			if ( !$this->is_installed ) return false;
+
 			if ( $this->check_registered( 'button', $button['name'] ) ) return true;
 
 			$wpdb->query( $wpdb->prepare( "
@@ -257,6 +269,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function unregister_tinymce_button( $button_name ) {
         	global $wpdb;
 			
+			if ( !$this->is_installed ) return false;
+
 			if ( $button_name == '' ) return false;
 
 			$wpdb->query( $wpdb->prepare( "
@@ -276,6 +290,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function register_user_settings( $user_name = 'wp_super_edit_default', $user_nicename = 'Default Editor Settings', $user_settings, $type = 'single' ) {
         	global $wpdb;
 			
+			if ( !$this->is_installed ) return false;
+
 			if ( $this->check_registered( 'user', $user_name ) ) return;
 			
 			$settings = maybe_serialize( $user_settings );
@@ -297,6 +313,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
         function update_user_settings(  $user_name = 'wp_super_edit_default', $user_settings ) {
         	global $wpdb;
 			
+			if ( !$this->is_installed ) return false;
+
 			$settings = maybe_serialize( $user_settings );
 			
 			$management_mode = ( $user_name == 'wp_super_edit_default' ? 'single' : $this->management_mode );
@@ -316,6 +334,8 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		*/
 		function register_new_user( $user_name ) {
         	global $wpdb, $wp_roles, $userdata;
+
+			if ( !$this->is_installed ) return false;
 
         	switch ( $this->management_mode ) {
 				case 'single':

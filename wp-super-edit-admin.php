@@ -612,10 +612,15 @@ function wp_super_edit_admin_menu_ui() {
 function wp_super_edit_display_management_mode() {
 	global $wp_super_edit;
 
+	if( empty( $wp_super_edit->management_modes[ $wp_super_edit->management_mode ] ) )
+		$management_mode = 'single';
+	else
+		$management_mode = $wp_super_edit->management_mode;
+
 	wp_super_edit_html_tag( array(
 		'tag' => 'div',
 		'id' => 'wp_super_edit_management_mode',
-		'tag_content' => __('Management Mode: ') . $wp_super_edit->management_modes[ $wp_super_edit->management_mode ]
+		'tag_content' => __('Management Mode: ') . $wp_super_edit->management_modes[ $management_mode ]
 	) );
 }
 

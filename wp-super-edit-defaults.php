@@ -15,7 +15,7 @@ function wp_super_edit_install_db_tables() {
 		$wp_super_edit = new wp_super_edit_admin();
 	}
 
-	if ( $wp_super_edit->is_db_installed ) return;
+	if ( $wp_super_edit->is_installed ) return;
 
 	if ( $wpdb->supports_collation() ) {
 		if ( ! empty($wpdb->charset) )
@@ -66,7 +66,7 @@ function wp_super_edit_install_db_tables() {
 	
 	dbDelta($install_sql);
 	
-	$wp_super_edit->is_db_installed = true;
+	$wp_super_edit->is_installed = true;
 		
 }
 
@@ -117,7 +117,7 @@ function wp_super_edit_set_user_default() {
 function wp_super_edit_wordpress_button_defaults() {
 	global $wp_super_edit;
 
-	if ( !$wp_super_edit->is_db_installed ) return;
+	if ( !$wp_super_edit->is_installed ) return;
 		
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'bold', 

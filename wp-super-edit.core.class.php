@@ -85,7 +85,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				$this->nonce = 'wp-super-edit-update-key';
 			}
 			
-        	if ( !$this->is_installed ) return;
+			if ( !$this->is_installed ) return false;
         	
 			$tinymce_check = '/tiny_mce_config\.php|page-new\.php|page\.php|post-new\.php|post\.php/';
 			
@@ -95,7 +95,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				$this->is_tinymce = true;
 			}           	
         	
-        	$this->management_mode = $this->get_option( 'management_mode' );	
+        	$this->management_mode = $this->get_option( 'management_mode' );
+        	if ( empty( $this->management_mode ) ) $this->management_mode = 'single';
 			
 			$plugin_query = "
 				SELECT name, url, status, provider, callbacks FROM $this->db_plugins
@@ -162,6 +163,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         function check_registered( $type, $name ) {
         	global $wpdb;
  
+			if ( !$this->is_installed ) return false;
+
 			$name_col = 'name';
 			$role = '';
 	
@@ -204,11 +207,14 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         function get_option( $option_name ) {
         	global $wpdb;
         		
+			if ( !$this->is_installed ) return false;
+
 			$option = $wpdb->get_row( $wpdb->prepare( "
 				SELECT value FROM $this->db_options
 				WHERE name=%s
 			", $option_name ) );
 		
+			if( empty( $option->value ) ) return false;
 			$option_value = maybe_unserialize( $option->value );
 			
 			return $option_value;
@@ -222,6 +228,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 		*/
         function set_option( $option_name, $option_value ) {
         	global $wpdb;
+
+			if ( !$this->is_installed ) return false;
 
 			$result = $wpdb->get_row( $wpdb->prepare( "
 				SELECT * FROM $this->db_options
@@ -257,6 +265,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         function get_user_settings( $user_name ) {
         	global $wpdb;
  
+			if ( !$this->is_installed ) return false;
+
 			switch ( $this->management_mode ) {
 				case 'single':
 					$role = " AND user_type='single'";
