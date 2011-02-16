@@ -53,7 +53,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->db_users =  $wpdb->base_prefix . 'wp_super_edit_users';
         	
 			$this->core_path = WP_PLUGIN_DIR . '/wp-super-edit/';
-        	$this->core_uri = WP_PLUGIN_URL . '/wp-super-edit/';
+        	$this->core_uri = plugins_url() . '/wp-super-edit/';
         	
         	$this->run_mode = $wp_super_edit_run_mode;
         	if ( $this->run_mode == 'off' ) return;
