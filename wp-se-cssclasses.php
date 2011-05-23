@@ -73,9 +73,12 @@ register_activation_hook( __FILE__, 'wp_super_css_classes_activate' );
 */
 function wp_super_css_classes_deactivate() {
 	global $wp_super_edit;
-	
+
 	// Unregister WP Super Edit options for this plugin
 	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');
+	
+	// DEPRECATE: Unregister OLD WP Super Edit options for this plugin
+	$wp_super_edit->unregister_tinymce_plugin( 'supercssclasses');
 	
 	// Unregister Tiny MCE Buttons provided by this plugin
 	$wp_super_edit->unregister_tinymce_button( 'styleselect' );
