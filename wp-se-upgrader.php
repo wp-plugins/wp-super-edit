@@ -67,7 +67,11 @@ function wp_super_edit_upgrader() {
 	global $wp_super_edit;
 	
 	// DEPRECATE: Unregister WP Super Edit options for this plugin
-	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');	
+	// wp-super-class - 2011 - name mistake
+	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');
+	// compat2x - 2011 - no longer functional
+	$wp_super_edit->unregister_tinymce_plugin( 'compat2x');
+	
 }
 add_action('wp_super_edit_mode_run', 'wp_super_edit_upgrader', 5);
 

@@ -508,19 +508,6 @@ function wp_super_edit_wordpress_button_defaults() {
 		'callbacks' => ''
 	));
 	
-	// compat2x
-	
-	// WP Super Edit options for this plugin
-	
-	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'compat2x', 
-		'nicename' => __( 'TinyMCE 2.x Compatiblity', 'wp-super-edit' ), 
-		'description' => __( 'This plugin attempts to offer compatibility with old TinyMCE 2.x plugins. Please suggest to the author to upgrade development to TinyMCE 3.x', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'status' => 'no', 
-		'callbacks' => ''
-	));
-	
 	// contextmenu
 	
 	// WP Super Edit options for this plugin
