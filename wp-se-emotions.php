@@ -34,30 +34,58 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 */
 
 /**
+* WP Super Emotions init
+* Function checks for WP Super Edit before allowing any activation
+* @global object $wp_super_edit 
+*/
+function wp_super_emoticons_init() {
+	global $wp_super_edit;
+	
+	// Deactivate if WP Super Edit is not active & display notice
+	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) add_action( 'admin_notices', 'wp_super_emoticons_shutdown' );;
+}
+add_action( 'init', 'wp_super_emoticons_init' );
+
+
+/**
+* WP Super Class Admin Shutdown Notification
+*/
+function wp_super_emoticons_shutdown() {	
+	$current_plugins = get_settings('active_plugins');
+	$current_plugin_basename = plugin_basename( __FILE__ );		
+	array_splice( $current_plugins, array_search( $current_plugin_basename, $current_plugins ), 1 ); // Array-function!
+	update_option( 'active_plugins', $current_plugins );
+    
+    echo '<div class="settings-error error" id="setting-error-settings_updated"><p><strong>';
+    _e( 'WP Super Edit Plugin Required! Activate WP Super Edit before using. Plugin Deactivated.', 'wp-super-edit' );
+    echo '</p></div>';
+}
+
+/**
 * WP Super Emoticon function to register items in WP Super Edit
 * Use $wp_super_edit primary object instance to add settings to database using register_tinymce_plugin() and register_tinymce_button() as many times as needed.
 * @global object $wp_super_edit 
 */
 function wp_super_emoticons_activate() {
 	global $wp_super_edit;
+
+	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) return false;
 	
-	// WP Super Edit options for this plugin
-	
+	// WP Super Edit options for this plugin	
 	$wp_super_edit->register_tinymce_plugin( array(
 		'name' => 'superemotions', 
-		'nicename' => __('Super Emoticon / Icon Plugin'), 
-		'description' => __('Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API.'), 
+		'nicename' => __( 'Super Emoticon / Icon Plugin', 'wp-super-edit' ), 
+		'description' => __( 'Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API.', 'wp-super-edit' ), 
 		'provider' => 'wp_super_edit', 
 		'status' => 'no', 
 		'callbacks' => ''
 	));
 	
-	// Tiny MCE Buttons provided by this plugin
-	
+	// Tiny MCE Buttons provided by this plugin	
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'superemotions', 
-		'nicename' => __('Super Emoticon / Icons'), 
-		'description' => __('Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API.'), 
+		'nicename' => __( 'Super Emoticon / Icons', 'wp-super-edit' ), 
+		'description' => __( 'Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API.', 'wp-super-edit' ), 
 		'provider' => 'wp_super_edit', 
 		'plugin' => 'superemotions', 
 		'status' => 'no'
@@ -73,6 +101,8 @@ register_activation_hook( __FILE__, 'wp_super_emoticons_activate' );
 */
 function wp_super_emoticons_deactivate() {
 	global $wp_super_edit;
+
+ 	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) return false;
 	
 	// Unregister WP Super Edit options for this plugin
 	$wp_super_edit->unregister_tinymce_plugin( 'superemotions');
@@ -94,6 +124,5 @@ function wp_super_emoticons_shortcode ($attr, $content = null ) {
 	return '<img class="superemotions" title="' . $attr['title'] . '" alt="'  . $attr['title'] . '" border="0" src="' . get_bloginfo('wpurl') . '/wp-includes/images/smilies/' . $attr['file'] . '" />';
 }
 add_shortcode('superemotions', 'wp_super_emoticons_shortcode');
-
 
 ?>

@@ -34,6 +34,34 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 */
 
 /**
+* WP Super Class init
+* Function checks for WP Super Edit before allowing any activation
+* @global object $wp_super_edit 
+*/
+function wp_super_css_classes_init() {
+	global $wp_super_edit;
+	
+	// Deactivate if WP Super Edit is not active & display notice
+	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) add_action( 'admin_notices', 'wp_super_css_classes_shutdown' );;
+}
+add_action( 'init', 'wp_super_css_classes_init' );
+
+
+/**
+* WP Super Class Admin Shutdown Notification
+*/
+function wp_super_css_classes_shutdown() {	
+	$current_plugins = get_settings('active_plugins');
+	$current_plugin_basename = plugin_basename( __FILE__ );		
+	array_splice( $current_plugins, array_search( $current_plugin_basename, $current_plugins ), 1 ); // Array-function!
+	update_option( 'active_plugins', $current_plugins );
+    
+    echo '<div class="settings-error error" id="setting-error-settings_updated"><p><strong>';
+    _e( 'WP Super Edit Plugin Required! Activate WP Super Edit before using. Plugin Deactivated.', 'wp-super-edit' );
+    echo '</p></div>';
+}
+
+/**
 * WP Super Class function to register items in WP Super Edit
 * Use $wp_super_edit primary object instance to add settings to database using register_tinymce_plugin() and register_tinymce_button() as many times as needed.
 * @global object $wp_super_edit 
@@ -41,23 +69,23 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 function wp_super_css_classes_activate() {
 	global $wp_super_edit;
 	
+	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) return false;
+	
 	// WP Super Edit options for this plugin
-		
 	$wp_super_edit->register_tinymce_plugin( array(
 		'name' => 'supercssclasses', 
-		'nicename' => __('Custom CSS Classes'), 
-		'description' => __('Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.'), 
+		'nicename' => __( 'Custom CSS Classes', 'wp-super-edit' ), 
+		'description' => __( 'Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.', 'wp-super-edit' ), 
 		'provider' => 'wp_super_edit', 
 		'status' => 'no', 
 		'callbacks' => ''
 	));
 	
 	// Tiny MCE Buttons provided by this plugin
-	
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'styleselect', 
-		'nicename' => __('Custom CSS Classes'), 
-		'description' => __('Shows a drop down list of CSS Classes that the editor has access to.'), 
+		'nicename' => __( 'Custom CSS Classes', 'wp-super-edit' ), 
+		'description' => __( 'Shows a drop down list of CSS Classes that the editor has access to.', 'wp-super-edit' ), 
 		'provider' => 'tinymce', 
 		'plugin' => 'supercssclasses', 
 		'status' => 'no'
@@ -73,15 +101,17 @@ register_activation_hook( __FILE__, 'wp_super_css_classes_activate' );
 */
 function wp_super_css_classes_deactivate() {
 	global $wp_super_edit;
-
-	// Unregister WP Super Edit options for this plugin
-	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');
 	
-	// DEPRECATE: Unregister OLD WP Super Edit options for this plugin
+	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) return false;
+	
+	//  Unregister OLD WP Super Edit options for this plugin
 	$wp_super_edit->unregister_tinymce_plugin( 'supercssclasses');
 	
 	// Unregister Tiny MCE Buttons provided by this plugin
 	$wp_super_edit->unregister_tinymce_button( 'styleselect' );
+	
+	// DEPRECATE: Unregister WP Super Edit options for this plugin
+	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');	
 }
 register_deactivation_hook( __FILE__, 'wp_super_css_classes_deactivate' );
 

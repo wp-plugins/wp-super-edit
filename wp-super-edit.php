@@ -65,13 +65,14 @@ $wp_super_edit_run_mode = 'off';
 * @global object $wp_super_edit 
 */
 if ( is_admin() ) {
-
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.admin.class.php' );
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit-admin.php' );
+	// Translations
+	load_plugin_textdomain( 'wp-super-edit', false, WP_PLUGIN_DIR . '/wp-super-edit/languages' );
 	$wp_super_edit_run_mode = 'admin';
-		
 }
 
+do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
 $wp_super_edit_run_mode = apply_filters( 'wp_super_edit_run_mode',  $wp_super_edit_run_mode );
 
 /**
@@ -81,19 +82,18 @@ switch( $wp_super_edit_run_mode ) {
 	// Minimal WP Super Edit usage
 	case 'core':
 		$wp_super_edit = new wp_super_edit_core();
-		do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );		
+		do_action( 'wp_super_edit_mode_core', 'wp_super_edit_mode_core' );
 	// WP Super Edit Administration interfaces and default manipulation of TinyMCE.
 	case 'admin':
 		$wp_super_edit = new wp_super_edit_admin();
-		load_plugin_textdomain( 'wp-super-edit', false, '/wp-super-edit/languages' );
 		if ( !$wp_super_edit->is_installed ) require_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php' );
+		do_action( 'wp_super_edit_mode_admin', 'wp_super_edit_mode_admin' );
 		add_action('admin_menu', 'wp_super_edit_admin_menu_setup');
 		add_action('admin_init', 'wp_super_edit_admin_setup');		
 		add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
 		add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
-
-		do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
 }
+do_action( 'wp_super_edit_mode_run', 'wp_super_edit_mode_run' );
 
 /**
 * WP Super Edit TinyMCE filter

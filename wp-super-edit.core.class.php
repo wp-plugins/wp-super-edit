@@ -64,9 +64,9 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	$this->user_profile = false;
         	
         	$this->management_modes = array(
-				'single' => __('One editor setting for all users'),
-				'roles' => __('Role based editor settings'),
-				'users' => __('Individual user editor settings')
+				'single' => __( 'One editor setting for all users', 'wp-super-edit' ),
+				'roles' => __( 'Role based editor settings', 'wp-super-edit' ),
+				'users' => __( 'Individual user editor settings', 'wp-super-edit' )
 			); 	
         	
         	if ( is_admin() ) {

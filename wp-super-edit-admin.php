@@ -21,10 +21,10 @@
 function wp_super_edit_admin_menu_setup() {
 	global $wp_super_edit;
 				
-	$wp_super_edit_option_page = add_options_page( __('WP Super Edit', 'wp_super_edit'), __('WP Super Edit', 'wp_super_edit'), 'manage_options', basename(__FILE__), 'wp_super_edit_admin_page' );
+	$wp_super_edit_option_page = add_options_page( __( 'WP Super Edit', 'wp_super_edit' ), __( 'WP Super Edit', 'wp_super_edit' ), 'manage_options', basename(__FILE__), 'wp_super_edit_admin_page' );
 
     if ( $wp_super_edit->management_mode == 'users' ) {
-		$wp_super_edit_user_page = add_users_page( __('Visual Editor Options', 'wp_super_edit'), __('Visual Editor Options', 'wp_super_edit'), 'edit_posts', 'wp-super-edit/wp-super-edit-user.php' );
+		$wp_super_edit_user_page = add_users_page( __( 'Visual Editor Options', 'wp_super_edit' ), __( 'Visual Editor Options', 'wp_super_edit' ), 'edit_posts', 'wp-super-edit/wp-super-edit-user.php' );
 	}
 }
 
@@ -363,13 +363,13 @@ function wp_super_edit_ui_header() {
 	
 	wp_super_edit_html_tag( array(
 		'tag' => 'h2',
-		'tag_content' => __('WP Super Edit'),
+		'tag_content' => __( 'WP Super Edit', 'wp-super-edit' ),
 	) );
 
 	wp_super_edit_html_tag( array(
 		'tag' => 'p',
 		'id' => 'wp_super_edit_info',
-		'tag_content' => __('To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://funroe.net/projects/super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://funroe.net/contribute/">donation or other contribution</a>.'),
+		'tag_content' => __( 'To give you more control over the Wordpress TinyMCE WYSIWYG Visual Editor. For more information, visit the <a href="http://funroe.net/projects/super-edit/">WP Super Edit project.</a> You can help continue development by making a <a href="http://funroe.net/contribute/">donation or other contribution</a>.', 'wp-super-edit' ),
 	) );
 }
 
@@ -558,19 +558,19 @@ function wp_super_edit_admin_menu_ui() {
 	$ui_tabs['buttons'] = wp_super_edit_html_tag( array(
 		'tag' => 'a',
 		'href' => htmlentities( $wp_super_edit->ui_url . '&wp_super_edit_ui=buttons' ),
-		'tag_content' => __('Arrange Editor Buttons'),
+		'tag_content' => __( 'Arrange Editor Buttons', 'wp-super-edit' ),
 		'return' => true
 	) );
 	$ui_tabs['plugins'] = wp_super_edit_html_tag( array(
 		'tag' => 'a',
 		'href' => htmlentities( $wp_super_edit->ui_url . '&wp_super_edit_ui=plugins' ),
-		'tag_content' => __('Configure Editor Plugins'),
+		'tag_content' => __( 'Configure Editor Plugins', 'wp-super-edit' ),
 		'return' => true
 	) );
 	$ui_tabs['options'] = wp_super_edit_html_tag( array(
 		'tag' => 'a',
 		'href' => htmlentities( $wp_super_edit->ui_url . '&wp_super_edit_ui=options' ),
-		'tag_content' => __('WP Super Edit Options'),
+		'tag_content' => __( 'WP Super Edit Options', 'wp-super-edit' ),
 		'return' => true
 	) );
 	
@@ -620,7 +620,7 @@ function wp_super_edit_display_management_mode() {
 	wp_super_edit_html_tag( array(
 		'tag' => 'div',
 		'id' => 'wp_super_edit_management_mode',
-		'tag_content' => __('Management Mode: ') . $wp_super_edit->management_modes[ $management_mode ]
+		'tag_content' => __( 'Management Mode: ', 'wp-super-edit' ) . $wp_super_edit->management_modes[ $management_mode ]
 	) );
 }
 
@@ -643,10 +643,10 @@ function wp_super_edit_install_ui() {
 	
 	wp_super_edit_html_tag( array(
 		'tag' => 'p',
-		'tag_content' => __('<strong>Install default settings and database tables for WP Super Edit.</strong>')
+		'tag_content' => __( '<strong>Install default settings and database tables for WP Super Edit.</strong>', 'wp-super-edit' )
 	) );			
 	
-	$button = wp_super_edit_submit_button( __('Install WP Super Edit'), '', true, true );
+	$button = wp_super_edit_submit_button( __( 'Install WP Super Edit', 'wp-super-edit' ), '', true, true );
 	
 	wp_super_edit_form( 'install', $button );
 	
@@ -671,7 +671,7 @@ function wp_super_edit_uninstall_ui() {
 		'id' => 'wp_super_edit_deactivate'
 	) );
 				
-	$button = wp_super_edit_submit_button( __('Uninstall WP Super Edit Database Tables'), __('<strong>This option will remove settings for WP Super Edit. </strong>'), true );
+	$button = wp_super_edit_submit_button( __( 'Uninstall WP Super Edit Database Tables', 'wp-super-edit' ), __( '<strong>This option will remove settings for WP Super Edit. </strong>', 'wp-super-edit' ), true );
 
 	wp_super_edit_form( 'uninstall', $button );
 
@@ -696,7 +696,7 @@ function wp_super_edit_options_ui() {
 
 	wp_super_edit_display_management_mode();
 	
-	$submit_button = wp_super_edit_submit_button( __('Update Options'), '', true, true );
+	$submit_button = wp_super_edit_submit_button( __( 'Update Options', 'wp-super-edit' ), '', true, true );
 	$submit_button_group = wp_super_edit_html_tag( array(
 		'tag' => 'p',
 		'class' => 'submit',
@@ -706,7 +706,7 @@ function wp_super_edit_options_ui() {
 	
 	$mode_select = wp_super_edit_form_select( 'wp_super_edit_management_mode', $wp_super_edit->management_modes, $wp_super_edit->management_mode, true );
 	
-	$table_row = wp_super_edit_form_table_row( __('Manage editor buttons using:'), $mode_select, true );
+	$table_row = wp_super_edit_form_table_row( __( 'Manage editor buttons using:', 'wp-super-edit' ), $mode_select, true );
 
 	$reset_default_user_box = wp_super_edit_html_tag( array(
 		'tag' => 'input',
@@ -715,11 +715,11 @@ function wp_super_edit_options_ui() {
 		'name' => 'wp_super_edit_reset_default_user',
 		'id' => 'wp_super_edit_reset_default_user_i',
 		'value' => 'reset_default_user',
-		'tag_content_after' => __('<br /> Reset Default User Setting to original TinyMCE editor settings'),
+		'tag_content_after' => __( '<br /> Reset Default User Setting to original TinyMCE editor settings', 'wp-super-edit' ),
 		'return' => true
 	) );
 
-	$table_row .= wp_super_edit_form_table_row( __('Reset Default User Settings:'), $reset_default_user_box, true );
+	$table_row .= wp_super_edit_form_table_row( __( 'Reset Default User Settings:', 'wp-super-edit' ), $reset_default_user_box, true );
 	
 	$reset_users_box = wp_super_edit_html_tag( array(
 		'tag' => 'input',
@@ -728,11 +728,11 @@ function wp_super_edit_options_ui() {
 		'name' => 'wp_super_edit_reset_users',
 		'id' => 'wp_super_edit_reset_users_i',
 		'value' => 'reset_users',
-		'tag_content_after' => __('<br /> Reset all users and roles using Default Editor Settings'),
+		'tag_content_after' => __( '<br /> Reset all users and roles using Default Editor Settings', 'wp-super-edit' ),
 		'return' => true
 	) );
 	
-	$table_row .= wp_super_edit_form_table_row( __('Reset All User and Role Settings:'), $reset_users_box, true );
+	$table_row .= wp_super_edit_form_table_row( __( 'Reset All User and Role Settings:', 'wp-super-edit' ), $reset_users_box, true );
 		
 	$form_content = wp_super_edit_form_table( $table_row, true );
 	$form_content .= $submit_button_group;
@@ -825,14 +825,14 @@ function wp_super_edit_user_management_ui() {
 	
 	switch ( $wp_super_edit->management_mode ) {
 		case 'single':
-			$user_management_text = __('This arrangement of visual editor buttons will apply to all users');
+			$user_management_text = __( 'This arrangement of visual editor buttons will apply to all users', 'wp-super-edit' );
 			break;
 		case 'roles':
-			$user_management_text = __('The arrangement of visual editor buttons will apply to all users in the selected Role or Default user button setting.<br />');
+			$user_management_text = __( 'The arrangement of visual editor buttons will apply to all users in the selected Role or Default user button setting.<br />', 'wp-super-edit' );
 			
 			$roles = Array();
 
-			$roles['wp_super_edit_default'] = __('Default Button Settings');
+			$roles['wp_super_edit_default'] = __( 'Default Button Settings', 'wp-super-edit' );
 
 			foreach( $wp_roles->role_names as $role => $name ) {
 				$name = translate_with_context($name);
@@ -844,10 +844,10 @@ function wp_super_edit_user_management_ui() {
 			
 			$role_select = wp_super_edit_form_select( 'wp_super_edit_manage_role', $roles, $selected, true );
 								
-			$submit_button = wp_super_edit_submit_button( __('Load Button Settings'), '', true );
+			$submit_button = wp_super_edit_submit_button( __( 'Load Button Settings', 'wp-super-edit' ), '', true );
 			$submit_button_group = wp_super_edit_html_tag( array(
 				'tag' => 'p',
-				'tag_content' => __('Select User Role to Edit: ') . $role_select . $submit_button,
+				'tag_content' => __( 'Select User Role to Edit: ', 'wp-super-edit' ) . $role_select . $submit_button,
 				'return' => true
 			) );						
 			
@@ -855,7 +855,7 @@ function wp_super_edit_user_management_ui() {
 
 			break;
 		case 'users':
-			$user_management_text = __('Users can arrange buttons under the Users tab. Changes to this button arrangement will only affect the defult button settings.');        	
+			$user_management_text = __( 'Users can arrange buttons under the Users tab. Changes to this button arrangement will only affect the defult button settings.', 'wp-super-edit' );        	
 			break;
 		default:
 			break;
@@ -882,7 +882,7 @@ function wp_super_edit_make_button_ui( $button, $separator = false ) {
 	
 	if ( $separator ) $button_class .= ' button_separator';
 	
-	$button_info_text = __('Button info for ');
+	$button_info_text = __( 'Button info for ', 'wp-super-edit' );
 	
 	$button_info = wp_super_edit_html_tag( array(
 		'tag' => 'img',
@@ -896,7 +896,7 @@ function wp_super_edit_make_button_ui( $button, $separator = false ) {
 		'return' => true
 	) );
 	
-	$separator_info_text = __('Toggle separator for ');
+	$separator_info_text = __( 'Toggle separator for ', 'wp-super-edit' );
 	
 	$button_separator_toggle = wp_super_edit_html_tag( array(
 		'tag' => 'img',
@@ -1002,9 +1002,9 @@ function wp_super_edit_buttons_ui() {
 	}
 	
 	$action_options = array(
-		'update' => __('Update Buttons'),
-		'reset_default' => __('Reset to Defaults'),
-		'set_default' => __('Set as Default')
+		'update' => __( 'Update Buttons', 'wp-super-edit' ),
+		'reset_default' => __( 'Reset to Defaults', 'wp-super-edit' ),
+		'set_default' => __( 'Set as Default', 'wp-super-edit' )
 	);
 
 	if ( $user == 'wp_super_edit_default' ) {
@@ -1016,7 +1016,7 @@ function wp_super_edit_buttons_ui() {
 	
 	$set_default_controls = wp_super_edit_form_select( 'wp_super_edit_action_control', $action_options, 'update', true );			
 
-	$submit_button = wp_super_edit_submit_button( __('Update Button Settings For: ') . $current_user['user_nicename'], $hidden_form_user . $hidden_form_items , true, true );								
+	$submit_button = wp_super_edit_submit_button( __( 'Update Button Settings For: ', 'wp-super-edit' ) . $current_user['user_nicename'], $hidden_form_user . $hidden_form_items , true, true );								
 
 	wp_super_edit_html_tag( array(
 		'tag' => 'div',
@@ -1049,7 +1049,7 @@ function wp_super_edit_buttons_ui() {
 		wp_super_edit_html_tag( array(
 			'tag' => 'h3',
 			'class' => 'row_title',
-			'tag_content' => __('Editor Button Row ') . $button_row
+			'tag_content' => __( 'Editor Button Row ', 'wp-super-edit' ) . $button_row
 		) );
 
 		
@@ -1102,7 +1102,7 @@ function wp_super_edit_buttons_ui() {
 	wp_super_edit_html_tag( array(
 		'tag' => 'h3',
 		'class' => 'row_title',
-		'tag_content' => __('Disabled Buttons')
+		'tag_content' => __( 'Disabled Buttons', 'wp-super-edit' )
 	) );
 
 	wp_super_edit_html_tag( array(
