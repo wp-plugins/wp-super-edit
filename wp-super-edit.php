@@ -55,11 +55,6 @@ define( 'WPSE_VERSION', '2.4' );
 require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit.core.class.php' );
 
 /**
-* Filter to set init of the wp_super_edit_core class with basic functionality
-*/
-$wp_super_edit_run_mode = 'off';
-
-/**
 * Conditional includes for WP Super Edit fuctions and classes in WordPress admin panels
 * Set $wp_super_edit primary object instance
 * @global object $wp_super_edit 
@@ -69,16 +64,26 @@ if ( is_admin() ) {
 	require_once( WP_PLUGIN_DIR . '/wp-super-edit/wp-super-edit-admin.php' );
 	// Translations
 	load_plugin_textdomain( 'wp-super-edit', false, WP_PLUGIN_DIR . '/wp-super-edit/languages' );
-	$wp_super_edit_run_mode = 'admin';
 }
 
 do_action( 'wp_super_edit_loaded', 'wp_super_edit_loaded' );
-$wp_super_edit_run_mode = apply_filters( 'wp_super_edit_run_mode',  $wp_super_edit_run_mode );
 
 /**
-* @internal: Conditional activation for WP Super Edit interfaces
+* WP Super Edit Init
+*
+* This function is initializes WP Super Edit. We add it to wp_loaded so you have time to remove it or interact with it.
+*
+* @global object $wp_super_edit 
 */
-switch( $wp_super_edit_run_mode ) {
+function wp_super_edit_init() {
+	global $wp_super_edit;
+	
+	$wp_super_edit_run_mode = 'off';	
+	if ( is_admin() ) $wp_super_edit_run_mode = 'admin';
+	$wp_super_edit_run_mode = apply_filters( 'wp_super_edit_run_mode',  $wp_super_edit_run_mode );
+
+	// Conditional activation for WP Super Edit interfaces
+	switch( $wp_super_edit_run_mode ) {
 	// Minimal WP Super Edit usage
 	case 'core':
 		$wp_super_edit = new wp_super_edit_core();
@@ -92,8 +97,11 @@ switch( $wp_super_edit_run_mode ) {
 		add_action('admin_init', 'wp_super_edit_admin_setup');		
 		add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
 		add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
+	}
+	do_action( 'wp_super_edit_mode_run', 'wp_super_edit_mode_run' );
 }
-do_action( 'wp_super_edit_mode_run', 'wp_super_edit_mode_run' );
+add_action( 'plugins_loaded', 'wp_super_edit_init' );
+
 
 /**
 * WP Super Edit TinyMCE filter

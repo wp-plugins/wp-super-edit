@@ -42,10 +42,19 @@ function wp_super_css_classes_init() {
 	global $wp_super_edit;
 	
 	// Deactivate if WP Super Edit is not active & display notice
-	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) add_action( 'admin_notices', 'wp_super_css_classes_shutdown' );;
+	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) 
+		add_action( 'admin_notices', 'wp_super_css_classes_shutdown' );
 }
 add_action( 'init', 'wp_super_css_classes_init' );
 
+/**
+* WP Super Class Provider Filter to add wp-se-cssclasses to the WP Super Edit approvoed provider list
+*/
+function wp_super_css_classes_provider_filter( $providers ) {
+	$providers[] = 'wp-se-cssclasses';
+	return $providers;
+}
+add_filter( 'providers_registered', 'wp_super_css_classes_provider_filter' );
 
 /**
 * WP Super Class Admin Shutdown Notification
@@ -76,7 +85,7 @@ function wp_super_css_classes_activate() {
 		'name' => 'supercssclasses', 
 		'nicename' => __( 'Custom CSS Classes', 'wp-super-edit' ), 
 		'description' => __( 'Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
+		'provider' => 'wp-se-cssclasses', 
 		'status' => 'no', 
 		'callbacks' => ''
 	));
@@ -87,7 +96,7 @@ function wp_super_css_classes_activate() {
 		'nicename' => __( 'Custom CSS Classes', 'wp-super-edit' ), 
 		'description' => __( 'Shows a drop down list of CSS Classes that the editor has access to.', 'wp-super-edit' ), 
 		'provider' => 'tinymce', 
-		'plugin' => 'supercssclasses', 
+		'plugin' => 'wp-se-cssclasses', 
 		'status' => 'no'
 	));
 }

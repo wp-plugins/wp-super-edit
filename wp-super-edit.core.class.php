@@ -97,6 +97,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
         	
         	$this->management_mode = $this->get_option( 'management_mode' );
         	if ( empty( $this->management_mode ) ) $this->management_mode = 'single';
+        	
+        	$this->providers_registered = apply_filters( 'providers_registered' , array( 'wp-super-edit', 'wp_super_edit', 'wordpress', 'tinymce' ) );
 			
 			$plugin_query = "
 				SELECT name, url, status, provider, callbacks FROM $this->db_plugins
@@ -110,11 +112,12 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			}
 
 			$plugin_result = $wpdb->get_results( $wpdb->prepare( $plugin_query ) );
-						
-			foreach ( $plugin_result as $plugin ) {
+									
+			foreach ( $plugin_result as $plugin ) {		
+				if ( !in_array( $plugin->provider, $this->providers_registered ) ) continue;
 				$this->plugins[$plugin->name] = $plugin;
 			}
-			
+						
 			$load_buttons = false;
 			
 			if ( $this->is_tinymce == true ) $load_buttons = true;
@@ -136,6 +139,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 			$buttons = $wpdb->get_results( $wpdb->prepare( $button_query ) );
 			
 			foreach( $buttons as $button ) {
+				if ( !in_array( $button->provider, $this->providers_registered ) ) continue;
 				$this->buttons[$button->name] = $button;
 				if ( $button->status == 'yes' ) {
 					$this->active_buttons[$button->name] = $button;

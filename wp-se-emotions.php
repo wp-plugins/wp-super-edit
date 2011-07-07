@@ -42,10 +42,19 @@ function wp_super_emoticons_init() {
 	global $wp_super_edit;
 	
 	// Deactivate if WP Super Edit is not active & display notice
-	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) add_action( 'admin_notices', 'wp_super_emoticons_shutdown' );;
+	if ( empty( $wp_super_edit ) || !is_object( $wp_super_edit ) ) 
+		add_action( 'admin_notices', 'wp_super_emoticons_shutdown' );	
 }
 add_action( 'init', 'wp_super_emoticons_init' );
 
+/**
+* WP Super Class Provider Filter to add wp-se-cssclasses to the WP Super Edit approvoed provider list
+*/
+function wp_super_emoticons_provider_filter( $providers ) {
+	$providers[] = 'wp-se-emotions';
+	return $providers;
+}
+add_filter( 'providers_registered', 'wp_super_emoticons_provider_filter' );
 
 /**
 * WP Super Class Admin Shutdown Notification
@@ -76,7 +85,7 @@ function wp_super_emoticons_activate() {
 		'name' => 'superemotions', 
 		'nicename' => __( 'Super Emoticon / Icon Plugin', 'wp-super-edit' ), 
 		'description' => __( 'Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
+		'provider' => 'wp-se-emotions', 
 		'status' => 'no', 
 		'callbacks' => ''
 	));
@@ -86,7 +95,7 @@ function wp_super_emoticons_activate() {
 		'name' => 'superemotions', 
 		'nicename' => __( 'Super Emoticon / Icons', 'wp-super-edit' ), 
 		'description' => __( 'Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
+		'provider' => 'wp-se-emotions', 
 		'plugin' => 'superemotions', 
 		'status' => 'no'
 	));

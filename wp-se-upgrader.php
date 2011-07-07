@@ -65,10 +65,17 @@ function wp_super_upgrader_shutdown() {
 
 function wp_super_edit_upgrader() {
 	global $wp_super_edit;
-	
+
+	//  Unregister Stuff for the Super Classes and Super Emotions plugins
+	$wp_super_edit->unregister_tinymce_plugin( 'supercssclasses');
+	$wp_super_edit->unregister_tinymce_button( 'styleselect' );
+	$wp_super_edit->unregister_tinymce_plugin( 'superemotions');
+	$wp_super_edit->unregister_tinymce_button( 'superemotions' );	
+
 	// DEPRECATE: Unregister WP Super Edit options for this plugin
 	// wp-super-class - 2011 - name mistake
 	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');
+	
 	// compat2x - 2011 - no longer functional
 	$wp_super_edit->unregister_tinymce_plugin( 'compat2x');
 	
@@ -81,6 +88,9 @@ function wp_super_edit_upgrader_shutdown() {
     echo '<div class="updated settings-error" id="setting-error-settings_updated"><p><strong>';
     _e( 'WP Super Edit Upgrade Completed!', 'wp-super-edit' );
     echo '</p></div>';
+
+	// Deactivate Super Emotions
+	deactivate_plugins( WP_PLUGIN_DIR . '/wp-super-edit/wp-se-emotions.php' );
 
 	// Deactivate Super Clasees
 	deactivate_plugins( WP_PLUGIN_DIR . '/wp-super-edit/wp-se-cssclasses.php' );
