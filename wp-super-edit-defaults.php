@@ -456,6 +456,15 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes'
 	));
 	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'wp_help', 
+		'nicename' => __( 'Wordpress Editor Help', 'wp-super-edit' ), 
+		'description' => __( 'Shows some visual editor documentation and shortcut information', 'wp-super-edit' ), 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes'
+	));	
+	
 	// Start Included Plugin Defaults
 	
 	// advhr
