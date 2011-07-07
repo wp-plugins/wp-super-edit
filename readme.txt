@@ -2,9 +2,9 @@
 Contributors: ev3rywh3re
 Donate link: http://funroe.net/contribute/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
-Requires at least: 3.0
-Tested up to: 3.1
-Stable tag: 2.3.8
+Requires at least: 3.2
+Tested up to: 3.2
+Stable tag: 2.4
 
 Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and custom TinyMCE plugins.
 
@@ -14,7 +14,7 @@ WP Super Edit is designed to get control of the WordPress wysiwyg visual editor 
 
 Your feedback is always welcome!
 
-Current release announcement: [http://funroe.net/projects/2010/09/25/wp-super-edit-2-3/](http://funroe.net/projects/2010/09/25/wp-super-edit-2-3/)
+Current release announcement: [http://funroe.net/projects/2011/07/wp-super-edit-2-4/](http://funroe.net/projects/2011/07/wp-super-edit-2-4/)
 
 **Features**
 
@@ -34,21 +34,20 @@ Current release announcement: [http://funroe.net/projects/2010/09/25/wp-super-ed
 This version has been tested for use with the versions of WordPress indicated. I attempt to keep WP Super Edit up to date with changes to WordPress and the visual editor, but the complex changes can make it unproductive to maintain compatiblity with some older versions of WordPress. This is a list of recent versions available for older WordPress sites.
 
 * Use WP Super Edit 2.1 for WordPress 2.6 to 2.7.1 
+* Use WP Super Edit 2.3.x for WordPress 2.8 to 3.1
 
 **[Download Older Versions of WP Super Edit](http://wordpress.org/extend/plugins/wp-super-edit/download/)**
 
 == Installation ==
 
-1. Take the whole whole **wp-super-edit** folder and put it in the **WordPress Plugin** directory for your Web site. 
+1. Take the whole **wp-super-edit** folder and put it in the **WordPress Plugin** directory for your Web site. 
 2. Activate the plugin on the Wordpress Plugins administration panel
 3. Click on the Settings option and you will see WP Super Edit in the sub menu.
 4. WP Super Edit should lead you through the final installation steps. **Please be patient!** WP Super Edit will attempt to scan and save your original wysiwyg visual editor settings while installing. WP Super Edit will not work until the installation has been completed!
 
 == Upgrade Notice ==
 
-**Versions 1.5 or earlier:**
-
-Before you install WP Super Edit, you should deactivate the old version of WP Super Edit and remove the superedit folder from WordPress Plugin folder for your WordPress installation. Follow the installation instructions for the updated version. The updated version should use the wp-super-edit folder in the WordPress Plugin folder and be more compatible and easier to update in the future. Due to the changes in the WordPress editor your old settings will not be updated for the new version of WP Super Edit.
+The WP Super Edit Upgrade Utility is a sub-plugin that hass been added to correct a few mistakes. It will automatically deactivate once it performs the upgrade procedure.
 
 * For in depth documentation visit **[Using WP Super Edit](http://funroe.net/projects/super-edit/using/)**
 
@@ -67,6 +66,11 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 == Changelog ==
 
 **Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://funroe.net/projects/super-edit/using/) for more information about changes, current issues, and planned development.**
+
+= 2.4 =
+* Update included TinyMCE pluigns to TinyMCE version 3.9.3 package.
+* Dependency checks for WP Super Edit sub-plugins.
+* Introduce WP Super Edit Upgrade Utility Plugin to correct my old mistakes and remove depreciated plugins and buttons.
 
 = 2.3.8 =
 * Fix Custom CSS Classes plugin supporting multiple CSS files thanks @atomas

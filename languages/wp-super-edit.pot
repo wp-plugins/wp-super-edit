@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Super Edit 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-06 15:57-0600\n"
-"PO-Revision-Date: 2011-07-06 15:58-0600\n"
+"POT-Creation-Date: 2011-07-07 15:12-0600\n"
+"PO-Revision-Date: 2011-07-07 15:12-0600\n"
 "Last-Translator: Jess Planck <jess@funroe.net>\n"
 "Language-Team: Jess Planck <jess@funroe.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,42 +16,42 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../wp-se-cssclasses.php:60
-#: ../wp-se-emotions.php:60
+#: ../wp-se-cssclasses.php:69
+#: ../wp-se-emotions.php:69
 #: ../wp-se-upgrader.php:60
 msgid "WP Super Edit Plugin Required! Activate WP Super Edit before using. Plugin Deactivated."
 msgstr ""
 
-#: ../wp-se-cssclasses.php:77
-#: ../wp-se-cssclasses.php:87
+#: ../wp-se-cssclasses.php:86
+#: ../wp-se-cssclasses.php:96
 msgid "Custom CSS Classes"
 msgstr ""
 
-#: ../wp-se-cssclasses.php:78
+#: ../wp-se-cssclasses.php:87
 msgid "Adds Custom styles button and CLASSES from an editor.css file in your <strong>Currently active THEME</strong> directory. Provides the Custom CSS Classes Button."
 msgstr ""
 
-#: ../wp-se-cssclasses.php:88
+#: ../wp-se-cssclasses.php:97
 msgid "Shows a drop down list of CSS Classes that the editor has access to."
 msgstr ""
 
-#: ../wp-se-emotions.php:77
+#: ../wp-se-emotions.php:86
 msgid "Super Emoticon / Icon Plugin"
 msgstr ""
 
-#: ../wp-se-emotions.php:78
+#: ../wp-se-emotions.php:87
 msgid "Wordpress Emoticon / Icon images. Uses Wordpress icon set. Provides the Emoticon / Icons Button. Uses WordPress shortcodes API."
 msgstr ""
 
-#: ../wp-se-emotions.php:87
+#: ../wp-se-emotions.php:96
 msgid "Super Emoticon / Icons"
 msgstr ""
 
-#: ../wp-se-emotions.php:88
+#: ../wp-se-emotions.php:97
 msgid "Interface for Wordpress Emoticon / Icon images. Uses Wordpress icon set. Uses WordPress shortcodes API."
 msgstr ""
 
-#: ../wp-se-upgrader.php:82
+#: ../wp-se-upgrader.php:89
 msgid "WP Super Edit Upgrade Completed!"
 msgstr ""
 
@@ -476,283 +476,291 @@ msgstr ""
 msgid "Insert Wordpress Next Page tag to divide page content into multiple views."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:467
+#: ../wp-super-edit-defaults.php:461
+msgid "Wordpress Editor Help"
+msgstr ""
+
+#: ../wp-super-edit-defaults.php:462
+msgid "Shows some visual editor documentation and shortcut information"
+msgstr ""
+
+#: ../wp-super-edit-defaults.php:476
 msgid "Advanced Horizontal Rule Lines"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:468
+#: ../wp-super-edit-defaults.php:477
 msgid "Advanced rule lines with options for &lt;hr&gt; HTML tag."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:478
+#: ../wp-super-edit-defaults.php:487
 msgid "Horizontal Rule Lines"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:479
+#: ../wp-super-edit-defaults.php:488
 msgid "Options for using the &lt;hr&gt; HTML tag"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:491
+#: ../wp-super-edit-defaults.php:500
 msgid "Advanced Image Link"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:492
+#: ../wp-super-edit-defaults.php:501
 msgid "A more advanded dialog for the Image Link button."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:504
+#: ../wp-super-edit-defaults.php:513
 msgid "Advanced Link"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:505
+#: ../wp-super-edit-defaults.php:514
 msgid "A more advanded dialog for the Create Link button."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:517
+#: ../wp-super-edit-defaults.php:526
 msgid "Context Menu"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:518
+#: ../wp-super-edit-defaults.php:527
 msgid "TinyMCE context menu is used by some plugins. The context menu is activated by right mouse click or crtl click on Mac in the editor area."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:530
+#: ../wp-super-edit-defaults.php:539
 msgid "Font Tools"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:531
+#: ../wp-super-edit-defaults.php:540
 msgid "Adds the Font Family and Font Size buttons to the editor."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:541
+#: ../wp-super-edit-defaults.php:550
 msgid "Font Select"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:542
+#: ../wp-super-edit-defaults.php:551
 msgid "Shows a drop down list of Font Typefaces."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:550
+#: ../wp-super-edit-defaults.php:559
 msgid "Font Size Select"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:551
+#: ../wp-super-edit-defaults.php:560
 msgid "Shows a drop down list of Font Sizes."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:563
+#: ../wp-super-edit-defaults.php:572
 msgid "Insert Date / Time Plugin"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:564
+#: ../wp-super-edit-defaults.php:573
 msgid "Adds insert date and time buttons to automatically insert date and time."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:574
+#: ../wp-super-edit-defaults.php:583
 msgid "Insert Date"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:575
+#: ../wp-super-edit-defaults.php:584
 msgid "Insert current date in editor"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:583
+#: ../wp-super-edit-defaults.php:592
 msgid "Insert Time"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:584
+#: ../wp-super-edit-defaults.php:593
 msgid "Insert current time in editor"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:596
+#: ../wp-super-edit-defaults.php:605
 msgid "Layers (DIV) Plugin"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:597
+#: ../wp-super-edit-defaults.php:606
 msgid "Insert layers using DIV HTML tag. This plugin will change the editor to allow all DIV tags. Provides the Insert Layer, Move Layer Forward, Move Layer Backward, and Toggle Layer Positioning Buttons."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:607
+#: ../wp-super-edit-defaults.php:616
 msgid "Insert Layer"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:608
+#: ../wp-super-edit-defaults.php:617
 msgid "Insert a layer using the DIV HTML tag. Be careful layers are tricky to position."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:616
+#: ../wp-super-edit-defaults.php:625
 msgid "Move Layer Forward"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:617
+#: ../wp-super-edit-defaults.php:626
 msgid "Move selected layer forward in stacked view."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:625
+#: ../wp-super-edit-defaults.php:634
 msgid "Move Layer Backward"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:626
+#: ../wp-super-edit-defaults.php:635
 msgid "Move selected layer backward in stacked view."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:634
+#: ../wp-super-edit-defaults.php:643
 msgid "Toggle Layer Positioning"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:635
+#: ../wp-super-edit-defaults.php:644
 msgid "Toggle the layer positioning as absolute or relative. Be careful layers are tricky to position."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:647
+#: ../wp-super-edit-defaults.php:656
 msgid "Nonbreaking Spaces"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:648
+#: ../wp-super-edit-defaults.php:657
 msgid "Adds button to insert nonbreaking space entity."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:658
+#: ../wp-super-edit-defaults.php:667
 msgid "Nonbreaking Space"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:659
+#: ../wp-super-edit-defaults.php:668
 msgid "Inserts nonbreaking space entities."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:671
+#: ../wp-super-edit-defaults.php:680
 msgid "Print Button Plugin"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:672
+#: ../wp-super-edit-defaults.php:681
 msgid "Adds print button to editor that should print only the edit area contents."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:682
+#: ../wp-super-edit-defaults.php:691
 msgid "Print"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:683
+#: ../wp-super-edit-defaults.php:692
 msgid "Print editor area contents."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:695
+#: ../wp-super-edit-defaults.php:704
 msgid "Search and Replace Plugin"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:696
+#: ../wp-super-edit-defaults.php:705
 msgid "Adds search and replace buttons and options to the editor."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:706
+#: ../wp-super-edit-defaults.php:715
 msgid "Search"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:707
+#: ../wp-super-edit-defaults.php:716
 msgid "Search for text in editor area."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:715
+#: ../wp-super-edit-defaults.php:724
 msgid "Replace"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:716
+#: ../wp-super-edit-defaults.php:725
 msgid "Replace text in editor area."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:728
+#: ../wp-super-edit-defaults.php:737
 msgid "Advanced CSS / styles Plugin"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:729
+#: ../wp-super-edit-defaults.php:738
 msgid "Allows access to properties that can be used in a STYLE attribute. Provides the Style Properties Button."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:739
+#: ../wp-super-edit-defaults.php:748
 msgid "Style Properties"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:740
+#: ../wp-super-edit-defaults.php:749
 msgid "Interface for properties that can be manipulated using the STYLE attribute."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:752
+#: ../wp-super-edit-defaults.php:761
 msgid "Tables Plugin"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:753
+#: ../wp-super-edit-defaults.php:762
 msgid "Allows the creation and manipulation of tables using the TABLE HTML tag. Provides the Tables and Table Controls Buttons."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:763
+#: ../wp-super-edit-defaults.php:772
 msgid "Tables"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:764
+#: ../wp-super-edit-defaults.php:773
 msgid "Interface to create and change table, row, and cell properties."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:772
+#: ../wp-super-edit-defaults.php:781
 msgid "Table controls"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:773
+#: ../wp-super-edit-defaults.php:782
 msgid "Interface to manipulate tables and access to cell and row properties."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:785
+#: ../wp-super-edit-defaults.php:794
 msgid "XHTML Extras Plugin"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:786
+#: ../wp-super-edit-defaults.php:795
 msgid "Allows access to interfaces for some XHTML tags like CITE, ABBR, ACRONYM, DEL and INS. Also can give access to advanced XHTML properties such as javascript events. Provides the Citation, Abbreviation, Acronym, Deletion, Insertion, and XHTML Attributes Buttons."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:796
+#: ../wp-super-edit-defaults.php:805
 msgid "Citation"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:797
+#: ../wp-super-edit-defaults.php:806
 msgid "Indicate a citation using the HTML CITE tag."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:805
+#: ../wp-super-edit-defaults.php:814
 msgid "Abbreviation"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:806
+#: ../wp-super-edit-defaults.php:815
 msgid "Indicate an abbreviation using the HTML ABBR tag."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:814
+#: ../wp-super-edit-defaults.php:823
 msgid "Acronym"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:815
+#: ../wp-super-edit-defaults.php:824
 msgid "Indicate an acronym using the HTML ACRONYM tag."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:823
+#: ../wp-super-edit-defaults.php:832
 msgid "Deletion"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:824
+#: ../wp-super-edit-defaults.php:833
 msgid "Use the HTML DEL tag to indicate recently deleted content."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:832
+#: ../wp-super-edit-defaults.php:841
 msgid "Insertion"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:833
+#: ../wp-super-edit-defaults.php:842
 msgid "Use the HTML INS tag to indicate newly inserted content."
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:841
+#: ../wp-super-edit-defaults.php:850
 msgid "XHTML Attributes"
 msgstr ""
 
-#: ../wp-super-edit-defaults.php:842
+#: ../wp-super-edit-defaults.php:851
 msgid "Modify advanced attributes and javascript events."
 msgstr ""
 
