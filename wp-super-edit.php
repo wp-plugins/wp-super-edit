@@ -141,7 +141,7 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 			if ( preg_match("/^(http:|https:)/i", $plugin->url ) ) {
 				$tinymce_plugins[$plugin->name] = $plugin->url;
 			} else {
-				$tinymce_plugins[$plugin->name] = plugins_url() . $plugin->url;
+				if ( $plugin->url != 'none' ) $tinymce_plugins[$plugin->name] = plugins_url() . $plugin->url;
 			}
 		} else { 
 			if ( in_array( $plugin->provider, $wp_super_edit->providers_registered ) ) $tinymce_plugins[$plugin->name] = $wp_super_edit->core_uri . 'tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
