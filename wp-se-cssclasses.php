@@ -95,8 +95,8 @@ function wp_super_css_classes_activate() {
 		'name' => 'styleselect', 
 		'nicename' => __( 'Custom CSS Classes', 'wp-super-edit' ), 
 		'description' => __( 'Shows a drop down list of CSS Classes that the editor has access to.', 'wp-super-edit' ), 
-		'provider' => 'tinymce', 
-		'plugin' => 'wp-se-cssclasses', 
+		'provider' => 'wp-se-cssclasses', 
+		'plugin' => 'supercssclasses', 
 		'status' => 'no'
 	));
 }

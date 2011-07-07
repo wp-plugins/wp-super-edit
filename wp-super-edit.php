@@ -144,11 +144,18 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 				$tinymce_plugins[$plugin->name] = plugins_url() . $plugin->url;
 			}
 		} else { 
-			if ( $plugin->provider == 'wp_super_edit' ) $tinymce_plugins[$plugin->name] = $wp_super_edit->core_uri . 'tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
+			if ( in_array( $plugin->provider, $wp_super_edit->providers_registered ) ) $tinymce_plugins[$plugin->name] = $wp_super_edit->core_uri . 'tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
 		}
 	}
 	
 	return $tinymce_plugins;
 }
+
+// Ye' Ole Debug function
+function wpse_debug() {
+	global $wp_super_edit;
+	print_r( $wp_super_edit );
+}
+// add_action( 'admin_footer', 'wpse_debug' );
 
 ?>
