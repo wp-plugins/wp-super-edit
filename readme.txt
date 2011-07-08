@@ -67,6 +67,9 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 
 **Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://funroe.net/projects/super-edit/using/) for more information about changes, current issues, and planned development.**
 
+= 2.4.1 =
+* Fix for Font Tools issues.
+
 = 2.4 =
 * Update included TinyMCE pluigns to TinyMCE version 3.9.3 package.
 * Dependency checks for WP Super Edit sub-plugins.
