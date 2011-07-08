@@ -215,6 +215,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 
 			if ( $this->check_registered( 'plugin', $plugin['name'] ) ) return true;
 			
+			if ( !isset( $plugin['url'] ) ) $plugin['url'] = '';
+			if ( !isset( $plugin['callbacks'] ) ) $plugin['callbacks'] = '';
+
 			$wpdb->query( $wpdb->prepare( "
 				INSERT INTO $this->db_plugins
 				( name, nicename, description, provider, status, callbacks, url ) 
