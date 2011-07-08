@@ -72,16 +72,16 @@ function wp_super_edit_upgrader() {
 	$wp_super_edit->unregister_tinymce_button( 'superemotions' );
 	
 	// 07-2011: Fix bad URL for Font Tools.
-	$wp_super_edit->unregister_tinymce_plugin( 'fontselect');	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'fontselect', 
-		'nicename' => __( 'Font Select', 'wp-super-edit' ), 
-		'description' => __( 'Shows a drop down list of Font Typefaces.', 'wp-super-edit' ), 
+	$wp_super_edit->unregister_tinymce_plugin( 'fonttools');	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'fonttools', 
+		'nicename' => __( 'Font Tools', 'wp-super-edit' ), 
+		'description' => __( 'Adds the Font Family and Font Size buttons to the editor.', 'wp-super-edit' ), 
 		'provider' => 'tinymce', 
-		'plugin' => 'fonttools',
-		'url' => 'none',
-		'status' => 'no'
-	));		
+		'status' => 'no', 
+		'url' => 'none',		
+		'callbacks' => ''
+	));	
 	
 	// 07-2011: compat2x -  DEPRECATE no longer functional
 	$wp_super_edit->unregister_tinymce_plugin( 'compat2x');
