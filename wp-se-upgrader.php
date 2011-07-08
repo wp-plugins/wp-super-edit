@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit Upgrade Utility
 Plugin URI: http://funroe.net/projects/super-edit/
 Description: Utility for upgrading or cleanning up WP Super Edit options. This will deactivate any active dependent plugins.
 Author: Jess Planck
-Version: 2.4
+Version: 2.4.1
 Author URI: http://funroe.net
 
 Copyright (c) Jess Planck (http://funroe.net)
@@ -60,24 +60,34 @@ function wp_super_upgrader_shutdown() {
     _e( 'WP Super Edit Plugin Required! Activate WP Super Edit before using. Plugin Deactivated.', 'wp-super-edit' );
     echo '</p></div>';
 }
-
 // register_activation_hook(__FILE__,'wp_super_edit_upgrader');
 
 function wp_super_edit_upgrader() {
 	global $wp_super_edit;
 
-	//  Unregister Stuff for the Super Classes and Super Emotions plugins
+	//  Unregister Stuff for the Super Classes and Super Emotions plugins by default
 	$wp_super_edit->unregister_tinymce_plugin( 'supercssclasses');
 	$wp_super_edit->unregister_tinymce_button( 'styleselect' );
 	$wp_super_edit->unregister_tinymce_plugin( 'superemotions');
-	$wp_super_edit->unregister_tinymce_button( 'superemotions' );	
-
-	// DEPRECATE: Unregister WP Super Edit options for this plugin
-	// wp-super-class - 2011 - name mistake
-	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');
+	$wp_super_edit->unregister_tinymce_button( 'superemotions' );
 	
-	// compat2x - 2011 - no longer functional
+	// 07-2011: Fix bad URL for Font Tools.
+	$wp_super_edit->unregister_tinymce_plugin( 'fontselect');	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'fontselect', 
+		'nicename' => __( 'Font Select', 'wp-super-edit' ), 
+		'description' => __( 'Shows a drop down list of Font Typefaces.', 'wp-super-edit' ), 
+		'provider' => 'tinymce', 
+		'plugin' => 'fonttools',
+		'url' => 'none',
+		'status' => 'no'
+	));		
+	
+	// 07-2011: compat2x -  DEPRECATE no longer functional
 	$wp_super_edit->unregister_tinymce_plugin( 'compat2x');
+
+	// 04-2011: wp-super-class - name mistake
+	$wp_super_edit->unregister_tinymce_plugin( 'wp-super-class');
 	
 }
 add_action('wp_super_edit_mode_run', 'wp_super_edit_upgrader', 5);

@@ -540,6 +540,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => __( 'Adds the Font Family and Font Size buttons to the editor.', 'wp-super-edit' ), 
 		'provider' => 'tinymce', 
 		'status' => 'no', 
+		'url' => 'none',		
 		'callbacks' => ''
 	));
 	
@@ -550,7 +551,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'nicename' => __( 'Font Select', 'wp-super-edit' ), 
 		'description' => __( 'Shows a drop down list of Font Typefaces.', 'wp-super-edit' ), 
 		'provider' => 'tinymce', 
-		'plugin' => 'fonttools', 
+		'plugin' => 'fonttools',
 		'status' => 'no'
 	));
 	
