@@ -217,9 +217,9 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			
 			$wpdb->query( $wpdb->prepare( "
 				INSERT INTO $this->db_plugins
-				( name, nicename, description, provider, status, callbacks ) 
-				VALUES ( %s, %s, %s, %s, %s, %s )", 
-				$plugin['name'], $plugin['nicename'], $plugin['description'], $plugin['provider'], $plugin['status'], $plugin['callbacks']
+				( name, nicename, description, provider, status, callbacks, url ) 
+				VALUES ( %s, %s, %s, %s, %s, %s, %s )", 
+				$plugin['name'], $plugin['nicename'], $plugin['description'], $plugin['provider'], $plugin['status'], $plugin['callbacks'], $plugin['url']
 			) );
         	
         }
