@@ -110,4 +110,3 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 
 = 2.0.x and Earlier =
 * Sorry didn't keep good notes for these changes. WP Super Edit 2.0 was a major rewrite to make this plugin compatible with WordPress 2.5 to 2.6.
-	
