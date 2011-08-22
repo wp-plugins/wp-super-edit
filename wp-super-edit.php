@@ -96,6 +96,7 @@ function wp_super_edit_init() {
 		add_action('admin_menu', 'wp_super_edit_admin_menu_setup');
 		add_action('admin_init', 'wp_super_edit_admin_setup');		
 		add_filter('mce_external_plugins','wp_super_edit_tinymce_plugin_filter', 99);
+		add_filter('mce_external_languages','wp_super_edit_tinymce_plugin_lang_filter', 99);
 		add_filter('tiny_mce_before_init','wp_super_edit_tinymce_filter', 99);
 	}
 	do_action( 'wp_super_edit_mode_run', 'wp_super_edit_mode_run' );
@@ -149,6 +150,72 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 	}
 	
 	return $tinymce_plugins;
+}
+
+if ( ! function_exists('wp_super_edit_get_file') ) {
+	function wp_super_edit_get_file($path) {
+	
+		if ( function_exists('realpath') )
+			$path = realpath($path);
+	
+		if ( ! $path || ! @is_file($path) )
+			return '';
+	
+		if ( function_exists('file_get_contents') )
+			return @file_get_contents($path);
+	
+		$content = '';
+		$fp = @fopen($path, 'r');
+		if ( ! $fp )
+			return '';
+	
+		while ( ! feof($fp) )
+			$content .= fgets($fp);
+	
+		fclose($fp);
+		return $content;
+	}
+}
+
+
+/**
+* WP Super Edit TinyMCE Plugin language filter
+*
+* This WordPress filter passes plugin language files if activated by WP Super Edit. The /langs/lang.php file builds 
+* string pairs suitable for the WordPress method of initializing TinyMCE.
+* @global object $wp_super_edit 
+*/
+function wp_super_edit_tinymce_plugin_lang_filter( $tinymce_langs ) {
+	global $wp_super_edit;
+		
+	if ( !$wp_super_edit->is_installed ) return $tinymce_langs;
+	
+	if ( !is_array( $wp_super_edit->plugins ) ) return;
+	
+	$mce_locale = ( '' == get_locale() ) ? 'en' : strtolower( substr(get_locale(), 0, 2) ); // only ISO 639-1
+	
+	foreach( $wp_super_edit->plugins as $plugin ) {
+		if ( $plugin->status != 'yes' ) continue;
+
+		if ( $plugin->url != '' ) {
+			/* 
+			ISSUE: Not sure how I'll get his to work. External Plugin URLS and Paths need to be built.
+			External files are really sensitive since TinyMCE loads them in JS. SSL definitely fails here.
+			if ( preg_match("/^(http:|https:)/i", $plugin->url ) ) {
+				$tinymce_plugins[$plugin->name] = $plugin->url;
+			} else {
+				if ( $plugin->url != 'none' ) $tinymce_plugins[$plugin->name] = plugins_url() . $plugin->url;
+			}
+			*/
+		} else { 
+			// ISSUE: Stolen from TinyMCE Advanced because it makes sense inline or languages will fail on SSL.
+			if ( file_exists( $wp_super_edit->core_path . 'tinymce_plugins/' . $plugin->name . '/langs/langs.php' ) ) {
+				if ( in_array( $plugin->provider, $wp_super_edit->providers_registered ) ) $tinymce_langs[$plugin->name] = $wp_super_edit->core_path . 'tinymce_plugins/' . $plugin->name . '/langs/langs.php';
+			}
+		}
+	}
+	
+	return $tinymce_langs;
 }
 
 // Ye' Ole Debug function
