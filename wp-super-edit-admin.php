@@ -1153,7 +1153,4 @@ function wp_super_edit_buttons_ui() {
 
 }
 
-
-
 // End - Superedit Admin Panel //
-?>

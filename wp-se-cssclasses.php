@@ -133,5 +133,3 @@ function wp_super_css_classes($mce_css) {
 	return $mce_css; 
 }
 add_filter('mce_css', 'wp_super_css_classes');
-
-?>

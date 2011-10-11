@@ -27,6 +27,4 @@ wp_super_edit_buttons_ui();
 
 wp_super_edit_ui_footer();
 
-
 // End - WP Super Edit User Panel //
-?>

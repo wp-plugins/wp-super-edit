@@ -856,5 +856,3 @@ function wp_super_edit_wordpress_button_defaults() {
 	));
 	
 }
-
-?>

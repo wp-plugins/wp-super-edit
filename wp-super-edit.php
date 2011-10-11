@@ -118,6 +118,10 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 
 	$initArray = $wp_super_edit->tinymce_settings( $initArray );
 	
+	$initArray['relative_urls'] = false;
+	$initArray['remove_script_host'] = false;
+	$initArray['convert_urls'] = false;
+	
 	return $initArray;
 }
 
@@ -224,5 +228,3 @@ function wpse_debug() {
 	print_r( $wp_super_edit );
 }
 // add_action( 'admin_footer', 'wpse_debug' );
-
-?>

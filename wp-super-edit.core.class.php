@@ -376,5 +376,3 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
     }
 
 }
-
-?>

@@ -133,5 +133,3 @@ function wp_super_emoticons_shortcode ($attr, $content = null ) {
 	return '<img class="superemotions" title="' . $attr['title'] . '" alt="'  . $attr['title'] . '" border="0" src="' . get_bloginfo('wpurl') . '/wp-includes/images/smilies/' . $attr['file'] . '" />';
 }
 add_shortcode('superemotions', 'wp_super_emoticons_shortcode');
-
-?>

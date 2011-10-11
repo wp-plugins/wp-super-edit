@@ -36,4 +36,3 @@ if ( is_admin() ) {
 }
 
 // End - WP Super Edit Uninstall //
-?>

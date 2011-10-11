@@ -109,6 +109,3 @@ function wp_super_edit_upgrader_shutdown() {
 	deactivate_plugins( __FILE__ );
 }
 add_action('admin_notices', 'wp_super_edit_upgrader_shutdown', 5);
-
-
-?>
