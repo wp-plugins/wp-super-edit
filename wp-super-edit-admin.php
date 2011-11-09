@@ -167,6 +167,8 @@ function wp_super_edit_admin_footer() {
 	var tiny_mce_buttons = new Object();
 	var buttons = new Array();
 	
+
+	
 	<?php wp_super_edit_buttons_js_objects(); ?>
 	
 	// Plugin and Button Control Functions
@@ -176,23 +178,24 @@ function wp_super_edit_admin_footer() {
 	}
 
 	function getButtonInfo(button) {
-		
-		wpsuperedit( '#wp_super_edit_dialog' ).attr( 'title', tiny_mce_buttons[button].desc );
-		wpsuperedit( '#wp_super_edit_dialog' ).html( '<p>' + tiny_mce_buttons[button].notice + '</p>');
+
+		var wpse_dialog = wpsuperedit( '<div></div>' )
+			.html( '<p>' + tiny_mce_buttons[button].notice + '</p>' )
+			.dialog( { 
+				title: tiny_mce_buttons[button].desc,
+				resizable: false,
+				draggable: false,
+				modal: true, 
+				overlay: { 
+					opacity: 0.5,
+					background: "black" 
+				},
+				close: function() {
+					wpsuperedit( '#wp_super_edit_dialog' ).addClass( 'hidden' );
+				}
+			});
+			
 		wpsuperedit( '#wp_super_edit_dialog' ).removeClass( 'hidden' );
-		
-		wpsuperedit('#wp_super_edit_dialog').dialog({ 
-			resizable: false,
-			draggable: false,
-			modal: true, 
-			overlay: { 
-				opacity: 0.5,
-				background: "black" 
-			},
-			close: function() {
-				wpsuperedit( '#wp_super_edit_dialog' ).addClass( 'hidden' );
-			}
-		});
 		
 		return false;		
 	}
