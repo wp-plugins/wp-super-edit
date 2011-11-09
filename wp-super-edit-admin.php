@@ -183,6 +183,7 @@ function wp_super_edit_admin_footer() {
 		
 		wpsuperedit('#wp_super_edit_dialog').dialog({ 
 			resizable: false,
+			draggable: false,
 			modal: true, 
 			overlay: { 
 				opacity: 0.5,

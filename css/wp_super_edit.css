@@ -219,7 +219,7 @@ div#disabled_buttons {
 .ui-dialog-buttonpane - for dialog buttons like yes, no, cancel
 */
 
-.ui-dialog-container {
+.ui-dialog {
   background: #fff;
   border: 5px solid #C3DEF1;
 }
