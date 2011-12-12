@@ -347,6 +347,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 						$wp_super_edit_row_buttons[] = '|';
 						continue;
 					}
+					if ( !isset( $this->buttons[$button_name] ) ) continue;
 					$plugin = $this->buttons[$button_name]->plugin;
 					if ( !empty( $plugin ) ) {
 						if ( $this->plugins[$plugin]->status != 'yes' ) continue;

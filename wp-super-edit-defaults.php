@@ -86,9 +86,9 @@ add_filter('tiny_mce_before_init','wp_super_edit_installer_tinymce_filter', 99);
 function wp_super_edit_set_user_default() {
 	global $wp_super_edit, $wp_super_edit_tinymce_default;
 
-	// Output buffering to get default TinyMCE init
+	// Output buffering to get default TinyMCE init - Since it's the core editor we want the DFW(distraction free writing)
 	ob_start();
-	wp_tiny_mce();
+	wp_editor( '', 'null', array( 'dfw' => true ) );
 	ob_end_clean();
 		
 	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $wp_super_edit_tinymce_default, 'single' );
@@ -236,16 +236,7 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes'
 	));
-
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'fullscreen', 
-		'nicename' => __( 'Full Screen', 'wp-super-edit' ), 
-		'description' => __( 'Toggle Full Screen editor mode.', 'wp-super-edit' ), 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes'
-	));
-	
+		
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'wp_adv', 
 		'nicename' => __( 'Show/Hide Advanced toolbar', 'wp-super-edit' ), 
@@ -380,7 +371,6 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes'
 	));
-	
 
 	// End WordPress Defaults
 	
@@ -466,6 +456,29 @@ function wp_super_edit_wordpress_button_defaults() {
 	));	
 	
 	// Start Included Plugin Defaults
+
+	// fullscreen
+	// Someday we deal with wp_fullscreen
+	
+	// WP Super Edit options for this plugin
+		
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'fullscreen', 
+		'nicename' => __( 'Full Screen', 'wp-super-edit' ), 
+		'description' => __( 'Toggle Full Screen editor mode.', 'wp-super-edit' ), 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'no'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'wp_fullscreen', 
+		'nicename' => __( 'WordPress Distraction Free Writing', 'wp-super-edit' ), 
+		'description' => __( 'Toggle WordPress Full Screen editor mode for distraction free writing.', 'wp-super-edit' ), 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes'
+	));	
 	
 	// advhr
 	
