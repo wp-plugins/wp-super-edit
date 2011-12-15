@@ -88,7 +88,10 @@ function wp_super_edit_set_user_default() {
 
 	// Output buffering to get default TinyMCE init - Since it's the core editor we want the DFW(distraction free writing)
 	ob_start();
-	wp_editor( '', 'null', array( 'dfw' => true ) );
+	if ( function_exists( 'wp_editor' ) ) 
+		wp_editor( '', 'null', array( 'dfw' => true ) );
+	else
+		wp_tiny_mce();
 	ob_end_clean();
 		
 	$wp_super_edit->register_user_settings( 'wp_super_edit_default', 'Default Editor Settings', $wp_super_edit_tinymce_default, 'single' );
