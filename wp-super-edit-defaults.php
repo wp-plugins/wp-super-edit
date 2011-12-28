@@ -26,39 +26,39 @@ function wp_super_edit_install_db_tables() {
 
 	$install_sql="CREATE TABLE $wp_super_edit->db_options (
 	 id bigint(20) NOT NULL auto_increment,
-	 name varchar(60) NOT NULL default '',
+	 name varchar(60) NOT NULL,
 	 value text NOT NULL,
 	 PRIMARY KEY (id,name),
 	 UNIQUE KEY name (name)
 	) $charset_collate;
 	CREATE TABLE $wp_super_edit->db_plugins (
 	 id bigint(20) NOT NULL auto_increment,
-	 name varchar(60) NOT NULL default '',
+	 name varchar(60) NOT NULL,
 	 url text NOT NULL,
-	 nicename varchar(120) NOT NULL default '',
+	 nicename varchar(120) NOT NULL,
 	 description text NOT NULL,
-	 provider varchar(60) NOT NULL default '',
+	 provider varchar(60) NOT NULL,
 	 status varchar(20) NOT NULL default 'no',
-	 callbacks varchar(120) NOT NULL default '',
+	 callbacks varchar(120) NOT NULL,
 	 PRIMARY KEY (id,name),
 	 UNIQUE KEY name (name)
 	) $charset_collate;
 	CREATE TABLE $wp_super_edit->db_buttons (
 	 id bigint(20) NOT NULL auto_increment,
-	 name varchar(60) NOT NULL default '',
-	 nicename varchar(120) NOT NULL default '',
-	 description text NOT NULL default '',
-	 provider varchar(60) NOT NULL default '',
-	 plugin varchar(60) NOT NULL default '',
+	 name varchar(60) NOT NULL,
+	 nicename varchar(120) NOT NULL,
+	 description text NOT NULL,
+	 provider varchar(60) NOT NULL,
+	 plugin varchar(60) NOT NULL,
 	 status varchar(20) NOT NULL default 'no',
 	 PRIMARY KEY (id,name),
 	 UNIQUE KEY id (id)
 	) $charset_collate;
 	CREATE TABLE $wp_super_edit->db_users (
 	 id bigint(20) NOT NULL auto_increment,
-	 user_name varchar(60) NOT NULL default '',
-	 user_nicename varchar(60) NOT NULL default '',
-	 user_type text NOT NULL default '',
+	 user_name varchar(60) NOT NULL,
+	 user_nicename varchar(60) NOT NULL,
+	 user_type text NOT NULL,
 	 editor_options text NOT NULL,
 	 PRIMARY KEY (id,user_name),
 	 UNIQUE KEY id (id)
