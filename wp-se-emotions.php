@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit WordPress Emoticons
 Plugin URI: http://funroe.net/projects/super-edit/
 Description: Adds emoticon / icon button to editor that uses default installed WordPress icon set.
 Author: Jess Planck
-Version: 2.4.4
+Version: 2.4.5
 Author URI: http://funroe.net
 
 Copyright (c) Jess Planck (http://funroe.net)
