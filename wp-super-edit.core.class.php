@@ -111,7 +111,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				";
 			}
 
-			$plugin_result = $wpdb->get_results( $wpdb->prepare( $plugin_query ) );
+			$plugin_result = $wpdb->get_results( $wpdb->prepare( $plugin_query, 0 ) );
 									
 			foreach ( $plugin_result as $plugin ) {		
 				if ( !in_array( $plugin->provider, $this->providers_registered ) ) continue;
@@ -136,7 +136,7 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 				";
 			}
 			
-			$buttons = $wpdb->get_results( $wpdb->prepare( $button_query ) );
+			$buttons = $wpdb->get_results( $wpdb->prepare( $button_query, 0 ) );
 			
 			foreach( $buttons as $button ) {
 				if ( !in_array( $button->provider, $this->providers_registered ) ) continue;

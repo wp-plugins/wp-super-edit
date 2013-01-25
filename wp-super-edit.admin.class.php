@@ -54,10 +54,10 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 		function uninstall() {
 			global $wpdb;
 			
-			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_options ));
-			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_plugins ));
-			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_buttons ));
-			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_users ));
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_options, 0 ));
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_plugins, 0 ));
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_buttons, 0 ));
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->db_users, 0 ));
 						
 			$this->is_installed = false;
 
@@ -93,7 +93,7 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 					SET editor_options = %s
 					WHERE user_name != 'wp_super_edit_default'", 
 					$user_settings->editor_options
-				) );
+				), 0 );
 
 			}
 		
