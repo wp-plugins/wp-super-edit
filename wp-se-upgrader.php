@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit Upgrade Utility
 Plugin URI: http://funroe.net/projects/super-edit/
 Description: Utility for upgrading or cleanning up WP Super Edit options. This will deactivate any active dependent plugins.
 Author: Jess Planck
-Version: 2.4.5
+Version: 2.4.6
 Author URI: http://funroe.net
 
 Copyright (c) Jess Planck (http://funroe.net)
