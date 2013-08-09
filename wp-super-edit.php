@@ -222,6 +222,19 @@ function wp_super_edit_tinymce_plugin_lang_filter( $tinymce_langs ) {
 	return $tinymce_langs;
 }
 
+function wp_super_edit_data_encode( $data ) {
+
+}
+
+function wp_super_edit_data_decode( $data ) {
+
+}
+
+function wp_super_edi_is_json( $string ) {
+ json_decode($string);
+ return (json_last_error() == JSON_ERROR_NONE);
+}
+
 // Ye' Ole Debug function
 function wpse_debug() {
 	global $wp_super_edit;
