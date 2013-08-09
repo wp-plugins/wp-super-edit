@@ -17,12 +17,10 @@ function wp_super_edit_install_db_tables() {
 
 	if ( $wp_super_edit->is_installed ) return;
 
-	if ( $wpdb->supports_collation() ) {
-		if ( ! empty($wpdb->charset) )
-			$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
-		if ( ! empty($wpdb->collate) )
-			$charset_collate .= " COLLATE $wpdb->collate";
-	}
+	if ( ! empty($wpdb->charset) )
+		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+	if ( ! empty($wpdb->collate) )
+		$charset_collate .= " COLLATE $wpdb->collate";
 
 	$install_sql="CREATE TABLE $wp_super_edit->db_options (
 	 id bigint(20) NOT NULL auto_increment,
