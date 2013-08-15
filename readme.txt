@@ -14,7 +14,7 @@ WP Super Edit is designed to get control of the WordPress wysiwyg visual editor 
 
 Your feedback is always welcome!
 
-Current release announcement: [http://funroe.net/projects/2011/07/wp-super-edit-2-4/](http://funroe.net/projects/2011/07/wp-super-edit-2-4/)
+Current release announcement: [http://funroe.net/blog/2013/08/wp-super-edit-2-4-7/](http://funroe.net/blog/2013/08/wp-super-edit-2-4-7/)
 
 **Features**
 
