@@ -4,7 +4,7 @@ Plugin Name: WP Super Edit
 Plugin URI: http://funroe.net/projects/super-edit/
 Description: Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and customized TinyMCE plugins.
 Author: Jess Planck
-Version: 2.4.6
+Version: 2.4.7
 Author URI: http://funroe.net
 
 Copyright (c) Jess Planck (http://funroe.net)
@@ -47,7 +47,7 @@ Public License at http://www.gnu.org/copyleft/gpl.html
 /**
 * WP Super Edit core variables defined
 */
-define( 'WPSE_VERSION', '2.4.6' );
+define( 'WPSE_VERSION', '2.4.7' );
 
 /**
 * WP Super Edit core class always required
@@ -222,17 +222,20 @@ function wp_super_edit_tinymce_plugin_lang_filter( $tinymce_langs ) {
 	return $tinymce_langs;
 }
 
+// ISSUE: Placeholder for json data migrations 
 function wp_super_edit_data_encode( $data ) {
 
 }
 
+// ISSUE: Placeholder for json data migrations 
 function wp_super_edit_data_decode( $data ) {
 
 }
 
+// ISSUE: Placeholder for json data migrations 
 function wp_super_edi_is_json( $string ) {
- json_decode($string);
- return (json_last_error() == JSON_ERROR_NONE);
+	json_decode($string);
+	return (json_last_error() == JSON_ERROR_NONE);
 }
 
 // Ye' Ole Debug function
@@ -240,4 +243,5 @@ function wpse_debug() {
 	global $wp_super_edit;
 	print_r( $wp_super_edit );
 }
+
 // add_action( 'admin_footer', 'wpse_debug' );
