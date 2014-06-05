@@ -717,13 +717,4 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'no'
 	));
 	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'tablecontrols', 
-		'nicename' => __( 'Table controls', 'wp-super-edit' ), 
-		'description' => __( 'Interface to manipulate tables and access to cell and row properties.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'table', 
-		'status' => 'no'
-	));
-	
 }
