@@ -157,7 +157,8 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 				if ( $plugin->url != 'none' ) $tinymce_plugins[$plugin->name] = plugins_url() . $plugin->url;
 			}
 		} else { 
-			if ( in_array( $plugin->provider, $wp_super_edit->providers_registered ) ) $tinymce_plugins[$plugin->name] = $wp_super_edit->core_uri . 'tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
+			// ISSUE: plugin files are now plugin.js
+			if ( in_array( $plugin->provider, $wp_super_edit->providers_registered ) ) $tinymce_plugins[$plugin->name] = $wp_super_edit->core_uri . 'tinymce_plugins/' . $plugin->name . '/plugin.js';
 		}
 	}
 	
