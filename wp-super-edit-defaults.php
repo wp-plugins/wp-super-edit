@@ -544,18 +544,9 @@ function wp_super_edit_wordpress_button_defaults() {
 	// Tiny MCE Buttons provided by this plugin
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'insertdate', 
-		'nicename' => __( 'Insert Date', 'wp-super-edit' ), 
-		'description' => __( 'Insert current date in editor', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'insertdatetime', 
-		'status' => 'no'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'inserttime', 
-		'nicename' => __( 'Insert Time', 'wp-super-edit' ), 
-		'description' => __( 'Insert current time in editor', 'wp-super-edit' ), 
+		'name' => 'insertdatetime', 
+		'nicename' => __( 'Insert Date or Time', 'wp-super-edit' ), 
+		'description' => __( 'Insert current date or time in editor', 'wp-super-edit' ), 
 		'provider' => 'wp_super_edit', 
 		'plugin' => 'insertdatetime', 
 		'status' => 'no'
