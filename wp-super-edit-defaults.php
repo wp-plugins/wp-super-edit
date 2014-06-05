@@ -667,18 +667,9 @@ function wp_super_edit_wordpress_button_defaults() {
 	// Tiny MCE Buttons provided by this plugin
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'search', 
-		'nicename' => __( 'Search', 'wp-super-edit' ), 
-		'description' => __( 'Search for text in editor area.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'searchreplace', 
-		'status' => 'no'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'replace', 
-		'nicename' => __( 'Replace', 'wp-super-edit' ), 
-		'description' => __( 'Replace text in editor area.', 'wp-super-edit' ), 
+		'name' => 'searchreplace', 
+		'nicename' => __( 'Search and Replace', 'wp-super-edit' ), 
+		'description' => __( 'Search and replace for text in editor area.', 'wp-super-edit' ), 
 		'provider' => 'wp_super_edit', 
 		'plugin' => 'searchreplace', 
 		'status' => 'no'
