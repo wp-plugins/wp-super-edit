@@ -10,11 +10,13 @@ Get control of the WordPress wysiwyg visual editor and add some functionality wi
 
 == Description ==
 
+= Currently Under Redevelopment =
+
 WP Super Edit is designed to get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and customized TinyMCE plugins. WP Super edit acts as framework for TinyMCE visual editor plugins and buttons allowing administrators (or users) to arrange buttons and add TinyMCE plugins to the visual editor.
 
 Your feedback is always welcome!
 
-Current release announcement: [http://funroe.net/blog/2013/08/wp-super-edit-2-4-7/](http://funroe.net/blog/2013/08/wp-super-edit-2-4-7/)
+Current release announcement: [http://funroe.net/projects/2011/07/wp-super-edit-2-4/](http://funroe.net/projects/2011/07/wp-super-edit-2-4/)
 
 **Features**
 
@@ -66,6 +68,10 @@ Yes! It may require some work. You can check out the documentation at **[Using W
 == Changelog ==
 
 **Visit the [WP Super Edit Bugs, Feature Requests & Change Log](http://funroe.net/projects/super-edit/using/) for more information about changes, current issues, and planned development.**
+
+= 2.5 =
+* The following plugins have been removed by the TinyMCE development team: advhr, advimg, advlink, style, xhtmlxtras.
+* Developmental plugins for WP Super Edit Emotions, WP Super Edit Classes, WP Super Edit Upgrade removed.
 
 = 2.4.7 =
 * Migrate from depreciated functions.

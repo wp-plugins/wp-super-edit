@@ -1117,7 +1117,10 @@ function wp_super_edit_buttons_ui() {
 	) );
 	
 	foreach ( $wp_super_edit->active_buttons as $button => $button_options ) {
-		if ( in_array( $button, $button_used ) ) continue;
+		
+		if ( is_array( $button_used ) ) {		
+			if ( in_array( $button, $button_used ) ) continue;
+		}
 		
 		wp_super_edit_make_button_ui( $wp_super_edit->active_buttons[$button] );
 

@@ -481,56 +481,6 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes'
 	));	
 	
-	// advhr
-	
-	// WP Super Edit options for this plugin
-
-	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'advhr', 
-		'nicename' => __( 'Advanced Horizontal Rule Lines', 'wp-super-edit' ), 
-		'description' => __( 'Advanced rule lines with options for &lt;hr&gt; HTML tag.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'status' => 'no', 
-		'callbacks' => ''
-	));
-	
-	// Tiny MCE Buttons provided by this plugin
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'advhr', 
-		'nicename' => __( 'Horizontal Rule Lines', 'wp-super-edit' ), 
-		'description' => __( 'Options for using the &lt;hr&gt; HTML tag', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'advhr', 
-		'status' => 'no'
-	));
-	
-	// advimage
-	
-	// WP Super Edit options for this plugin
-	
-	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'advimage', 
-		'nicename' => __( 'Advanced Image Link', 'wp-super-edit' ), 
-		'description' => __( 'A more advanded dialog for the Image Link button.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'status' => 'no', 
-		'callbacks' => ''
-	));
-	
-	// advlink
-	
-	// WP Super Edit options for this plugin
-
-	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'advlink', 
-		'nicename' => __( 'Advanced Link', 'wp-super-edit' ), 
-		'description' => __( 'A more advanded dialog for the Create Link button.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'status' => 'no', 
-		'callbacks' => ''
-	));
-	
 	// contextmenu
 	
 	// WP Super Edit options for this plugin
@@ -743,30 +693,6 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'no'
 	));
 	
-	// style
-	
-	// WP Super Edit options for this plugin
-	
-	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'style', 
-		'nicename' => __( 'Advanced CSS / styles Plugin', 'wp-super-edit' ), 
-		'description' => __( 'Allows access to properties that can be used in a STYLE attribute. Provides the Style Properties Button.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'status' => 'no', 
-		'callbacks' => ''
-	));
-	
-	// Tiny MCE Buttons provided by this plugin
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'styleprops', 
-		'nicename' => __( 'Style Properties', 'wp-super-edit' ), 
-		'description' => __( 'Interface for properties that can be manipulated using the STYLE attribute.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'style', 
-		'status' => 'no'
-	));
-	
 	// table
 	
 	// WP Super Edit options for this plugin
@@ -797,75 +723,6 @@ function wp_super_edit_wordpress_button_defaults() {
 		'description' => __( 'Interface to manipulate tables and access to cell and row properties.', 'wp-super-edit' ), 
 		'provider' => 'wp_super_edit', 
 		'plugin' => 'table', 
-		'status' => 'no'
-	));
-	
-	// xhtmlxtras
-	
-	// WP Super Edit options for this plugin
-	
-	$wp_super_edit->register_tinymce_plugin( array(
-		'name' => 'xhtmlxtras', 
-		'nicename' => __( 'XHTML Extras Plugin', 'wp-super-edit' ), 
-		'description' => __( 'Allows access to interfaces for some XHTML tags like CITE, ABBR, ACRONYM, DEL and INS. Also can give access to advanced XHTML properties such as javascript events. Provides the Citation, Abbreviation, Acronym, Deletion, Insertion, and XHTML Attributes Buttons.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'status' => 'no', 
-		'callbacks' => ''
-	));
-	
-	// Tiny MCE Buttons provided by this plugin
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'cite', 
-		'nicename' => __( 'Citation', 'wp-super-edit' ), 
-		'description' => __( 'Indicate a citation using the HTML CITE tag.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'xhtmlxtras', 
-		'status' => 'no'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'abbr', 
-		'nicename' => __( 'Abbreviation', 'wp-super-edit' ), 
-		'description' => __( 'Indicate an abbreviation using the HTML ABBR tag.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'xhtmlxtras', 
-		'status' => 'no'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'acronym', 
-		'nicename' => __( 'Acronym', 'wp-super-edit' ), 
-		'description' => __( 'Indicate an acronym using the HTML ACRONYM tag.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'xhtmlxtras', 
-		'status' => 'no'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'del', 
-		'nicename' => __( 'Deletion', 'wp-super-edit' ), 
-		'description' => __( 'Use the HTML DEL tag to indicate recently deleted content.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'xhtmlxtras', 
-		'status' => 'no'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'ins', 
-		'nicename' => __( 'Insertion', 'wp-super-edit' ), 
-		'description' => __( 'Use the HTML INS tag to indicate newly inserted content.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'xhtmlxtras', 
-		'status' => 'no'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'attribs', 
-		'nicename' => __( 'XHTML Attributes', 'wp-super-edit' ), 
-		'description' => __( 'Modify advanced attributes and javascript events.', 'wp-super-edit' ), 
-		'provider' => 'wp_super_edit', 
-		'plugin' => 'xhtmlxtras', 
 		'status' => 'no'
 	));
 	

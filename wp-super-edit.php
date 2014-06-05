@@ -6,7 +6,9 @@ Description: Get control of the WordPress wysiwyg visual editor and add some fun
 Author: Jess Planck
 Version: 2.4.7
 Author URI: http://funroe.net
+*/
 
+/*
 Copyright (c) Jess Planck (http://funroe.net)
 WP Super Edit is released under the GNU General Public
 License: http://www.gnu.org/licenses/gpl.txt
@@ -91,7 +93,9 @@ function wp_super_edit_init() {
 	// WP Super Edit Administration interfaces and default manipulation of TinyMCE.
 	case 'admin':
 		$wp_super_edit = new wp_super_edit_admin();
+		
 		if ( !$wp_super_edit->is_installed ) require_once( $wp_super_edit->core_path . 'wp-super-edit-defaults.php' );
+		
 		do_action( 'wp_super_edit_mode_admin', 'wp_super_edit_mode_admin' );
 		add_action('admin_menu', 'wp_super_edit_admin_menu_setup');
 		add_action('admin_init', 'wp_super_edit_admin_setup');		
@@ -113,6 +117,10 @@ add_action( 'plugins_loaded', 'wp_super_edit_init' );
 */
 function wp_super_edit_tinymce_filter( $initArray ) {
 	global $wp_super_edit;
+	
+	//ISSUE:: Find out what TinyMCE is spewing
+	echo "ISSUE::";
+	print_r( $initArray );
 
 	if ( !$wp_super_edit->is_installed ) return $initArray;
 
@@ -152,6 +160,9 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 			if ( in_array( $plugin->provider, $wp_super_edit->providers_registered ) ) $tinymce_plugins[$plugin->name] = $wp_super_edit->core_uri . 'tinymce_plugins/' . $plugin->name . '/editor_plugin.js';
 		}
 	}
+	
+	echo 'ISSUE:: TinyMCE Plugins have slashes </br>';
+	print_r( $tinymce_plugins );
 	
 	return $tinymce_plugins;
 }

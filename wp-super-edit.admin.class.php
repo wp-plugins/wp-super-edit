@@ -35,13 +35,13 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 			$current_user['editor_options'] = maybe_unserialize( $user_settings->editor_options );
 
 			for ( $button_rows = 1; $button_rows <= 4; $button_rows += 1) {
-				
-				if ( $current_user['editor_options']['theme_advanced_buttons' . $button_rows] == '' ) {
+				// ISSUE: 'theme_advanced_buttons' changed to 'toolbar' in WP 3.9								
+				if ( $current_user['editor_options']['toolbar' . $button_rows] == '' ) {
 					$current_user['buttons'][$button_rows] = array();
 					continue;
 				}
-				
-				$current_user['buttons'][$button_rows] = explode( ',', $current_user['editor_options']['theme_advanced_buttons' . $button_rows] );
+				// ISSUE: 'theme_advanced_buttons' changed to 'toolbar' in WP 3.9				
+				$current_user['buttons'][$button_rows] = explode( ',', $current_user['editor_options']['toolbar' . $button_rows] );
 			}
 			
 			return $current_user;
@@ -185,7 +185,11 @@ if ( class_exists( 'wp_super_edit_core' ) ) {
 						}
 										
 						$button_row = implode( ',', $button_row_setting );
-						$button_array_key = 'theme_advanced_buttons' . $wp_super_edit_row_number;
+						
+						/*
+						ISSUE: 'theme_advanced_buttons' changed to 'toolbar' in WP 3.9
+						*/
+						$button_array_key = 'toolbar' . $wp_super_edit_row_number;
 						
 						$current_user_settings[$button_array_key] = $button_row;
 						

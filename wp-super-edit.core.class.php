@@ -331,7 +331,8 @@ if ( !class_exists( 'wp_super_edit_core' ) ) {
 						
 			for ( $button_row = 1; $button_row <= 4; $button_row += 1) {
 				
-				$row_name = 'theme_advanced_buttons' . $button_row;
+				// ISSUE: 'theme_advanced_buttons' changed to 'toolbar' in WP 3.9
+				$row_name = 'toolbar' . $button_row;
 			
 				$wp_super_edit_check = explode( ',', $tinymce_user_settings[$row_name] );
 				$row_check = explode( ',', $initArray[$row_name] );
