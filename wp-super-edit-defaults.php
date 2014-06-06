@@ -730,5 +730,30 @@ function wp_super_edit_wordpress_button_defaults() {
 		'provider' => 'wp_super_edit', 
 		'plugin' => 'advlist', 
 		'status' => 'no'
-	));		
+	));	
+	
+	// advanced list
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'anchor', 
+		'nicename' => __( 'Anchor Plugin', 'wp-super-edit' ), 
+		'description' => __( 'Allows the creation and manipulation of anchors with advanced options.', 'wp-super-edit' ), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'anchor', 
+		'nicename' => __( 'Anchors', 'wp-super-edit' ), 
+		'description' => __( 'Interface for anchor options.', 'wp-super-edit' ), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'anchor', 
+		'status' => 'no'
+	));	
+			
 }
