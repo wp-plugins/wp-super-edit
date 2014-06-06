@@ -699,4 +699,36 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'no'
 	));
 	
+	// advanced list
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'advlist', 
+		'nicename' => __( 'Advanced List Plugin', 'wp-super-edit' ), 
+		'description' => __( 'Allows the creation and manipulation of lists with advanced options.', 'wp-super-edit' ), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'numlist', 
+		'nicename' => __( 'Advanced Numbered Lists', 'wp-super-edit' ), 
+		'description' => __( 'Interface for advanced numbered lists.', 'wp-super-edit' ), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'advlist', 
+		'status' => 'no'
+	));	
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'bullist', 
+		'nicename' => __( 'Advanced Bulletied Lists', 'wp-super-edit' ), 
+		'description' => __( 'Interface for advanced bulleted lists.', 'wp-super-edit' ), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'advlist', 
+		'status' => 'no'
+	));		
 }
