@@ -119,8 +119,8 @@ function wp_super_edit_tinymce_filter( $initArray ) {
 	global $wp_super_edit;
 	
 	//ISSUE:: Find out what TinyMCE is spewing
-	echo "ISSUE::";
-	print_r( $initArray );
+	//echo "ISSUE::";
+	//print_r( $initArray );
 
 	if ( !$wp_super_edit->is_installed ) return $initArray;
 
@@ -162,8 +162,8 @@ function wp_super_edit_tinymce_plugin_filter( $tinymce_plugins ) {
 		}
 	}
 	
-	echo 'ISSUE:: TinyMCE Plugins have slashes </br>';
-	print_r( $tinymce_plugins );
+	//echo 'ISSUE:: TinyMCE Plugins have slashes </br>';
+	//print_r( $tinymce_plugins );
 	
 	return $tinymce_plugins;
 }
