@@ -429,15 +429,6 @@ function wp_super_edit_wordpress_button_defaults() {
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'code', 
-		'nicename' => __( 'HTML Source', 'wp-super-edit' ), 
-		'description' => __( 'View and edit the HTML source code.', 'wp-super-edit' ), 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'wp_page', 
 		'nicename' => __( 'Wordpress Next Page Tag', 'wp-super-edit' ), 
 		'description' => __( 'Insert Wordpress Next Page tag to divide page content into multiple views.', 'wp-super-edit' ), 
