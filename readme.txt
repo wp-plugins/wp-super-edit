@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: ev3rywh3re
-Donate link: http://funroe.net/contribute/
+Donate link: http://funroe.net/projects/
 Tags: post, TinyMCE, editor, wysiwyg, buttons, formatting, admin
-Requires at least: 3.5
-Tested up to: 3.6
-Stable tag: 2.4.7
+Requires at least: 3.9
+Tested up to: 3.9.1
+Stable tag: 2.5
 
 Get control of the WordPress wysiwyg visual editor and add some functionality with more buttons and custom TinyMCE plugins.
 
@@ -16,7 +16,7 @@ WP Super Edit is designed to get control of the WordPress wysiwyg visual editor 
 
 Your feedback is always welcome!
 
-Current release announcement: [http://funroe.net/projects/2011/07/wp-super-edit-2-4/](http://funroe.net/projects/2011/07/wp-super-edit-2-4/)
+Current release announcement: [http://funroe.net/projects/2014/06/wp-super-edit-2-5/](http://funroe.net/projects/2014/06/wp-super-edit-2-5/)
 
 **Features**
 
