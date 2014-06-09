@@ -174,29 +174,37 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes'
 	));
 
-	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'justifyleft', 
-		'nicename' => __( 'Left Justification', 'wp-super-edit' ), 
-		'description' => __( 'Set the alignment to left justification. Wordpress default editor option for first row.', 'wp-super-edit' ), 
+		'name' => 'hr', 
+		'nicename' => __( 'Horizontal Rule', 'wp-super-edit' ), 
+		'description' => __( 'Horizonatal rule lines can be used to separate areas.', 'wp-super-edit' ), 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'justifycenter', 
-		'nicename' => __( 'Center Justification', 'wp-super-edit' ), 
-		'description' => __( 'Set the alignment to center justification. Wordpress default editor option for first row.', 'wp-super-edit' ), 
+		'name' => 'alignleft', 
+		'nicename' => __( 'Left Alignment', 'wp-super-edit' ), 
+		'description' => __( 'Set the alignment to left justification.', 'wp-super-edit' ), 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes'
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'justifyright', 
-		'nicename' => __( 'Right Justification', 'wp-super-edit' ), 
-		'description' => __( 'Set the alignment to right justification. Wordpress default editor option for first row.', 'wp-super-edit' ), 
+		'name' => 'aligncenter', 
+		'nicename' => __( 'Center Alignment', 'wp-super-edit' ), 
+		'description' => __( 'Set the alignment to center.', 'wp-super-edit' ), 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes'
+	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'alignright', 
+		'nicename' => __( 'Right Alignment', 'wp-super-edit' ), 
+		'description' => __( 'Set the alignment to right alignment.', 'wp-super-edit' ), 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes'
@@ -237,6 +245,15 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'yes'
 	));
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'wp_fullscreen', 
+		'nicename' => __( 'Distraction Free Writing', 'wp-super-edit' ), 
+		'description' => __( 'Toggle WordPress Full Screen editor mode for distraction free writing.', 'wp-super-edit' ), 
+		'provider' => 'wordpress', 
+		'plugin' => '', 
+		'status' => 'yes'
+	));		
 		
 	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'wp_adv', 
@@ -266,9 +283,9 @@ function wp_super_edit_wordpress_button_defaults() {
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'justifyfull', 
-		'nicename' => __( 'Full Justification', 'wp-super-edit' ), 
-		'description' => __( 'Set the alignment to full justification. Built in Wordpress button.', 'wp-super-edit' ), 
+		'name' => 'alignjustify', 
+		'nicename' => __( 'Align Justification', 'wp-super-edit' ), 
+		'description' => __( 'Set the alignment to full justification.', 'wp-super-edit' ), 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes'
@@ -293,27 +310,9 @@ function wp_super_edit_wordpress_button_defaults() {
 	));
 	
 	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'pasteword', 
-		'nicename' => __( 'Paste from Microsoft Word', 'wp-super-edit' ), 
-		'description' => __( 'Attempts to clean up HTML produced by Microsoft Word during cut and paste. Built in Wordpress button.', 'wp-super-edit' ), 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes'
-	));
-	
-	$wp_super_edit->register_tinymce_button( array(
 		'name' => 'removeformat', 
 		'nicename' => __( 'Remove HTML Formatting', 'wp-super-edit' ), 
 		'description' => __( 'Removes HTML formatting from selected item. Built in Wordpress button.', 'wp-super-edit' ), 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes'
-	));
-
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'media', 
-		'nicename' => __( 'Media', 'wp-super-edit' ), 
-		'description' => __( 'Add or edit embedded media like Flash, Quicktime, or Windows Media. Different from WordPress Media tools.', 'wp-super-edit' ), 
 		'provider' => 'wordpress', 
 		'plugin' => '', 
 		'status' => 'yes'
@@ -447,19 +446,9 @@ function wp_super_edit_wordpress_button_defaults() {
 		'status' => 'yes'
 	));
 	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'wp_help', 
-		'nicename' => __( 'Wordpress Editor Help', 'wp-super-edit' ), 
-		'description' => __( 'Shows some visual editor documentation and shortcut information', 'wp-super-edit' ), 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes'
-	));	
-	
 	// Start Included Plugin Defaults
 
 	// fullscreen
-	// Someday we deal with wp_fullscreen
 	
 	// WP Super Edit options for this plugin
 		
@@ -471,15 +460,6 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => '', 
 		'status' => 'no'
 	));
-	
-	$wp_super_edit->register_tinymce_button( array(
-		'name' => 'wp_fullscreen', 
-		'nicename' => __( 'WordPress Distraction Free Writing', 'wp-super-edit' ), 
-		'description' => __( 'Toggle WordPress Full Screen editor mode for distraction free writing.', 'wp-super-edit' ), 
-		'provider' => 'wordpress', 
-		'plugin' => '', 
-		'status' => 'yes'
-	));	
 	
 	// contextmenu
 	
@@ -527,6 +507,30 @@ function wp_super_edit_wordpress_button_defaults() {
 		'plugin' => 'fonttools', 
 		'status' => 'no'
 	));
+	
+	// code
+	
+	// WP Super Edit options for this plugin
+	
+	$wp_super_edit->register_tinymce_plugin( array(
+		'name' => 'code', 
+		'nicename' => __( 'Source Code Plugin', 'wp-super-edit' ), 
+		'description' => __( 'Adds code buttons to allow viewing of HTML and other TinyMCE supported source code.', 'wp-super-edit' ), 
+		'provider' => 'wp_super_edit', 
+		'status' => 'no', 
+		'callbacks' => ''
+	));
+	
+	// Tiny MCE Buttons provided by this plugin
+	
+	$wp_super_edit->register_tinymce_button( array(
+		'name' => 'code', 
+		'nicename' => __( 'Source Code', 'wp-super-edit' ), 
+		'description' => __( 'View source code used in editor area.', 'wp-super-edit' ), 
+		'provider' => 'wp_super_edit', 
+		'plugin' => 'insertdatetime', 
+		'status' => 'no'
+	));	
 	
 	// insertdatetime
 	
