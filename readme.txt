@@ -36,7 +36,8 @@ Current release announcement: [http://funroe.net/projects/2014/06/wp-super-edit-
 This version has been tested for use with the versions of WordPress indicated. I attempt to keep WP Super Edit up to date with changes to WordPress and the visual editor, but the complex changes can make it unproductive to maintain compatiblity with some older versions of WordPress. This is a list of recent versions available for older WordPress sites.
 
 * Use WP Super Edit 2.1 for WordPress 2.6 to 2.7.1 
-* Use WP Super Edit 2.3.x for WordPress 2.8 to 3.1
+* Use WP Super Edit 2.3.x for WordPress 2.8 to 3.1.x
+* Use WP Super Edit 2.4.x for WordPress 3.1 to 3.8.x
 
 **[Download Older Versions of WP Super Edit](http://wordpress.org/extend/plugins/wp-super-edit/download/)**
 
